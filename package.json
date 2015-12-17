@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/michaellperry/improvingu/issues"
   },
-  "homepage": "https://github.com/michaellperry/improvingu#readme"
+  "homepage": "https://github.com/michaellperry/improvingu#readme",
+  "dependencies": {
+    "bower": "^1.7.1"
+  }
 }
