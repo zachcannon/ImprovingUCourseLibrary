@@ -21,4 +21,6 @@ The application was created using these steps:
 
 Create an empty directory and initialize a Node application using `npm init`. Also initialize a Git repository using `git init`.
 
-Install Bower with `npm install -save bower`.
+Install Bower with `npm install -save bower`. Initialize it with `bower init` and select the "globals" package style.
+
+Install Bootstrap with `bower install -save bootstrap`.

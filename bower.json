@@ -1,0 +1,20 @@
+{
+  "name": "improvingu",
+  "description": "ImprovingU course survey",
+  "main": "index.js",
+  "authors": [
+    "Michael L Perry"
+  ],
+  "license": "MIT",
+  "moduleType": [
+    "globals"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
