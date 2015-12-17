@@ -23,4 +23,11 @@ Create an empty directory and initialize a Node application using `npm init`. Al
 
 Install Bower with `npm install -save bower`. Initialize it with `bower init` and select the "globals" package style.
 
-Install Bootstrap with `bower install -save bootstrap`.
+Install Bootstrap with `bower install -save bootstrap`. Copy a starting page to index.html, and modify the CSS and JS links:
+
+```
+<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+```
+
+Test it by starting a web server and navigating to the index page.
