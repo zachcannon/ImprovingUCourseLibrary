@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/michaellperry/improvingu#readme",
   "dependencies": {
-    "bower": "^1.7.1"
+    "bower": "^1.7.1",
+    "express": "^4.13.3"
   }
 }
