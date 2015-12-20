@@ -14,18 +14,21 @@ var app = express();
 var server = http.createServer(app);
 app.server = server;
 
-var doCookieParser = cookieParser();
-var doBodyParserUrlEncoded = bodyParser.urlencoded({extended: true});
-var doSession = session({
-    secret: config.sessionSecret,
-    saveUninitialized: true,
-    resave: true
-});
-app.use(doCookieParser);
-app.use(doBodyParserUrlEncoded);
-app.use(doSession);
+var pipeline = {
+    cookieParser: cookieParser(),
+    bodyParserUrlEncoded: bodyParser.urlencoded({extended: true}),
+    session: session({
+        secret: config.sessionSecret,
+        saveUninitialized: true,
+        resave: true
+    })
+};
+app.use(pipeline.cookieParser);
+app.use(pipeline.bodyParserUrlEncoded);
+app.use(pipeline.session);
 
 var authorization = require('./startup/authorization')(app, config);
+require('./startup/distributor')(server, pipeline, authorization, config);
 
 app.use("/bower_components", express.static(__dirname + "/bower_components"));
 app.use("/public", express.static(__dirname + "/public"));

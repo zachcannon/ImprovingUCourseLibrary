@@ -158,3 +158,81 @@ app.use("/private", authorization.require, express.static(__dirname + "/private"
 ```
 
 Add a link to `private/ideas.html` into the site navigation. Test by running the app. When you click on the link, you should be redirected to the login page. After logging in, you should be redirected to the private page.
+
+### Jinaga distributor
+
+Now we can finally configure Jinaga. Install Jinaga using `npm install -save jinaga`, and Chain Middleware using `npm install -save chain-middleware`. Then create a file called `startup/distributor.js` with the following code:
+
+```JavaScript
+module.exports = function( server, pipeline, authorization, config ) {
+    var JinagaDistributor = require("jinaga/jinaga.distributor.server");
+    var MongoProvider = require("jinaga/jinaga.mongo");
+    var chainMiddleware = require('chain-middleware');
+    var debug = require('debug')('improvingu');
+
+    var mongo = new MongoProvider(config.mongoDB || "http://localhost:27017/dev");
+
+    function getUser(request, response, done) {
+        if (request.isAuthenticated())
+            done(request.user);
+        else
+            done(null);
+    }
+
+    function authenticateUser(request, done) {
+        var handler = chainMiddleware(debug)
+            .first(pipeline.cookieParser)
+            .then(pipeline.session)
+            .then(authorization.initialize)
+            .then(authorization.session)
+            .then(getUser)
+            .end();
+        handler(request, {}, done);
+    }
+
+    JinagaDistributor.attach(mongo, mongo, server, authenticateUser);
+};
+```
+
+Call this function from app.js after the authorization setup, but before starting the listener.
+
+```JavaScript
+require('./startup/distributor')(server, pipeline, authorization, config);
+``` 
+
+Install Jinaga for the client-side using Bower:
+
+```
+bower install -save jinaga
+```
+
+Create a client-side JavaScript file called `private/ideas.js`. This will be the single-page application for the ideas page.
+
+```JavaScript
+var j = new Jinaga();
+j.sync(new JinagaDistributor("ws://localhost:8080/"));
+
+j.login(function (u, profile) {
+  if (!u) {
+    window.location = "http://localhost:8080/public/login.html";
+  }
+  else {
+    console.log("Logged in: " + profile.displayName);
+  }
+});
+```
+
+Load Jinaga and start ideas.js from the ideas.html page.
+
+```
+<script src="/bower_components/jinaga/jinaga.js"></script>
+<script src="/private/ideas.js"></script>
+```
+
+Test by starting Mongo, starting the app, bringing up the browser developer tools, and navigating to the Ideas page. After you log in, you should see a message in the console.
+
+If you don't see the message, make sure you have started Mongo. Then run the app with debug output so you can see what's happening:
+
+```
+DEBUG=jinaga* node app
+```
