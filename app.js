@@ -1,5 +1,8 @@
 var http = require('http');
 var express = require('express');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var config = {};
 try {
@@ -10,6 +13,17 @@ catch (err) {}
 var app = express();
 var server = http.createServer(app);
 app.server = server;
+
+var doCookieParser = cookieParser();
+var doBodyParserUrlEncoded = bodyParser.urlencoded({extended: true});
+var doSession = session({
+    secret: config.sessionSecret,
+    saveUninitialized: true,
+    resave: true
+});
+app.use(doCookieParser);
+app.use(doBodyParserUrlEncoded);
+app.use(doSession);
 
 var authorization = require('./startup/authorization')(app, config);
 

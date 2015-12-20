@@ -39,6 +39,9 @@ Create an `app.js` with the following code:
 ```JavaScript
 var http = require('http');
 var express = require('express');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var config = {};
 try {
@@ -49,6 +52,17 @@ catch (err) {}
 var app = express();
 var server = http.createServer(app);
 app.server = server;
+
+var doCookieParser = cookieParser();
+var doBodyParserUrlEncoded = bodyParser.urlencoded({extended: true});
+var doSession = session({
+    secret: config.sessionSecret,
+    saveUninitialized: true,
+    resave: true
+});
+app.use(doCookieParser);
+app.use(doBodyParserUrlEncoded);
+app.use(doSession);
 
 app.use("/bower_components", express.static(__dirname + "/bower_components"));
 app.use("/public", express.static(__dirname + "/public"));
@@ -80,7 +94,7 @@ Test it by starting the app and refreshing the browser.
 
 ### Passport
 
-Install Passport with `npm install -save passport`. Install your Passport provider. This app was built to work with Azure AD, so it used  `npm install -save passport-azure-ad-oauth2` and `npm install -save jsonwebtoken`.
+Install Passport with `npm install -save passport`. Install your Passport provider. This app was built to work with Azure AD, so it used  `npm install -save passport-azure-ad`.
 
 Create a file called `startup/authorization.js`. It should have the following structure:
 

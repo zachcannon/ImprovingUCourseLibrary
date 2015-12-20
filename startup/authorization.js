@@ -1,32 +1,18 @@
 var passport = require('passport');
-var AzureAdOAuth2Strategy = require('passport-azure-ad-oauth2').Strategy;
-var jwt = require('jsonwebtoken');
+var WsfedStrategy = require('passport-azure-ad').WsfedStrategy;
+var debug = require('debug')('improvingu');
 
 module.exports = function( app, config ) {
-    passport.use(
-        new AzureAdOAuth2Strategy({
-            tenant: config.azureAd.tenant,
-            clientID: config.azureAd.clientID,
-            clientSecret: config.azureAd.clientSecret,
-            callbackUrl: config.baseUrl + '/auth/azureadoauth2/callback',
-            resource: '00000002-0000-0000-c000-000000000000'
-        },
-        function (accessToken, refresh_token, params, profile, done) {
-            var waadProfile = profile || jwt.decode(params.id_token);
-            if (waadProfile && waadProfile.upn) {
-                return done(null, {
-                    provider: waadProfile.provider,
-                    id: waadProfile.upn,
-                    profile: {
-                        displayName: waadProfile.displayName
-                    }
-                });
-            }
-            else {
-                return done(null, false, {
-                    message: "Login failed"
-                });
-            }
+    passport.use(new WsfedStrategy(config.ad,
+        function (profile, done) {
+            debug("Logged in: " + JSON.stringify(profile));
+            return done(null, {
+                provider: profile.provider,
+                id: profile.id,
+                profile: {
+                    displayName: profile["http://schemas.microsoft.com/identity/claims/displayname"]
+                }
+            });
         })
     );
 
@@ -43,16 +29,16 @@ module.exports = function( app, config ) {
     app.use(doPassportInitialize);
     app.use(doPassportSession);
 
-    app.get('/auth/azureadoauth2', passport.authenticate('azure_ad_oauth2'));
-
-    app.get('/auth/azureadoauth2/callback', passport.authenticate('azure_ad_oauth2', {
-            failureRedirect: '/public/login.html'
-        }),
-        function(req, res) {
-            // Successful authentication, redirect home.
-            res.redirect('/');
-        }
-    );
+    var authenticate = passport.authenticate('wsfed-saml2', {
+        failureRedirect: '/public/login.html'
+    });
+    function authenticationCallback(req, res) {
+        var redirect_to = req.session.redirect_to ? req.session.redirect_to : '/';
+        delete req.session.redirect_to;
+        res.redirect( redirect_to );
+    }
+    app.get('/login', authenticate);
+    app.post('/login/callback', authenticate, authenticationCallback);
 
     return {
         initialize: doPassportInitialize,
