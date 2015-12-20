@@ -167,10 +167,9 @@ Now we can finally configure Jinaga. Install Jinaga using `npm install -save jin
 module.exports = function( server, pipeline, authorization, config ) {
     var JinagaDistributor = require("jinaga/jinaga.distributor.server");
     var MongoProvider = require("jinaga/jinaga.mongo");
-    var chainMiddleware = require('chain-middleware');
-    var debug = require('debug')('improvingu');
+    var chain = require('chain-middleware');
 
-    var mongo = new MongoProvider(config.mongoDB || "http://localhost:27017/dev");
+    var mongo = new MongoProvider(config.mongoDB || "mongodb://localhost:27017/dev");
 
     function getUser(request, response, done) {
         if (request.isAuthenticated())
@@ -180,13 +179,12 @@ module.exports = function( server, pipeline, authorization, config ) {
     }
 
     function authenticateUser(request, done) {
-        var handler = chainMiddleware(debug)
-            .first(pipeline.cookieParser)
-            .then(pipeline.session)
-            .then(authorization.initialize)
-            .then(authorization.session)
-            .then(getUser)
-            .end();
+        var handler = chain(
+            pipeline.cookieParser,
+            pipeline.session,
+            authorization.initialize,
+            authorization.session,
+            getUser);
         handler(request, {}, done);
     }
 
