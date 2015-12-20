@@ -47,6 +47,7 @@ module.exports = function( app, config ) {
             if (req.isAuthenticated()) {
                return next();
             }
+            req.session.redirect_to = req.originalUrl;
             return res.redirect('/public/login.html');
         }
     }

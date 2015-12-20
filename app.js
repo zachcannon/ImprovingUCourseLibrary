@@ -29,6 +29,7 @@ var authorization = require('./startup/authorization')(app, config);
 
 app.use("/bower_components", express.static(__dirname + "/bower_components"));
 app.use("/public", express.static(__dirname + "/public"));
+app.use("/private", authorization.require, express.static(__dirname + "/private"));
 app.get('/', function(req, res, next) {
     res.sendFile(__dirname + "/public/index.html");
 });

@@ -115,8 +115,9 @@ module.exports = function( app, config ) {
             failureRedirect: '/public/login.html'
         }),
         function(req, res) {
-            // Successful authentication, redirect home.
-            res.redirect('/');
+            var redirect_to = req.session.redirect_to ? req.session.redirect_to : '/';
+            delete req.session.redirect_to;
+            res.redirect( redirect_to );
         }
     );
 
@@ -127,6 +128,7 @@ module.exports = function( app, config ) {
             if (req.isAuthenticated()) {
                return next();
             }
+            req.session.redirect_to = req.originalUrl;
             return res.redirect('/public/login.html');
         }
     }
@@ -144,3 +146,15 @@ var authorization = require('./startup/authorization')(app, config);
 Create a `public/login.html` page containing a link to your authorization provider's endpoint, as configured in `startup/authorization.js`. 
 
 Copy `config/config.example.js` to `config/config.js` and edit the authentication parameters. Test the app to ensure that you can log in.
+
+### Private area
+
+Create a page called `private/ideas.html`. This will be a page listing course ideas. This page will only be available to logged in users.
+
+Configure the route to require authorization. Add the following to `app.js`.
+
+```JavaScript
+app.use("/private", authorization.require, express.static(__dirname + "/private"));
+```
+
+Add a link to `private/ideas.html` into the site navigation. Test by running the app. When you click on the link, you should be redirected to the login page. After logging in, you should be redirected to the private page.
