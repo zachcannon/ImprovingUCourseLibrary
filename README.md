@@ -220,7 +220,7 @@ j.login(function (u, profile) {
 });
 ```
 
-Load Jinaga and start ideas.js from the ideas.html page.
+Load Jinaga and start `ideas.js` from the `ideas.html` page.
 
 ```
 <script src="/bower_components/jinaga/jinaga.js"></script>
@@ -234,3 +234,76 @@ If you don't see the message, make sure you have started Mongo. Then run the app
 ```
 DEBUG=jinaga* node app
 ```
+
+### Knockout
+
+Although Jinaga will work with any JavaScript front end library, this application uses Knockout.js. Install it with `bower install -save knockout`. Include it in `ideas.html`.
+
+```
+<script src="/bower_components/knockout/dist/knockout.js"></script>
+```
+
+Create a view model in `ideas.js`. Create observables for the user and display name.
+
+```JavaScript
+var viewModel = {
+    user: ko.observable(),
+    displayName: ko.observable()
+};
+
+ko.applyBindings(viewModel);
+```
+
+Data bind the display name to the page.
+
+```
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="#" data-bind="text: displayName"></a></li>
+</ul>
+```
+
+Modify the login callback to set the user and update the display name.
+
+```JavaScript
+viewModel.user(u);
+j.query(u, [namesForUser], function(names) {
+    if (names.length != 1 || names[0].value !== profile.displayName) {
+        j.fact({
+            type: "ImprovingU.UserName",
+            prior: names,
+            from: u,
+            value: profile.displayName
+        });
+    }
+});
+```
+
+Where the template functions are defined as such:
+
+```JavaScript
+function nameIsCurrent(n) {
+    return j.not({
+        type: "ImprovingU.UserName",
+        prior: n
+    });
+}
+
+function namesForUser(u) {
+    return j.where({
+        type: "ImprovingU.UserName",
+        from: u
+    }, [nameIsCurrent]);
+}
+```
+
+This creates `UserName` facts when necessary to record the user's display name. But it doesn't update the view model. To update the display name in the view model, subscribe to the `user` and create a watch.
+
+```JavaScript
+viewModel.user.subscribe(function (u) {
+    j.watch(u, [namesForUser], function (n) {
+        viewModel.displayName(n.value);
+    });
+});
+```
+
+Test by running the app and logging in. Your name should appear on the right side of the nav bar.
