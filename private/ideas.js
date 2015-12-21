@@ -3,7 +3,10 @@ j.sync(new JinagaDistributor("ws://localhost:3000/"));
 
 var viewModel = {
     user: ko.observable(),
-    displayName: ko.observable()
+    displayName: ko.observable(),
+    newIdeaTitle: ko.observable(),
+    submitNewIdea: submitNewIdea,
+    ideas: ko.observableArray()
 };
 
 ko.applyBindings(viewModel);
@@ -46,3 +49,51 @@ viewModel.user.subscribe(function (u) {
         viewModel.displayName(n.value);
     });
 });
+
+var semester = {
+    type: "ImprovingU.Semester",
+    name: "Spring 2016",
+    office: {
+        type: "ImprovingU.Office",
+        name: "Dallas",
+        company: {
+            type: "ImprovingU.Company",
+            name: "Improving"
+        }
+    }
+};
+
+function submitNewIdea() {
+    if (viewModel.newIdeaTitle()) {
+        j.fact({
+            type: "ImprovingU.Idea",
+            semester: semester,
+            from: viewModel.user(),
+            createdAt: new Date(),
+            title: viewModel.newIdeaTitle()
+        });
+        viewModel.newIdeaTitle("");
+    }
+}
+
+function ideasForSemester(s) {
+    return {
+        type: "ImprovingU.Idea",
+        semester: s
+    };
+}
+
+j.watch(semester, [ideasForSemester], addTo(viewModel.ideas), removeFrom(viewModel.ideas));
+
+function addTo(observableArray) {
+    return function (fact) {
+        observableArray.push(fact);
+        return fact;
+    };
+}
+
+function removeFrom(observableArray) {
+    return function (fact) {
+        observableArray.remove(fact);
+    };
+}

@@ -311,3 +311,9 @@ viewModel.user.subscribe(function (u) {
 ```
 
 Test by running the app and logging in. Your name should appear on the right side of the nav bar.
+
+## Features
+
+Now that we have a basic site, let's add some features:
+
+- [Submit course ideas](https://github.com/michaellperry/ImprovingU/blob/master/NewIdea.md)

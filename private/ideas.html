@@ -54,6 +54,15 @@
 
     <h1>Ideas</h1>
     <p>Vote on your favorite course ideas. Which would you take if it was scheduled at a good time? Which would you teach?</p>
+    <form>
+        <input type="text" data-bind="value: newIdeaTitle" placeholder="Title">
+        <input type="button" data-bind="click: submitNewIdea" value="Submit">
+    </form>
+    <div data-bind="foreach: ideas">
+        <div class="row">
+            <span data-bind="text: title"></span>
+        </div>
+    </div>
 
 </div><!-- /.container -->
 
