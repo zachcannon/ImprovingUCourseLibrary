@@ -17,7 +17,7 @@ var semester = {
 };
 ```
 
-Notice how the hierarchy is upside-down - at least from the perspective of document modeling. Each fact refers to its predecessor.
+Notice how the hierarchy is upside-down -- at least from the perspective of document or object-oriented modeling. Each fact refers to its predecessor.
 
 ## Submit an idea
 
@@ -68,7 +68,7 @@ function ideasForSemester(s) {
 }
 ```
 
-Then query for facts matching that template. Use them to update an observable array in the view model.
+Then watch for facts matching that template. Use them to update an observable array in the view model.
 
 ```JavaScript
 var viewModel = {

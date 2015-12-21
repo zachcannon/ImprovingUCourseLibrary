@@ -83,17 +83,98 @@ function ideasForSemester(s) {
     };
 }
 
-j.watch(semester, [ideasForSemester], addTo(viewModel.ideas), removeFrom(viewModel.ideas));
+j.watch(semester, [ideasForSemester],
+    addTo(viewModel.ideas, IdeaViewModel),
+    removeFrom(viewModel.ideas));
 
-function addTo(observableArray) {
+function addTo(observableArray, map) {
+    map = map || function (o) { return o; };
     return function (fact) {
-        observableArray.push(fact);
-        return fact;
+        observableArray.push(map(fact));
+        return map(fact);
     };
 }
 
 function removeFrom(observableArray) {
-    return function (fact) {
-        observableArray.remove(fact);
+    return function (obj) {
+        observableArray.remove(obj);
     };
+}
+
+////////////////////////////////
+// Idea view model
+
+function IdeaViewModel(idea) {
+    var user = viewModel.user();
+    var ideaViewModel = {
+        title: idea.title,
+        takeCount: ko.observable(0),
+        takeVotes: ko.observableArray(),
+        toggleTakeVote: toggleTakeVote
+    };
+    j.watch(idea, [takeVotesForIdea],
+        increment(ideaViewModel.takeCount),
+        decrement(ideaViewModel.takeCount));
+    var ideaConsumer = {
+        type: "ImprovingU.IdeaConsumer",
+        idea: idea,
+        consumer: user
+    };
+    j.watch(ideaConsumer, [takeVotesForIdeaConsumer],
+        addTo(ideaViewModel.takeVotes),
+        removeFrom(ideaViewModel.takeVotes));
+    function toggleTakeVote() {
+        if (ideaViewModel.takeVotes().length) {
+            j.fact({
+                type: "ImprovingU.RescindVote",
+                from: user,
+                vote: ideaViewModel.takeVotes()
+            });
+        }
+        else {
+            j.fact({
+                type: "ImprovingU.TakeVote",
+                from: user,
+                createdAt: new Date(),
+                ideaConsumer: ideaConsumer
+            });
+        }
+    }
+    return ideaViewModel;
+}
+
+function increment(value) {
+    return function (v) {
+        value(value() + 1);
+    };
+}
+
+function decrement(value) {
+    return function (v) {
+        value(value() - 1);
+    };
+}
+
+function voteIsNotRescinded(v) {
+    return j.not({
+        type: "ImprovingU.RescindVote",
+        vote: v
+    });
+}
+
+function takeVotesForIdea(i) {
+    return j.where({
+        type: "ImprovingU.TakeVote",
+        ideaConsumer: {
+            type: "ImprovingU.IdeaConsumer",
+            idea: i
+        }
+    }, [voteIsNotRescinded]);
+}
+
+function takeVotesForIdeaConsumer(ic) {
+    return j.where({
+        type: "ImprovingU.TakeVote",
+        ideaConsumer: ic
+    }, [voteIsNotRescinded]);
 }

@@ -317,3 +317,4 @@ Test by running the app and logging in. Your name should appear on the right sid
 Now that we have a basic site, let's add some features:
 
 - [Submit course ideas](https://github.com/michaellperry/ImprovingU/blob/master/NewIdea.md)
+- [Vote on course ideas](https://github.com/michaellperry/ImprovingU/blob/master/Vote.md)

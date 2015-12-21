@@ -54,13 +54,22 @@
 
     <h1>Ideas</h1>
     <p>Vote on your favorite course ideas. Which would you take if it was scheduled at a good time? Which would you teach?</p>
-    <form>
-        <input type="text" data-bind="value: newIdeaTitle" placeholder="Title">
-        <input type="button" data-bind="click: submitNewIdea" value="Submit">
+    <form class="form-inline">
+        <label for="newIdeaTitle">Title</label>
+        <input id="newIdeaTitle" type="text" class="form-control" data-bind="value: newIdeaTitle" placeholder="Underwater basketweaving">
+        <input type="button" class="form-control" data-bind="click: submitNewIdea" value="Submit a new idea">
     </form>
+    <hr/>
     <div data-bind="foreach: ideas">
-        <div class="row">
-            <span data-bind="text: title"></span>
+        <div class="row row-idea">
+            <div class="col-md-2">
+                <button type="button" class="btn btn-success" title="I'd take it!" data-bind="text: takeCount, click: toggleTakeVote"></button>
+                <button type="button" class="btn btn-danger" title="I'd teach it!">1</button>
+                <button type="button" class="btn btn-warning" title="I recommend it!">7</button>
+           </div>
+            <div class="col-md-10">
+                <span data-bind="text: title"></span>
+            </div>
         </div>
     </div>
 
