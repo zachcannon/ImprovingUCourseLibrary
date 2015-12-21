@@ -53,16 +53,20 @@ var app = express();
 var server = http.createServer(app);
 app.server = server;
 
-var doCookieParser = cookieParser();
-var doBodyParserUrlEncoded = bodyParser.urlencoded({extended: true});
-var doSession = session({
-    secret: config.sessionSecret,
-    saveUninitialized: true,
-    resave: true
-});
-app.use(doCookieParser);
-app.use(doBodyParserUrlEncoded);
-app.use(doSession);
+var pipeline = {
+    cookieParser: cookieParser(),
+    bodyParserUrlEncoded: bodyParser.urlencoded({extended: true}),
+    session: session({
+        secret: config.sessionSecret,
+        saveUninitialized: true,
+        resave: true
+    })
+};
+app.use(pipeline.cookieParser);
+app.use(pipeline.bodyParserUrlEncoded);
+app.use(pipeline.session);
+
+// Additional startup will go here.
 
 app.use("/bower_components", express.static(__dirname + "/bower_components"));
 app.use("/public", express.static(__dirname + "/public"));
@@ -137,7 +141,7 @@ module.exports = function( app, config ) {
 
 Follow the instructions for your selected Passport provider to configure your strategy, authorization function, and endpoints.
 
-Call this startup in the node app:
+Call this startup in app.js where indicated by the above comment:
 
 ```JavaScript
 var authorization = require('./startup/authorization')(app, config);
@@ -192,7 +196,7 @@ module.exports = function( server, pipeline, authorization, config ) {
 };
 ```
 
-Call this function from app.js after the authorization setup, but before starting the listener.
+Call this function from app.js immediately after the authorization startup.
 
 ```JavaScript
 require('./startup/distributor')(server, pipeline, authorization, config);
