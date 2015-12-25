@@ -18,7 +18,6 @@
   "homepage": "https://github.com/michaellperry/improvingu#readme",
   "dependencies": {
     "body-parser": "^1.14.2",
-    "bower": "^1.7.1",
     "chain-middleware": "^1.0.1",
     "cookie-parser": "^1.4.0",
     "debug": "^2.2.0",
