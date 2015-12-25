@@ -3,7 +3,7 @@ module.exports = function( server, pipeline, authorization, config ) {
     var MongoProvider = require("jinaga/jinaga.mongo");
     var chain = require("chain-middleware");
 
-    var mongo = new MongoProvider(config.mongoDB || "mongodb://localhost:27017/dev");
+    var mongo = new MongoProvider(process.env.MONGO_DB || config.mongoDB || "mongodb://localhost:27017/dev");
 
     function getUser(request, response, done) {
         if (request.isAuthenticated())

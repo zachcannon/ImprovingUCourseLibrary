@@ -1,5 +1,5 @@
 var j = new Jinaga();
-j.sync(new JinagaDistributor("ws://localhost:3000/"));
+j.sync(new JinagaDistributor(distributorUrl || "ws://localhost:8080/"));
 
 var viewModel = {
     user: ko.observable(),
@@ -27,7 +27,7 @@ function namesForUser(u) {
 
 j.login(function (u, profile) {
     if (!u) {
-        window.location = "http://localhost:3000/public/login.html";
+        window.location = loginUrl || "http://localhost:8080/public/login.html";
     }
     else {
         viewModel.user(u);

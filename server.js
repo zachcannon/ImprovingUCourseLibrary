@@ -36,8 +36,16 @@ app.use("/private", authorization.require, express.static(__dirname + "/private"
 app.get('/', function(req, res, next) {
     res.sendFile(__dirname + "/public/index.html");
 });
+app.get("/config.js", function(req, res, next) {
+    var host = config.host || "localhost";
+    var port = process.env.PORT || config.port || 8080;
+    res.send(
+        "var distributorUrl = \"ws://" + host + ":" + port + "/\";\n" +
+        "var loginUrl = \"http://" + host + ":" + port + "/public/login.html\";\n");
+    res.end();
+});
 
-server.listen(config.port || 8080, function () {
+server.listen(process.env.PORT || config.port || 8080, function () {
     var host = server.address().address;
     var port = server.address().port;
 

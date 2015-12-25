@@ -3,7 +3,13 @@ var WsfedStrategy = require('passport-azure-ad').WsfedStrategy;
 var debug = require('debug')('improvingu');
 
 module.exports = function( app, config ) {
-    passport.use(new WsfedStrategy(config.ad,
+    var ad = config.ad || {};
+    passport.use(new WsfedStrategy({
+            realm: process.env.AD_REALM || ad.realm,
+            logoutUrl: process.env.AD_LOGOUT_URL || ad.logoutUrl,
+            identityProviderUrl: process.env.AD_IDENTITY_PROVIDER_URL || ad.identityProviderUrl,
+            identityMetadata: process.env.AD_IDENTITY_METADATA || ad.identityMetadata
+        },
         function (profile, done) {
             debug("Logged in: " + JSON.stringify(profile));
             return done(null, {
