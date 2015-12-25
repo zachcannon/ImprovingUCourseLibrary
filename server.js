@@ -18,7 +18,7 @@ var pipeline = {
     cookieParser: cookieParser(),
     bodyParserUrlEncoded: bodyParser.urlencoded({extended: true}),
     session: session({
-        secret: config.sessionSecret,
+        secret: process.env.SESSION_SECRET || config.sessionSecret || "randomCharacters",
         saveUninitialized: true,
         resave: true
     })
@@ -37,7 +37,7 @@ app.get('/', function(req, res, next) {
     res.sendFile(__dirname + "/public/index.html");
 });
 app.get("/config.js", function(req, res, next) {
-    var host = config.host || "localhost";
+    var host = process.env.HOST || config.host || "localhost";
     var port = process.env.PORT || config.port || 8080;
     res.send(
         "var distributorUrl = \"ws://" + host + ":" + port + "/\";\n" +
