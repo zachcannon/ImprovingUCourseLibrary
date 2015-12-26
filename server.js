@@ -37,11 +37,9 @@ app.get('/', function(req, res, next) {
     res.sendFile(__dirname + "/public/index.html");
 });
 app.get("/config.js", function(req, res, next) {
-    var host = process.env.HOST || config.host || "localhost";
-    var port = process.env.PORT || config.port || 8080;
     res.send(
-        "var distributorUrl = \"ws://" + host + ":" + port + "/\";\n" +
-        "var loginUrl = \"http://" + host + ":" + port + "/public/login.html\";\n");
+        "var distributorUrl = \"ws://" + req.headers.host + "/\";\n" +
+        "var loginUrl = \"" + req.protocol + "://" + req.headers.host + "/public/login.html\";\n");
     res.end();
 });
 
