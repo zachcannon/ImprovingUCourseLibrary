@@ -1,0 +1,28 @@
+{
+  "name": "jinaga",
+  "version": "1.2.2",
+  "homepage": "https://github.com/michaellperry/jinaga",
+  "authors": [
+    "Michael L Perry <michael@qedcode.com>"
+  ],
+  "description": "Real-time client-to-server-to-client messaging with persistence",
+  "main": "jinaga.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "messaging"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "ignore": [
+  ],
+  "dependencies": {
+  }
+}
