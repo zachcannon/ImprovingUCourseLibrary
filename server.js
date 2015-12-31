@@ -37,9 +37,10 @@ app.get('/', function(req, res, next) {
     res.sendFile(__dirname + "/public/index.html");
 });
 app.get("/config.js", function(req, res, next) {
+    var secure = config.secure || true;
     res.send(
-        "var distributorUrl = \"ws://" + req.headers.host + "/\";\n" +
-        "var loginUrl = \"" + req.protocol + "://" + req.headers.host + "/public/login.html\";\n");
+        "var distributorUrl = \"" + (secure ? "wss" : "ws") + "://" + req.headers.host + "/\";\n" +
+        "var loginUrl = \"" + (secure ? "https" : "http") + "://" + req.headers.host + "/public/login.html\";\n");
     res.end();
 });
 

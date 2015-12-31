@@ -7,5 +7,6 @@ module.exports = {
         identityProviderUrl: 'https://login.windows.net/my-tenant-id/wsfed',
         identityMetadata: 'https://login.windows.net/my-tenant-id/federationmetadata/2007-06/federationmetadata.xml'
     },
-    mongoDB: 'mongodb://localhost:27017/improvingu'
+    mongoDB: 'mongodb://localhost:27017/improvingu',
+    secure: false
 };
