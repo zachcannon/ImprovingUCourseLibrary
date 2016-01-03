@@ -83,7 +83,9 @@
                 <button type="button" class="btn btn-warning vote" title="I recommend it!" data-bind="text: recommendCount, click: toggleRecommendVote, css: { selected: recommendVotes().length > 0 }">0</button>
            </div>
             <div class="col-md-10">
-                <span data-bind="text: title"></span>
+                <span class="idea-title" data-bind="text: title"></span>
+                <br>
+                <span class="idea-author" data-bind="text: authorName().value"></span>
             </div>
         </div>
     </div>

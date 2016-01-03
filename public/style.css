@@ -23,3 +23,9 @@ body {
 .vote.selected.btn-warning {
     border-color: #9A6314;
 }
+.idea-title {
+    font-weight: bold;
+}
+.idea-author {
+    margin-left: 10px;
+}

@@ -138,7 +138,8 @@ function IdeaViewModel(idea) {
         recommendCount: ko.observable(0),
         takeVotes: ko.observableArray(),
         teachVotes: ko.observableArray(),
-        recommendVotes: ko.observableArray()
+        recommendVotes: ko.observableArray(),
+        authorName: ko.observable()
     };
     var ideaConsumer = {
         type: "ImprovingU.IdeaConsumer",
@@ -159,7 +160,8 @@ function IdeaViewModel(idea) {
     var watches = []
         .concat(watchVotes("ImprovingU.TakeVote", ideaViewModel.takeCount, ideaViewModel.takeVotes))
         .concat(watchVotes("ImprovingU.TeachVote", ideaViewModel.teachCount, ideaViewModel.teachVotes))
-        .concat(watchVotes("ImprovingU.RecommendVote", ideaViewModel.recommendCount, ideaViewModel.recommendVotes));
+        .concat(watchVotes("ImprovingU.RecommendVote", ideaViewModel.recommendCount, ideaViewModel.recommendVotes))
+        .concat(j.watch(idea.from, [namesForUser], setValue(ideaViewModel.authorName)));
 
     function toggleVote(type, votesObservable) {
         return function() {
@@ -245,6 +247,12 @@ function decrement(value) {
     return function (v) {
         value(value() - 1);
     };
+}
+
+function setValue(observable) {
+    return function (v) {
+        observable(v);
+    }
 }
 
 function dispose(watches) {
