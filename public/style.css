@@ -1,9 +1,18 @@
 body {
     padding-top: 50px;
 }
-.starter-template {
+.call-to-action {
     padding: 40px 15px;
     text-align: center;
+}
+.text-involvement {
+    color: #008800;
+}
+.text-dedication {
+    color: #000088;
+}
+.text-excellence {
+    color: #888800;
 }
 .row-idea {
     padding: 4px 0px;
@@ -22,6 +31,9 @@ body {
 }
 .vote.selected.btn-warning {
     border-color: #9A6314;
+}
+.idea {
+    cursor: pointer;
 }
 .idea-title {
     font-weight: bold;

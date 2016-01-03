@@ -44,7 +44,8 @@ var viewModel = {
     selectedSemester: ko.observable(),
     newIdeaTitle: ko.observable(),
     submitNewIdea: submitNewIdea,
-    ideas: ko.observableArray()
+    ideas: ko.observableArray(),
+    details: ko.observable()
 };
 
 ko.applyBindings(viewModel);
@@ -185,6 +186,7 @@ function IdeaViewModel(idea) {
     ideaViewModel.toggleTakeVote = toggleVote("ImprovingU.TakeVote", ideaViewModel.takeVotes);
     ideaViewModel.toggleTeachVote = toggleVote("ImprovingU.TeachVote", ideaViewModel.teachVotes);
     ideaViewModel.toggleRecommendVote = toggleVote("ImprovingU.RecommendVote", ideaViewModel.recommendVotes);
+    ideaViewModel.showDetails = showDetails(idea);
     ideaViewModel.dispose = dispose(watches);
     return ideaViewModel;
 }
@@ -215,6 +217,69 @@ function votesForIdeaConsumer(type) {
             ideaConsumer: ic
         }, [voteIsNotRescinded]);
     };
+}
+
+function showDetails(idea) {
+    return function() {
+        if (viewModel.details())
+            viewModel.details().dispose();
+        viewModel.details(new IdeaDetails(idea));
+        $("#idea-details").modal();
+    };
+}
+
+
+/////////////////////////////////
+// Details
+
+function IdeaDetails(idea) {
+    this.title = idea.title;
+    this.abstractValues = ko.observableArray();
+    this.abstract = ko.computed(function () {
+        var values = this.abstractValues();
+        return values.length == 0
+            ? ""
+            : values[0].value
+    }, this);
+    this.editing = ko.observable(false);
+    this.editAbstract = ko.computed({
+        read: function () {
+            return this.abstract();
+        },
+        write: function (value) {
+            j.fact({
+                type: "ImprovingU.Abstract",
+                idea: idea,
+                prior: this.abstractValues(),
+                from: viewModel.user(),
+                value: value
+            });
+        },
+        owner: this
+    });
+
+    this.toggleEditAbstract = function () {
+        this.editing(!this.editing());
+    };
+
+    var watches = [
+        j.watch(idea, [abstractsInIdea], addTo(this.abstractValues), removeFrom(this.abstractValues))
+    ];
+    this.dispose = dispose(watches);
+}
+
+function abstractsInIdea(i) {
+    return j.where({
+        type: "ImprovingU.Abstract",
+        idea: i
+    }, [abstractIsCurrent]);
+}
+
+function abstractIsCurrent(a) {
+    return j.not({
+        type: "ImprovingU.Abstract",
+        prior: a
+    });
 }
 
 

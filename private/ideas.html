@@ -82,10 +82,32 @@
                 <button type="button" class="btn btn-danger vote" title="I'd teach it!" data-bind="text: teachCount, click: toggleTeachVote, css: { selected: teachVotes().length > 0 }">0</button>
                 <button type="button" class="btn btn-warning vote" title="I recommend it!" data-bind="text: recommendCount, click: toggleRecommendVote, css: { selected: recommendVotes().length > 0 }">0</button>
            </div>
-            <div class="col-md-10">
+            <div class="col-md-10 idea" data-bind="click: showDetails">
                 <span class="idea-title" data-bind="text: title"></span>
                 <br>
                 <span class="idea-author" data-bind="text: authorName().value"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="idea-details" tabindex="-1" role="dialog" aria-labelledby="idea-details-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" data-bind="with: details">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="idea-details-title" data-bind="text: title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <p data-bind="text: abstract, visible: !editing()"></p>
+                        <textarea class="form-control" placeholder="Abstract" data-bind="value: editAbstract, visible: editing"></textarea>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: toggleEditAbstract, text: editing() ? 'Done' : 'Edit Abstract'"></button>
+                </div>
             </div>
         </div>
     </div>
