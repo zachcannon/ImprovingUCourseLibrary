@@ -6,5 +6,8 @@ body {
     text-align: center;
 }
 .row-idea {
-    margin-bottom: 4px;
+    padding: 4px 0px;
+}
+.row-idea:nth-child(even) {
+    background-color: #eee;
 }

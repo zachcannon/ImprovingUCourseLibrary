@@ -134,38 +134,55 @@ function IdeaViewModel(idea) {
     var ideaViewModel = {
         title: idea.title,
         takeCount: ko.observable(0),
+        teachCount: ko.observable(0),
+        recommendCount: ko.observable(0),
         takeVotes: ko.observableArray(),
-        toggleTakeVote: toggleTakeVote
+        teachVotes: ko.observableArray(),
+        recommendVotes: ko.observableArray()
     };
-    var watches = [];
-    watches.push(j.watch(idea, [takeVotesForIdea],
-        increment(ideaViewModel.takeCount),
-        decrement(ideaViewModel.takeCount)));
     var ideaConsumer = {
         type: "ImprovingU.IdeaConsumer",
         idea: idea,
         consumer: user
     };
-    watches.push(j.watch(ideaConsumer, [takeVotesForIdeaConsumer],
-        addTo(ideaViewModel.takeVotes),
-        removeFrom(ideaViewModel.takeVotes)));
-    function toggleTakeVote() {
-        if (ideaViewModel.takeVotes().length) {
-            j.fact({
-                type: "ImprovingU.RescindVote",
-                from: user,
-                vote: ideaViewModel.takeVotes()
-            });
-        }
-        else {
-            j.fact({
-                type: "ImprovingU.TakeVote",
-                from: user,
-                createdAt: new Date(),
-                ideaConsumer: ideaConsumer
-            });
-        }
+
+    function watchVotes(type, countObservable, votesObservable) {
+        return [
+            j.watch(idea, [votesForIdea(type)],
+                increment(countObservable),
+                decrement(countObservable)),
+            j.watch(ideaConsumer, [votesForIdeaConsumer(type)],
+                addTo(votesObservable),
+                removeFrom(votesObservable))
+        ];
     }
+    var watches = []
+        .concat(watchVotes("ImprovingU.TakeVote", ideaViewModel.takeCount, ideaViewModel.takeVotes))
+        .concat(watchVotes("ImprovingU.TeachVote", ideaViewModel.teachCount, ideaViewModel.teachVotes))
+        .concat(watchVotes("ImprovingU.RecommendVote", ideaViewModel.recommendCount, ideaViewModel.recommendVotes));
+
+    function toggleVote(type, votesObservable) {
+        return function() {
+            if (votesObservable().length) {
+                j.fact({
+                    type: "ImprovingU.RescindVote",
+                    from: user,
+                    vote: votesObservable()
+                });
+            }
+            else {
+                j.fact({
+                    type: type,
+                    from: user,
+                    createdAt: new Date(),
+                    ideaConsumer: ideaConsumer
+                });
+            }
+        };
+    }
+    ideaViewModel.toggleTakeVote = toggleVote("ImprovingU.TakeVote", ideaViewModel.takeVotes);
+    ideaViewModel.toggleTeachVote = toggleVote("ImprovingU.TeachVote", ideaViewModel.teachVotes);
+    ideaViewModel.toggleRecommendVote = toggleVote("ImprovingU.RecommendVote", ideaViewModel.recommendVotes);
     ideaViewModel.dispose = dispose(watches);
     return ideaViewModel;
 }
@@ -177,21 +194,25 @@ function voteIsNotRescinded(v) {
     });
 }
 
-function takeVotesForIdea(i) {
-    return j.where({
-        type: "ImprovingU.TakeVote",
-        ideaConsumer: {
-            type: "ImprovingU.IdeaConsumer",
-            idea: i
-        }
-    }, [voteIsNotRescinded]);
+function votesForIdea(type) {
+    return function(i) {
+        return j.where({
+            type: type,
+            ideaConsumer: {
+                type: "ImprovingU.IdeaConsumer",
+                idea: i
+            }
+        }, [voteIsNotRescinded]);
+    };
 }
 
-function takeVotesForIdeaConsumer(ic) {
-    return j.where({
-        type: "ImprovingU.TakeVote",
-        ideaConsumer: ic
-    }, [voteIsNotRescinded]);
+function votesForIdeaConsumer(type) {
+    return function(ic) {
+        return j.where({
+            type: type,
+            ideaConsumer: ic
+        }, [voteIsNotRescinded]);
+    };
 }
 
 
@@ -208,7 +229,8 @@ function addTo(observableArray, map) {
 
 function removeFrom(observableArray) {
     return function (obj) {
-        obj.dispose();
+        if (obj.dispose)
+            obj.dispose();
         observableArray.remove(obj);
     };
 }

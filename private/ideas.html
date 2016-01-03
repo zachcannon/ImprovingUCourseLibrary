@@ -57,19 +57,30 @@
         <label for="officeSelection">Office</label>
         <select id="officeSelection" data-bind="options: semesters, optionsText: 'office', value: selectedSemester, optionsCaption: 'Choose...'"></select>
     </form>
-    <p>Vote on your favorite course ideas. Which would you take if it was scheduled at a good time? Which would you teach?</p>
+    <p>Vote on your favorite course ideas.</p>
+    <p class="alert-success">I would like to <strong>take</strong> this class.</p>
+    <p class="alert-danger">I would be willing to <strong>teach</strong> this class.</p>
+    <p class="alert-warning">I have taken this class and would <strong>recommend</strong> it.</p>
+    <p>Don't see the course you want? Suggest it.</p>
     <form class="form-inline">
         <label for="newIdeaTitle">Title</label>
         <input id="newIdeaTitle" type="text" class="form-control" data-bind="value: newIdeaTitle" placeholder="Underwater basketweaving">
         <input type="button" class="form-control" data-bind="click: submitNewIdea" value="Submit a new idea">
     </form>
     <hr/>
+    <div class="row">
+        <div class="col-md-2">
+            <span class="text-success">Take</span>
+            <span class="text-danger">Teach</span>
+            <span class="text-warning">Rec.</span>
+        </div>
+    </div>
     <div data-bind="foreach: ideas">
         <div class="row row-idea">
             <div class="col-md-2">
                 <button type="button" class="btn btn-success" title="I'd take it!" data-bind="text: takeCount, click: toggleTakeVote">0</button>
-                <button type="button" class="btn btn-danger" title="I'd teach it!">1</button>
-                <button type="button" class="btn btn-warning" title="I recommend it!">7</button>
+                <button type="button" class="btn btn-danger" title="I'd teach it!" data-bind="text: teachCount, click: toggleTeachVote">0</button>
+                <button type="button" class="btn btn-warning" title="I recommend it!" data-bind="text: recommendCount, click: toggleRecommendVote">0</button>
            </div>
             <div class="col-md-10">
                 <span data-bind="text: title"></span>
