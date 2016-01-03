@@ -1,9 +1,47 @@
 var j = new Jinaga();
 j.sync(new JinagaDistributor(distributorUrl || "ws://localhost:8080/"));
 
+function listSemester(office, fact) {
+    return {
+        office: office,
+        fact: fact
+    };
+}
+
+var semesterDallas = {
+    type: "ImprovingU.Semester",
+    name: "Spring 2016",
+    office: {
+        type: "ImprovingU.Office",
+        name: "Dallas",
+        company: {
+            type: "ImprovingU.Company",
+            name: "Improving"
+        }
+    }
+};
+
+var semesterColumbus = {
+    type: "ImprovingU.Semester",
+    name: "Spring 2016",
+    office: {
+        type: "ImprovingU.Office",
+        name: "Columbus",
+        company: {
+            type: "ImprovingU.Company",
+            name: "Improving"
+        }
+    }
+};
+
 var viewModel = {
     user: ko.observable(),
     displayName: ko.observable(),
+    semesters: ko.observableArray([
+        listSemester("Columbus", semesterColumbus),
+        listSemester("Dallas", semesterDallas)
+    ]),
+    selectedSemester: ko.observable(),
     newIdeaTitle: ko.observable(),
     submitNewIdea: submitNewIdea,
     ideas: ko.observableArray()
@@ -50,24 +88,11 @@ viewModel.user.subscribe(function (u) {
     });
 });
 
-var semester = {
-    type: "ImprovingU.Semester",
-    name: "Spring 2016",
-    office: {
-        type: "ImprovingU.Office",
-        name: "Dallas",
-        company: {
-            type: "ImprovingU.Company",
-            name: "Improving"
-        }
-    }
-};
-
 function submitNewIdea() {
-    if (viewModel.newIdeaTitle()) {
+    if (viewModel.newIdeaTitle() && viewModel.selectedSemester()) {
         j.fact({
             type: "ImprovingU.Idea",
-            semester: semester,
+            semester: viewModel.selectedSemester().fact,
             from: viewModel.user(),
             createdAt: new Date(),
             title: viewModel.newIdeaTitle()
@@ -83,23 +108,23 @@ function ideasForSemester(s) {
     };
 }
 
-j.watch(semester, [ideasForSemester],
-    addTo(viewModel.ideas, IdeaViewModel),
-    removeFrom(viewModel.ideas));
+var ideasWatch;
+viewModel.selectedSemester.subscribe(function (semester) {
+    if (ideasWatch) {
+        ideasWatch.stop();
+        ideasWatch = null;
+    }
 
-function addTo(observableArray, map) {
-    map = map || function (o) { return o; };
-    return function (fact) {
-        observableArray.push(map(fact));
-        return map(fact);
-    };
-}
-
-function removeFrom(observableArray) {
-    return function (obj) {
-        observableArray.remove(obj);
-    };
-}
+    viewModel.ideas().forEach(function (idea) {
+        idea.dispose();
+    });
+    viewModel.ideas.removeAll();
+    if (semester) {
+        ideasWatch = j.watch(semester.fact, [ideasForSemester],
+            addTo(viewModel.ideas, IdeaViewModel),
+            removeFrom(viewModel.ideas));
+    }
+});
 
 ////////////////////////////////
 // Idea view model
@@ -112,17 +137,18 @@ function IdeaViewModel(idea) {
         takeVotes: ko.observableArray(),
         toggleTakeVote: toggleTakeVote
     };
-    j.watch(idea, [takeVotesForIdea],
+    var watches = [];
+    watches.push(j.watch(idea, [takeVotesForIdea],
         increment(ideaViewModel.takeCount),
-        decrement(ideaViewModel.takeCount));
+        decrement(ideaViewModel.takeCount)));
     var ideaConsumer = {
         type: "ImprovingU.IdeaConsumer",
         idea: idea,
         consumer: user
     };
-    j.watch(ideaConsumer, [takeVotesForIdeaConsumer],
+    watches.push(j.watch(ideaConsumer, [takeVotesForIdeaConsumer],
         addTo(ideaViewModel.takeVotes),
-        removeFrom(ideaViewModel.takeVotes));
+        removeFrom(ideaViewModel.takeVotes)));
     function toggleTakeVote() {
         if (ideaViewModel.takeVotes().length) {
             j.fact({
@@ -140,19 +166,8 @@ function IdeaViewModel(idea) {
             });
         }
     }
+    ideaViewModel.dispose = dispose(watches);
     return ideaViewModel;
-}
-
-function increment(value) {
-    return function (v) {
-        value(value() + 1);
-    };
-}
-
-function decrement(value) {
-    return function (v) {
-        value(value() - 1);
-    };
 }
 
 function voteIsNotRescinded(v) {
@@ -177,4 +192,43 @@ function takeVotesForIdeaConsumer(ic) {
         type: "ImprovingU.TakeVote",
         ideaConsumer: ic
     }, [voteIsNotRescinded]);
+}
+
+
+/////////////////////////////////
+// Utilities
+
+function addTo(observableArray, map) {
+    map = map || function (o) { return o; };
+    return function (fact) {
+        observableArray.push(map(fact));
+        return map(fact);
+    };
+}
+
+function removeFrom(observableArray) {
+    return function (obj) {
+        obj.dispose();
+        observableArray.remove(obj);
+    };
+}
+
+function increment(value) {
+    return function (v) {
+        value(value() + 1);
+    };
+}
+
+function decrement(value) {
+    return function (v) {
+        value(value() - 1);
+    };
+}
+
+function dispose(watches) {
+    return function() {
+        watches.forEach(function (watch) {
+            watch.stop();
+        });
+    };
 }

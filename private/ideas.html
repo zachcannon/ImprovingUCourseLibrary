@@ -53,6 +53,10 @@
 <div class="container">
 
     <h1>Ideas</h1>
+    <form class="form-inline">
+        <label for="officeSelection">Office</label>
+        <select id="officeSelection" data-bind="options: semesters, optionsText: 'office', value: selectedSemester, optionsCaption: 'Choose...'"></select>
+    </form>
     <p>Vote on your favorite course ideas. Which would you take if it was scheduled at a good time? Which would you teach?</p>
     <form class="form-inline">
         <label for="newIdeaTitle">Title</label>
@@ -63,7 +67,7 @@
     <div data-bind="foreach: ideas">
         <div class="row row-idea">
             <div class="col-md-2">
-                <button type="button" class="btn btn-success" title="I'd take it!" data-bind="text: takeCount, click: toggleTakeVote"></button>
+                <button type="button" class="btn btn-success" title="I'd take it!" data-bind="text: takeCount, click: toggleTakeVote">0</button>
                 <button type="button" class="btn btn-danger" title="I'd teach it!">1</button>
                 <button type="button" class="btn btn-warning" title="I recommend it!">7</button>
            </div>
