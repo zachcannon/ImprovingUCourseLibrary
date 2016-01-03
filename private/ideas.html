@@ -78,9 +78,9 @@
     <div data-bind="foreach: ideas">
         <div class="row row-idea">
             <div class="col-md-2">
-                <button type="button" class="btn btn-success" title="I'd take it!" data-bind="text: takeCount, click: toggleTakeVote">0</button>
-                <button type="button" class="btn btn-danger" title="I'd teach it!" data-bind="text: teachCount, click: toggleTeachVote">0</button>
-                <button type="button" class="btn btn-warning" title="I recommend it!" data-bind="text: recommendCount, click: toggleRecommendVote">0</button>
+                <button type="button" class="btn btn-success vote" title="I'd take it!" data-bind="text: takeCount, click: toggleTakeVote, css: { selected: takeVotes().length > 0 }">0</button>
+                <button type="button" class="btn btn-danger vote" title="I'd teach it!" data-bind="text: teachCount, click: toggleTeachVote, css: { selected: teachVotes().length > 0 }">0</button>
+                <button type="button" class="btn btn-warning vote" title="I recommend it!" data-bind="text: recommendCount, click: toggleRecommendVote, css: { selected: recommendVotes().length > 0 }">0</button>
            </div>
             <div class="col-md-10">
                 <span data-bind="text: title"></span>
