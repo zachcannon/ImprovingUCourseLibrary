@@ -140,13 +140,18 @@ function IdeaViewModel(idea) {
         takeVotes: ko.observableArray(),
         teachVotes: ko.observableArray(),
         recommendVotes: ko.observableArray(),
-        authorName: ko.observable()
+        authorNameFact: ko.observable()
     };
     var ideaConsumer = {
         type: "ImprovingU.IdeaConsumer",
         idea: idea,
         consumer: user
     };
+
+    ideaViewModel.authorName = ko.computed(function () {
+        return ideaViewModel.authorNameFact() ? ideaViewModel.authorNameFact().value : "";
+    });
+
 
     function watchVotes(type, countObservable, votesObservable) {
         return [
@@ -162,7 +167,7 @@ function IdeaViewModel(idea) {
         .concat(watchVotes("ImprovingU.TakeVote", ideaViewModel.takeCount, ideaViewModel.takeVotes))
         .concat(watchVotes("ImprovingU.TeachVote", ideaViewModel.teachCount, ideaViewModel.teachVotes))
         .concat(watchVotes("ImprovingU.RecommendVote", ideaViewModel.recommendCount, ideaViewModel.recommendVotes))
-        .concat(j.watch(idea.from, [namesForUser], setValue(ideaViewModel.authorName)));
+        .concat(j.watch(idea.from, [namesForUser], setValue(ideaViewModel.authorNameFact)));
 
     function toggleVote(type, votesObservable) {
         return function() {
