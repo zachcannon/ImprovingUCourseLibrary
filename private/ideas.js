@@ -237,6 +237,8 @@ function showDetails(idea) {
 /////////////////////////////////
 // Details
 
+var converter = new showdown.Converter();
+
 function IdeaDetails(idea) {
     this.title = idea.title;
     this.abstractValues = ko.observableArray();
@@ -244,12 +246,15 @@ function IdeaDetails(idea) {
         var values = this.abstractValues();
         return values.length == 0
             ? ""
-            : values[0].value
+            : converter.makeHtml(values[0].value);
     }, this);
     this.editing = ko.observable(false);
     this.editAbstract = ko.computed({
         read: function () {
-            return this.abstract();
+            var values = this.abstractValues();
+            return values.length == 0
+                ? ""
+                : values[0].value;
         },
         write: function (value) {
             j.fact({

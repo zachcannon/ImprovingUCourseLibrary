@@ -23,6 +23,6 @@
     "commit": "475e0027591978680c9f7575673eacf8d7f9e49b"
   },
   "_source": "git://github.com/michaellperry/jinaga-web.git",
-  "_target": "~1.2.1",
+  "_target": "~1.2.2",
   "_originalSource": "jinaga"
 }

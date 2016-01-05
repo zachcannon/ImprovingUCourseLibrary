@@ -100,7 +100,7 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <p data-bind="text: abstract, visible: !editing()"></p>
+                        <div data-bind="html: abstract, visible: !editing()"></div>
                         <textarea class="form-control" placeholder="Abstract" data-bind="value: editAbstract, visible: editing"></textarea>
                     </form>
                 </div>
@@ -123,6 +123,7 @@
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="/bower_components/jinaga/jinaga.js"></script>
 <script src="/bower_components/knockout/dist/knockout.js"></script>
+<script src="/bower_components/showdown/dist/showdown.js"></script>
 <script src="/config.js"></script>
 <script src="/private/ideas.js"></script>
 </body>
