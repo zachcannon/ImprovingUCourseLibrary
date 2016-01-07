@@ -19,7 +19,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.6",
-    "jinaga": "~1.2.2",
+    "jinaga": "~1.3.0",
     "knockout": "~3.4.0",
     "showdown": "~1.3.0"
   }

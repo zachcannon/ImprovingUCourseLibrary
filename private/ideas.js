@@ -1,5 +1,7 @@
 var j = new Jinaga();
 j.sync(new JinagaDistributor(distributorUrl || "ws://localhost:8080/"));
+j.onError(function (message) { viewModel.error(message); });
+j.onProgress(function (queueCount) { viewModel.queueCount(queueCount); });
 
 function listSemester(office, fact) {
     return {
@@ -35,6 +37,10 @@ var semesterColumbus = {
 };
 
 var viewModel = {
+    error: ko.observable(),
+    queueCount: ko.observable(),
+    showError: showError,
+
     user: ko.observable(),
     displayName: ko.observable(),
     semesters: ko.observableArray([
@@ -47,8 +53,19 @@ var viewModel = {
     ideas: ko.observableArray(),
     details: ko.observable()
 };
+viewModel.status = ko.computed(function () {
+    return viewModel.error()
+        ? "Error"
+        : viewModel.queueCount() > 0
+        ? "Saving..."
+        : "";
+});
 
 ko.applyBindings(viewModel);
+
+function showError() {
+    $("#error-dialog").modal();
+}
 
 function nameIsCurrent(n) {
     return j.not({

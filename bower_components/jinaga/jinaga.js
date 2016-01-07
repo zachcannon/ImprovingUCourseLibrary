@@ -366,14 +366,14 @@ function computeStringHash(str) {
 },{"./collections":2}],4:[function(require,module,exports){
 var engine = require("engine.io-client");
 var Socket = engine.Socket;
+var interface_1 = require("./interface");
 var JinagaDistributor = (function () {
     function JinagaDistributor(endpoint) {
-        var _this = this;
+        this.endpoint = endpoint;
         this.isOpen = false;
         this.pending = [];
-        this.socket = new Socket(endpoint);
-        this.socket.on("open", function () { _this.onOpen(); });
-        this.socket.on("message", function (message) { _this.onMessage(message); });
+        this.maxTimeout = 1 * 1000;
+        this.createSocket();
     }
     JinagaDistributor.prototype.init = function (coordinator) {
         this.coordinator = coordinator;
@@ -396,8 +396,15 @@ var JinagaDistributor = (function () {
     JinagaDistributor.prototype.fact = function (fact) {
         this.send(JSON.stringify({
             type: "fact",
-            fact: fact
+            fact: fact,
+            token: interface_1.computeHash(fact)
         }));
+    };
+    JinagaDistributor.prototype.createSocket = function () {
+        var _this = this;
+        this.socket = new Socket(this.endpoint);
+        this.socket.on("open", function () { _this.onOpen(); });
+        this.socket.on("error", function (error) { _this.onError(error.message); });
     };
     JinagaDistributor.prototype.send = function (message) {
         if (this.isOpen)
@@ -407,16 +414,27 @@ var JinagaDistributor = (function () {
     };
     JinagaDistributor.prototype.onOpen = function () {
         var _this = this;
+        this.coordinator.onError(null);
+        this.socket.on("message", function (message) { _this.onMessage(message); });
+        this.socket.on("close", function () { _this.onClose(); });
+        this.maxTimeout = 1 * 1000;
         this.isOpen = true;
         this.pending.forEach(function (message) {
             _this.socket.send(message);
         });
         this.pending = [];
     };
+    JinagaDistributor.prototype.onError = function (error) {
+        this.coordinator.onError(error);
+        this.retry();
+    };
     JinagaDistributor.prototype.onMessage = function (message) {
         var messageObj = JSON.parse(message);
         if (messageObj.type === "fact") {
             this.coordinator.onReceived(messageObj.fact, null, this);
+        }
+        if (messageObj.type === "received") {
+            this.coordinator.onDelivered(messageObj.token, this);
         }
         if (messageObj.type === "loggedIn") {
             this.coordinator.onLoggedIn(messageObj.userFact, messageObj.profile);
@@ -425,11 +443,27 @@ var JinagaDistributor = (function () {
             this.coordinator.onDone(messageObj.token);
         }
     };
+    JinagaDistributor.prototype.onClose = function () {
+        this.isOpen = false;
+        this.retry();
+    };
+    JinagaDistributor.prototype.retry = function () {
+        var _this = this;
+        setTimeout(function () { _this.resendMessages(); }, Math.random() * this.maxTimeout);
+        this.maxTimeout *= 2;
+        if (this.maxTimeout > 30 * 1000)
+            this.maxTimeout = 30 * 1000;
+    };
+    JinagaDistributor.prototype.resendMessages = function () {
+        this.createSocket();
+        if (this.pending.length === 0)
+            this.coordinator.resendMessages();
+    };
     return JinagaDistributor;
 })();
 module.exports = JinagaDistributor;
 
-},{"engine.io-client":12}],5:[function(require,module,exports){
+},{"./interface":3,"engine.io-client":12}],5:[function(require,module,exports){
 var Interface = require("./interface");
 var computeHash = Interface.computeHash;
 var parse = require("./queryParser");
@@ -478,6 +512,8 @@ var Watch = (function () {
 })();
 var JinagaCoordinator = (function () {
     function JinagaCoordinator() {
+        this.errorHandlers = [];
+        this.progressHandlers = [];
         this.watches = [];
         this.messages = null;
         this.network = null;
@@ -498,6 +534,12 @@ var JinagaCoordinator = (function () {
         this.network = network;
         this.network.init(this);
         this.messages.sendAllFacts();
+    };
+    JinagaCoordinator.prototype.addErrorHandler = function (callback) {
+        this.errorHandlers.push(callback);
+    };
+    JinagaCoordinator.prototype.addProgressHandler = function (callback) {
+        this.progressHandlers.push(callback);
     };
     JinagaCoordinator.prototype.fact = function (message) {
         this.messages.save(message, null);
@@ -563,8 +605,8 @@ var JinagaCoordinator = (function () {
         if (source === null) {
             this.messages.push(fact);
         }
-        this.watches.map(function (watch) {
-            watch.inverses.map(function (inverse) {
+        this.watches.forEach(function (watch) {
+            watch.inverses.forEach(function (inverse) {
                 _this.messages.executeQuery(fact, inverse.affected, _this.userFact, function (error2, affected) {
                     if (!error2) {
                         if (_some(affected, function (obj) { return _isEqual(obj, watch.start); })) {
@@ -598,6 +640,9 @@ var JinagaCoordinator = (function () {
     JinagaCoordinator.prototype.onReceived = function (fact, userFact, source) {
         this.messages.save(fact, source);
     };
+    JinagaCoordinator.prototype.onDelivered = function (token, destination) {
+        this.messages.dequeue(token, destination);
+    };
     JinagaCoordinator.prototype.onDone = function (token) {
         var index = -1;
         for (var i = 0; i < this.queries.length; i++) {
@@ -611,8 +656,11 @@ var JinagaCoordinator = (function () {
             this.queries.splice(index, 1)[0].callback();
         }
     };
+    JinagaCoordinator.prototype.onProgress = function (queueCount) {
+        this.progressHandlers.forEach(function (handler) { return handler(queueCount); });
+    };
     JinagaCoordinator.prototype.onError = function (err) {
-        debug(err);
+        this.errorHandlers.forEach(function (h) { return h(err); });
     };
     JinagaCoordinator.prototype.send = function (fact, source) {
         if (this.network)
@@ -626,6 +674,9 @@ var JinagaCoordinator = (function () {
             callback(userFact, profile);
         });
         this.loginCallbacks = [];
+    };
+    JinagaCoordinator.prototype.resendMessages = function () {
+        this.messages.sendAllFacts();
     };
     return JinagaCoordinator;
 })();
@@ -645,6 +696,12 @@ var Jinaga = (function () {
         this.coordinator = new JinagaCoordinator();
         this.coordinator.save(new MemoryProvider());
     }
+    Jinaga.prototype.onError = function (handler) {
+        this.coordinator.addErrorHandler(handler);
+    };
+    Jinaga.prototype.onProgress = function (handler) {
+        this.coordinator.addProgressHandler(handler);
+    };
     Jinaga.prototype.save = function (storage) {
         this.coordinator.save(storage);
     };
@@ -789,8 +846,18 @@ var MemoryProvider = (function () {
     };
     MemoryProvider.prototype.push = function (fact) {
         this.queue.push({ hash: computeHash(fact), fact: fact });
-        if (this.coordinator)
+        if (this.coordinator) {
             this.coordinator.send(fact, null);
+            this.coordinator.onProgress(this.queue.length);
+        }
+    };
+    MemoryProvider.prototype.dequeue = function (token, destination) {
+        for (var position = this.queue.length - 1; position >= 0; position--) {
+            if (this.queue[position].hash === token)
+                this.queue.splice(position, 1);
+        }
+        if (this.coordinator)
+            this.coordinator.onProgress(this.queue.length);
     };
     MemoryProvider.prototype.findNodeWithFact = function (array, fact) {
         for (var index = 0; index < array.length; index++) {

@@ -44,6 +44,7 @@
                 <li class="active"><a href="/private/ideas.html">Ideas</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" data-bind="text: status, click: showError">Saving...</a></li>
                 <li><a href="#" data-bind="text: displayName"></a></li>
             </ul>
         </div><!--/.nav-collapse -->
@@ -91,6 +92,24 @@
     </div>
 
     <!-- Modal -->
+    <div class="modal fade" id="error-dialog" tabindex="-1" role="dialog" aria-labelledby="error-dialog-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="error-dialog-title">Error</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <p data-bind="text: error"></p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="idea-details" tabindex="-1" role="dialog" aria-labelledby="idea-details-title">
         <div class="modal-dialog" role="document">
             <div class="modal-content" data-bind="with: details">
