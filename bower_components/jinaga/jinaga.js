@@ -1095,14 +1095,15 @@ function findTarget(spec) {
     return null;
 }
 function parse(templates) {
+    var steps = [];
     for (var templateIndex in templates) {
         var template = templates[templateIndex];
         var target = new ParserProxy(null, null);
         var spec = template(target);
         var targetJoins = findTarget(spec);
-        return new Query(targetJoins); // TODO: Append each query
+        steps = steps.concat(targetJoins);
     }
-    return null;
+    return new Query(steps);
 }
 module.exports = parse;
 

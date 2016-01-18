@@ -289,9 +289,23 @@ function IdeaDetails(idea) {
         this.editing(!this.editing());
     };
 
+    this.takeVotes = ko.observableArray();
+    this.teachVotes = ko.observableArray();
+    this.recommendVotes = ko.observableArray();
+    function watchVotes(type, observable) {
+        return [
+            j.watch(idea, [votesForIdea(type), userForVote, namesForUser],
+                addTo(observable),
+                removeFrom(observable))
+        ]
+    }
     var watches = [
         j.watch(idea, [abstractsInIdea], addTo(this.abstractValues), removeFrom(this.abstractValues))
     ];
+    watches = watches
+        .concat(watchVotes("ImprovingU.TakeVote", this.takeVotes))
+        .concat(watchVotes("ImprovingU.TeachVote", this.teachVotes))
+        .concat(watchVotes("ImprovingU.RecommendVote", this.recommendVotes));
     this.dispose = dispose(watches);
 }
 
@@ -309,6 +323,12 @@ function abstractIsCurrent(a) {
     });
 }
 
+function userForVote(v) {
+    v.has("from");
+    v.from.type = "Jinaga.User";
+    return v.from;
+}
+
 
 /////////////////////////////////
 // Utilities
@@ -316,8 +336,9 @@ function abstractIsCurrent(a) {
 function addTo(observableArray, map) {
     map = map || function (o) { return o; };
     return function (fact) {
-        observableArray.push(map(fact));
-        return map(fact);
+        var obj = map(fact);
+        observableArray.push(obj);
+        return obj;
     };
 }
 

@@ -120,8 +120,29 @@
                 <div class="modal-body">
                     <form>
                         <div data-bind="html: abstract, visible: !editing()"></div>
-                        <textarea class="form-control" placeholder="Abstract" data-bind="value: editAbstract, visible: editing"></textarea>
+                        <textarea class="form-control idea-details-abstract-edit" placeholder="Abstract" data-bind="value: editAbstract, visible: editing"></textarea>
                     </form>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p>Take:</p>
+                            <ul data-bind="foreach: takeVotes">
+                                <li data-bind="text: value"></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Teach:</p>
+                            <ul data-bind="foreach: teachVotes">
+                                <li data-bind="text: value"></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Recommend:</p>
+                            <ul data-bind="foreach: recommendVotes">
+                                <li data-bind="text: value"></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

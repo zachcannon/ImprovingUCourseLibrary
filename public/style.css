@@ -41,3 +41,6 @@ body {
 .idea-author {
     margin-left: 10px;
 }
+.idea-details-abstract-edit {
+    height: 20em !important;
+}
