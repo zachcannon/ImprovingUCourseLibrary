@@ -90,6 +90,10 @@
             </div>
         </div>
     </div>
+    <hr/>
+    <form class="form-inline">
+        <input type="button" class="form-control" data-bind="click: showSummary" value="Summary">
+    </form>
 
     <!-- Modal -->
     <div class="modal fade" id="error-dialog" tabindex="-1" role="dialog" aria-labelledby="error-dialog-title">
@@ -147,6 +151,41 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" data-bind="click: toggleEditAbstract, text: editing() ? 'Done' : 'Edit Abstract'"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="summary-dialog" tabindex="-1" role="dialog" aria-labelledby="summary-dialog-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="summary-dialog-title">Summary</h4>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Idea</th>
+                            <th>Suggested by</th>
+                            <th>Take</th>
+                            <th>Teach</th>
+                            <th>Recommend</th>
+                        </tr>
+                        </thead>
+                        <tbody data-bind="foreach: ideas">
+                        <tr>
+                            <td data-bind="text: title"></td>
+                            <td data-bind="text: authorName"></td>
+                            <td data-bind="text: takeCount"></td>
+                            <td data-bind="text: teachCount"></td>
+                            <td data-bind="text: recommendCount"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

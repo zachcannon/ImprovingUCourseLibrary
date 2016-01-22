@@ -22,6 +22,7 @@ body {
 }
 .vote {
     border-width: 2px;
+    width: 3em;
 }
 .vote.selected.btn-success {
     border-color: #145D16;
