@@ -40,6 +40,7 @@ var viewModel = {
     error: ko.observable(),
     queueCount: ko.observable(),
     showError: showError,
+    showSummary: showSummary,
 
     user: ko.observable(),
     displayName: ko.observable(),
@@ -65,6 +66,10 @@ ko.applyBindings(viewModel);
 
 function showError() {
     $("#error-dialog").modal();
+}
+
+function showSummary() {
+    $("#summary-dialog").modal();
 }
 
 function nameIsCurrent(n) {
