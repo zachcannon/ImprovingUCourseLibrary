@@ -27,12 +27,9 @@ app.use(pipeline.cookieParser);
 app.use(pipeline.bodyParserUrlEncoded);
 app.use(pipeline.session);
 
-var authorization = require('./startup/authorization')(app, config);
-require('./startup/distributor')(server, pipeline, authorization, config);
-
+// Set up the public site
 app.use("/bower_components", express.static(__dirname + "/bower_components"));
 app.use("/public", express.static(__dirname + "/public"));
-app.use("/private", authorization.require, express.static(__dirname + "/private"));
 app.get('/', function(req, res, next) {
     res.sendFile(__dirname + "/public/index.html");
 });
@@ -43,6 +40,18 @@ app.get("/config.js", function(req, res, next) {
         "var loginUrl = \"" + (secure ? "https" : "http") + "://" + req.headers.host + "/public/login.html\";\n");
     res.end();
 });
+
+// Set up the private site
+try {
+    var authorization = require('./startup/authorization')(app, config);
+    require('./startup/distributor')(server, pipeline, authorization, config);
+    app.use("/private", authorization.require, express.static(__dirname + "/private"));
+}
+catch (err) {
+    app.get("/status", function(req, res, next) {
+        res.send("<html><body><p>" + err + "</p></body></html>")
+    })
+}
 
 server.listen(process.env.PORT || config.port || 8080, function () {
     var host = server.address().address;
