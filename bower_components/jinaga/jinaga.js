@@ -372,6 +372,7 @@ var JinagaDistributor = (function () {
         this.endpoint = endpoint;
         this.isOpen = false;
         this.pending = [];
+        this.watches = [];
         this.maxTimeout = 1 * 1000;
         this.createSocket();
     }
@@ -379,11 +380,30 @@ var JinagaDistributor = (function () {
         this.coordinator = coordinator;
     };
     JinagaDistributor.prototype.watch = function (start, query) {
-        this.send(JSON.stringify({
+        var watch = {
             type: "watch",
             start: start,
             query: query.toDescriptiveString()
-        }));
+        };
+        this.watches.push(watch);
+        this.send(JSON.stringify(watch));
+    };
+    JinagaDistributor.prototype.stopWatch = function (start, query) {
+        var descriptiveString = query.toDescriptiveString();
+        var watch = {
+            type: "watch",
+            start: start,
+            query: descriptiveString
+        };
+        var index = this.watches.indexOf(watch);
+        if (index >= 0) {
+            this.watches.splice(index, 1);
+            this.send(JSON.stringify({
+                type: "stop",
+                start: start,
+                query: descriptiveString
+            }));
+        }
     };
     JinagaDistributor.prototype.query = function (start, query, token) {
         this.send(JSON.stringify({
@@ -455,9 +475,13 @@ var JinagaDistributor = (function () {
             this.maxTimeout = 30 * 1000;
     };
     JinagaDistributor.prototype.resendMessages = function () {
+        var _this = this;
         this.createSocket();
         if (this.pending.length === 0)
             this.coordinator.resendMessages();
+        this.watches.forEach(function (w) {
+            _this.socket.send(w);
+        });
     };
     return JinagaDistributor;
 })();
@@ -587,6 +611,9 @@ var JinagaCoordinator = (function () {
                 this.watches.splice(index, 1);
                 return;
             }
+        }
+        if (this.network) {
+            this.network.stopWatch(watch.start, watch.joins);
         }
     };
     JinagaCoordinator.prototype.login = function (callback) {
