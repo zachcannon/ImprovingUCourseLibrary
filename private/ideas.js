@@ -10,25 +10,12 @@ function listSemester(office, fact) {
     };
 }
 
-var semesterDallas = {
+var semester = {
     type: "ImprovingU.Semester",
     name: "Summer 2016",
     office: {
         type: "ImprovingU.Office",
-        name: "Dallas",
-        company: {
-            type: "ImprovingU.Company",
-            name: "Improving"
-        }
-    }
-};
-
-var semesterColumbus = {
-    type: "ImprovingU.Semester",
-    name: "Summer 2016",
-    office: {
-        type: "ImprovingU.Office",
-        name: "Columbus",
+        name: window.location.hash,
         company: {
             type: "ImprovingU.Company",
             name: "Improving"
@@ -44,11 +31,7 @@ var viewModel = {
 
     user: ko.observable(),
     displayName: ko.observable(),
-    semesters: ko.observableArray([
-        listSemester("Columbus", semesterColumbus),
-        listSemester("Dallas", semesterDallas)
-    ]),
-    selectedSemester: ko.observable(),
+    office: window.location.hash,
     newIdeaTitle: ko.observable(),
     submitNewIdea: submitNewIdea,
     ideas: ko.observableArray(),
@@ -112,10 +95,10 @@ viewModel.user.subscribe(function (u) {
 });
 
 function submitNewIdea() {
-    if (viewModel.newIdeaTitle() && viewModel.selectedSemester()) {
+    if (viewModel.newIdeaTitle()) {
         j.fact({
             type: "ImprovingU.Idea",
-            semester: viewModel.selectedSemester().fact,
+            semester: semester,
             from: viewModel.user(),
             createdAt: new Date(),
             title: viewModel.newIdeaTitle()
@@ -131,23 +114,9 @@ function ideasForSemester(s) {
     };
 }
 
-var ideasWatch;
-viewModel.selectedSemester.subscribe(function (semester) {
-    if (ideasWatch) {
-        ideasWatch.stop();
-        ideasWatch = null;
-    }
-
-    viewModel.ideas().forEach(function (idea) {
-        idea.dispose();
-    });
-    viewModel.ideas.removeAll();
-    if (semester) {
-        ideasWatch = j.watch(semester.fact, [ideasForSemester],
-            addTo(viewModel.ideas, IdeaViewModel),
-            removeFrom(viewModel.ideas));
-    }
-});
+var ideasWatch = j.watch(semester, [ideasForSemester],
+    addTo(viewModel.ideas, IdeaViewModel),
+    removeFrom(viewModel.ideas));
 
 ////////////////////////////////
 // Idea view model

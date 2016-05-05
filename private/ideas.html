@@ -39,9 +39,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-                <li><a href="/public/login.html">Login</a></li>
-                <li class="active"><a href="/private/ideas.html">Ideas</a></li>
+                <li data-bind="css: { active: office() === 'Dallas' }"><a href="/private/ideas.html#Dallas">Dallas</a></li>
+                <li data-bind="css: { active: office() === 'Columbus' }"><a href="/private/ideas.html#Columbus">Columbus</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" data-bind="text: status, click: showError">Saving...</a></li>
@@ -53,11 +52,7 @@
 
 <div class="container">
 
-    <h1>Ideas</h1>
-    <form class="form-inline">
-        <label for="officeSelection">Office</label>
-        <select id="officeSelection" data-bind="options: semesters, optionsText: 'office', value: selectedSemester, optionsCaption: 'Choose...'"></select>
-    </form>
+    <h1 data-bind="text: office"></h1>
     <p>Vote on your favorite course ideas.</p>
     <p class="alert-success">I would like to <strong>take</strong> this class.</p>
     <p class="alert-danger">I would be willing to <strong>teach</strong> this class.</p>
