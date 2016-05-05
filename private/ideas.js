@@ -15,7 +15,7 @@ var semester = {
     name: "Summer 2016",
     office: {
         type: "ImprovingU.Office",
-        name: window.location.hash,
+        name: window.location.hash.slice(1),
         company: {
             type: "ImprovingU.Company",
             name: "Improving"
@@ -31,7 +31,7 @@ var viewModel = {
 
     user: ko.observable(),
     displayName: ko.observable(),
-    office: window.location.hash,
+    office: window.location.hash.slice(1),
     newIdeaTitle: ko.observable(),
     submitNewIdea: submitNewIdea,
     ideas: ko.observableArray(),
