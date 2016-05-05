@@ -12,7 +12,7 @@ function listSemester(office, fact) {
 
 var semesterDallas = {
     type: "ImprovingU.Semester",
-    name: "Spring 2016",
+    name: "Summer 2016",
     office: {
         type: "ImprovingU.Office",
         name: "Dallas",
@@ -25,7 +25,7 @@ var semesterDallas = {
 
 var semesterColumbus = {
     type: "ImprovingU.Semester",
-    name: "Spring 2016",
+    name: "Summer 2016",
     office: {
         type: "ImprovingU.Office",
         name: "Columbus",
