@@ -60,5 +60,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="/bower_components/jquery/dist/jquery.min.js"><\/script>')</script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/bower_components/js-cookie/src/js.cookie.js"></script>
+<script>
+    if (window.location.hash && window.location.hash.length > 1 && window.location.hash[0] === '#') {
+        Cookies.set('ImprovingU.Office', window.location.hash.slice(1));
+    }
+</script>
 </body>
 </html>

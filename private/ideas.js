@@ -10,6 +10,21 @@ function listSemester(office, fact) {
     };
 }
 
+function getOffice() {
+    if (window.location.hash && window.location.hash.length > 1 && window.location.hash[0] === '#') {
+        return window.location.hash.slice(1);
+    }
+    else {
+        var value = Cookies.get('ImprovingU.Office');
+        if (value) {
+            return value;
+        }
+        else {
+            return 'Dallas';
+        }
+    }
+}
+
 var viewModel = {
     error: ko.observable(),
     queueCount: ko.observable(),
@@ -18,7 +33,7 @@ var viewModel = {
 
     user: ko.observable(),
     displayName: ko.observable(),
-    office: ko.observable(window.location.hash.slice(1)),
+    office: ko.observable(getOffice()),
     newIdeaTitle: ko.observable(),
     submitNewIdea: submitNewIdea,
     ideas: ko.observableArray(),
@@ -50,6 +65,7 @@ ko.applyBindings(viewModel);
 
 window.addEventListener('hashchange', hashChanged, false);
 function hashChanged() {
+    Cookies.set('ImprovingU.Office', window.location.hash.slice(1));
     viewModel.office(window.location.hash.slice(1));
 };
 
