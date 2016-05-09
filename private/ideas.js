@@ -137,7 +137,7 @@ function ideasForSemester(s) {
 }
 
 var ideasWatch;
-viewModel.semester.subscribe(function (s) {
+function updateIdeasWatch(s) {
     if (ideasWatch) {
         ideasWatch.stop();
         ideasWatch = null;
@@ -152,7 +152,9 @@ viewModel.semester.subscribe(function (s) {
             addTo(viewModel.ideas, IdeaViewModel),
             removeFrom(viewModel.ideas));
     }
-});
+}
+viewModel.semester.subscribe(updateIdeasWatch);
+updateIdeasWatch(viewModel.semester());
 
 
 ////////////////////////////////
