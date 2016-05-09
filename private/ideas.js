@@ -70,11 +70,18 @@ function hashChanged() {
 };
 
 function showError() {
-    $("#error-dialog").modal();
+    if (viewModel.error())
+        $("#error-dialog").modal();
+    return false;
 }
 
 function showSummary() {
     $("#summary-dialog").modal();
+    return false;
+}
+
+function ignore() {
+    return false;
 }
 
 function nameIsCurrent(n) {
