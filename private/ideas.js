@@ -33,6 +33,7 @@ var viewModel = {
 
     user: ko.observable(),
     displayName: ko.observable(),
+    offices: ['Dallas', 'Columbus', 'Houston', 'Minneapolis' ],
     office: ko.observable(getOffice()),
     newIdeaTitle: ko.observable(),
     submitNewIdea: submitNewIdea,

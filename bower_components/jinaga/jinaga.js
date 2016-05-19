@@ -500,7 +500,7 @@ var JinagaDistributor = (function () {
             start: start,
             query: query.toDescriptiveString()
         };
-        this.watches.push(watch);
+        this.watches.push(JSON.stringify(watch));
         this.send(JSON.stringify(watch));
     };
     JinagaDistributor.prototype.stopWatch = function (start, query) {
@@ -510,7 +510,7 @@ var JinagaDistributor = (function () {
             start: start,
             query: descriptiveString
         };
-        var index = this.watches.indexOf(watch);
+        var index = this.watches.indexOf(JSON.stringify(watch));
         if (index >= 0) {
             this.watches.splice(index, 1);
             this.send(JSON.stringify({

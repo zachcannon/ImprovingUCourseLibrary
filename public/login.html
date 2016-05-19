@@ -38,9 +38,8 @@
             <a class="navbar-brand" href="/">ImprovingU</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="/private/ideas.html#Dallas">Dallas</a></li>
-                <li><a href="/private/ideas.html#Columbus">Columbus</a></li>
+            <ul class="nav navbar-nav" data-bind="foreach: offices">
+                <li data-bind="css: { active: $parent.office() === $data }"><a data-bind="attr: { href: '/private/ideas.html#' + $data }, text: $data"></a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -66,5 +65,7 @@
         Cookies.set('ImprovingU.Office', window.location.hash.slice(1));
     }
 </script>
+<script src="/bower_components/knockout/dist/knockout.js"></script>
+<script src="/public/offices.js"></script>
 </body>
 </html>
