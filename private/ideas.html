@@ -43,7 +43,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" data-bind="text: status, click: showError">Saving...</a></li>
-                <li><a href="#" data-bind="text: displayName, click: ignore"></a></li>
+                <li><a href="#" data-bind="text: displayName, click: showError"></a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -199,6 +199,10 @@
 <script src="/bower_components/showdown/dist/showdown.js"></script>
 <script src="/bower_components/js-cookie/src/js.cookie.js"></script>
 <script src="/config.js"></script>
+<script src="/private/knockoutHelpers.js"></script>
+<script src="/private/model.js"></script>
+<script src="/private/ideaDetails.js"></script>
+<script src="/private/idea.js"></script>
 <script src="/private/ideas.js"></script>
 </body>
 </html>

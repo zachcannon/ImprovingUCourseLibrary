@@ -42,15 +42,21 @@ app.get("/config.js", function(req, res, next) {
 });
 
 // Set up the private site
+function setStatus(message) {
+    app.get("/status", function (req, res, next) {
+        res.send("<html><body><p>" + message + "</p></body></html>")
+    })
+}
+
 try {
     var authorization = require('./startup/authorization')(app, config);
     require('./startup/distributor')(server, pipeline, authorization, config);
     app.use("/private", authorization.require, express.static(__dirname + "/private"));
+    setStatus("All good!");
 }
 catch (err) {
-    app.get("/status", function(req, res, next) {
-        res.send("<html><body><p>" + err + "</p></body></html>")
-    })
+    setStatus(err);
+    console.log(err);
 }
 
 server.listen(process.env.PORT || config.port || 8080, function () {

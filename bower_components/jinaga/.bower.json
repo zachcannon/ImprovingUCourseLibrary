@@ -1,6 +1,6 @@
 {
   "name": "jinaga",
-  "version": "1.5.1",
+  "version": "1.7.0",
   "homepage": "https://github.com/michaellperry/jinaga",
   "authors": [
     "Michael L Perry <michael@qedcode.com>"
@@ -22,13 +22,14 @@
     "tests"
   ],
   "dependencies": {},
-  "_release": "1.5.1",
+  "_release": "1.7.0",
   "_resolution": {
     "type": "version",
-    "tag": "v1.5.1",
-    "commit": "ad8773de565f5a82d865503997ff3dba9a7062de"
+    "tag": "v1.7.0",
+    "commit": "a85a4b1da895d83a42b74fa7540ff7ca128a9115"
   },
   "_source": "https://github.com/michaellperry/jinaga-web.git",
-  "_target": "~1.5.0",
-  "_originalSource": "jinaga"
+  "_target": "^1.7.0",
+  "_originalSource": "jinaga",
+  "_direct": true
 }

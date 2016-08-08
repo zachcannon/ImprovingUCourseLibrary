@@ -13,7 +13,44 @@ ImprovingU is a series of courses taught by Improvers for Improvers (that is, pe
 
 ## Installation
 
-Clone the repository. Run `npm install`. Start a Mongo server on the local machine, or configure the application to use a different instance.
+Clone the repository. Run `npm install`. Copy `config/config.example.js` to `config/config.js`. Run `DEBUG=jinaga* node server`.
+
+Navigate to `http://localhost:8080/status` to see if there were any errors during startup. This is especially helpful once you deploy it to a remote server.
+
+You will need to configure a Mongo database and Google OAuth2 credentials.
+
+### Mongo
+
+By default, the application is configured to use the Mongo instance at `mongodb://localhost:27017/dev`. This is the default port, so if you have Mongo installed and running, you should be good.
+
+To change the configuration, either set the `mongoDB` setting in `config/config.js`, or set the `MONGO_DB` environment variable. The environment variable takes precedence, and is intended for server deployments. The configuration setting is easier for development.
+
+```JavaScript
+module.exports = {
+    mongoDB: 'mongodb://localhost:27017/improvingu'
+};
+```
+
+### Google OAuth2
+
+This application example is configured to use Google OAuth2. To switch to a different provider, install a different NPM package for your chosen [Passport](http://passportjs.org) strategy. I recommend sticking with the Google strategy for your first time.
+
+Go to the [Google Developers Console](https://console.developers.google.com) and create a new project. Go to the API Manager in the hamburger menu, and select Credentials. Create new credentials of type "OAuth client ID" for a "Web application".
+
+Add an authorized JavaScript origin for `http://localhost:8080`. Add an authorized redirect URI for `http://localhost:8080/login/callback`. Copy your client ID and client secret and put them into `config/config.js`.
+
+```JavaScript
+module.exports = {
+    google: {
+        clientId: '12345-xxxxxx.apps.googleusercontent.com',
+        clientSecret: 'yyyyyyy'
+    }
+};
+```
+
+Back on the "Credentials" screen, click on the "OAuth consent screen" tab and set up your email address and product name.
+
+Then, back in the API Manager screen, under "Social APIs", choose "Google+ API". Enable the API. This is necessary to get the user's profile name.
 
 ## Walkthrough
 
@@ -34,7 +71,7 @@ Install Express with:
 - `npm install -save cookie-parser`
 - `npm install -save express-session`
 
-Create an `app.js` with the following code:
+Create a `server.js` with the following code:
 
 ```JavaScript
 var http = require('http');
@@ -57,7 +94,7 @@ var pipeline = {
     cookieParser: cookieParser(),
     bodyParserUrlEncoded: bodyParser.urlencoded({extended: true}),
     session: session({
-        secret: config.sessionSecret,
+        secret: process.env.SESSION_SECRET || config.sessionSecret || "randomCharacters",
         saveUninitialized: true,
         resave: true
     })
@@ -66,13 +103,14 @@ app.use(pipeline.cookieParser);
 app.use(pipeline.bodyParserUrlEncoded);
 app.use(pipeline.session);
 
-// Additional startup will go here.
-
+// Set up the public site
 app.use("/bower_components", express.static(__dirname + "/bower_components"));
 app.use("/public", express.static(__dirname + "/public"));
 app.get('/', function(req, res, next) {
     res.sendFile(__dirname + "/public/index.html");
 });
+
+// Additional startup will go here.
 
 server.listen(config.port || 8080, function () {
     var host = server.address().address;
@@ -141,7 +179,7 @@ module.exports = function( app, config ) {
 
 Follow the instructions for your selected Passport provider to configure your strategy, authorization function, and endpoints.
 
-Call this startup in app.js where indicated by the above comment:
+Call this startup in server.js where indicated by the above comment:
 
 ```JavaScript
 var authorization = require('./startup/authorization')(app, config);
@@ -155,7 +193,7 @@ Copy `config/config.example.js` to `config/config.js` and edit the authenticatio
 
 Create a page called `private/ideas.html`. This will be a page listing course ideas. This page will only be available to logged in users.
 
-Configure the route to require authorization. Add the following to `app.js`.
+Configure the route to require authorization. Add the following to `server.js`.
 
 ```JavaScript
 app.use("/private", authorization.require, express.static(__dirname + "/private"));
@@ -173,7 +211,7 @@ module.exports = function( server, pipeline, authorization, config ) {
     var MongoProvider = require("jinaga/jinaga.mongo");
     var chain = require('chain-middleware');
 
-    var mongo = new MongoProvider(config.mongoDB || "mongodb://localhost:27017/dev");
+    var mongo = new MongoProvider(process.env.MONGO_DB || config.mongoDB || "mongodb://localhost:27017/dev");
 
     function getUser(request, response, done) {
         if (request.isAuthenticated())
@@ -196,7 +234,7 @@ module.exports = function( server, pipeline, authorization, config ) {
 };
 ```
 
-Call this function from app.js immediately after the authorization startup.
+Call this function from server.js immediately after the authorization startup.
 
 ```JavaScript
 require('./startup/distributor')(server, pipeline, authorization, config);
@@ -231,7 +269,7 @@ Load Jinaga and start `ideas.js` from the `ideas.html` page.
 <script src="/private/ideas.js"></script>
 ```
 
-Test by starting Mongo, starting the app, bringing up the browser developer tools, and navigating to the Ideas page. After you log in, you should see a message in the console.
+Test by starting Mongo, running `node server`, bringing up the browser developer tools, and navigating to the Ideas page. After you log in, you should see a message in the console.
 
 If you don't see the message, make sure you have started Mongo. Then run the app with debug output so you can see what's happening:
 
@@ -316,5 +354,5 @@ Test by running the app and logging in. Your name should appear on the right sid
 
 Now that we have a basic site, let's add some features:
 
-- [Submit course ideas](https://github.com/michaellperry/ImprovingU/blob/master/NewIdea.md)
-- [Vote on course ideas](https://github.com/michaellperry/ImprovingU/blob/master/Vote.md)
+- [Submit course ideas](https://github.com/jinaga/ImprovingU/blob/master/NewIdea.md)
+- [Vote on course ideas](https://github.com/jinaga/ImprovingU/blob/master/Vote.md)

@@ -1,5 +1,5 @@
 var viewModel = {
-    offices: ['Dallas', 'Columbus', 'Houston', 'Minneapolis' ],
+    offices: ['Dallas', 'Columbus', 'Houston', 'Minneapolis', 'College Station', 'Calgary'],
     office: ko.observable('')
 };
 
