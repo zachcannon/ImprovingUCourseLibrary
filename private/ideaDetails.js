@@ -27,6 +27,13 @@ function IdeaDetails(idea) {
         this.editing(!this.editing());
     };
 
+    this.deleteIdea = function () {
+        if (window.confirm('Do you want to delete this idea?')) {
+            createIdeaDeletion(idea);
+            $('#idea-details').modal('toggle');
+        }
+    }
+
     this.takeVotes = ko.observableArray();
     this.teachVotes = ko.observableArray();
     this.recommendVotes = ko.observableArray();

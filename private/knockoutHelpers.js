@@ -11,7 +11,7 @@ function addToChild(propertyName, ctor) {
     return function (parent, fact) {
         var obj = ctor ? new ctor(fact) : fact;
         parent[propertyName].push(obj);
-        return { parent, obj };
+        return { parent: parent, obj: obj };
     }
 }
 

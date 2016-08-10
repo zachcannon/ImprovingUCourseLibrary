@@ -20,6 +20,13 @@ function createIdea(semester, user, title) {
     });
 }
 
+function createIdeaDeletion(idea) {
+    return j.fact({
+        type: "ImprovingU.Idea.Deletion",
+        idea: idea
+    });
+}
+
 function createIdeaConsumer(idea, user) {
     return j.fact({
         type: "ImprovingU.IdeaConsumer",
@@ -73,9 +80,16 @@ function namesForUser(u) {
 }
 
 function ideasForSemester(s) {
-    return {
+    return j.where({
         type: "ImprovingU.Idea",
         semester: s
+    }, [j.not(ideaIsDeleted)]);
+}
+
+function ideaIsDeleted(i) {
+    return {
+        type: "ImprovingU.Idea.Deletion",
+        idea: i
     };
 }
 
