@@ -110,6 +110,7 @@ viewModel.context.subscribe(function (c) {
         watchIdeaForVotes(ideaWatch, "ImprovingU.TeachVote", "teachCount");
         watchIdeaForVotes(ideaWatch, "ImprovingU.RecommendVote", "recommendCount");
         ideaWatch.watch([userForIdea, namesForUser], setChildValue("authorNameFact"));
+        ideaWatch.watch([abstractsInIdea], setChildValue("abstractFact"));
         userWatches = [
             j.watch(c.user, [namesForUser], function (n) {
                 viewModel.displayName(n.value);

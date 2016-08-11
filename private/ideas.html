@@ -65,22 +65,34 @@
     <hr/>
     <div class="row">
         <div class="col-md-2">
-            <span class="text-success">Take</span>
-            <span class="text-danger">Teach</span>
-            <span class="text-warning">Rec.</span>
+            <div class="votelabel take">Take</div>
+            <div class="votelabel teach">Teach</div>
+            <div class="votelabel recommend">Rec.</div>
         </div>
     </div>
     <div data-bind="foreach: ideas">
         <div class="row row-idea">
             <div class="col-md-2">
-                <button type="button" class="btn btn-success vote" title="I'd take it!" data-bind="text: takeCount, click: toggleTakeVote, css: { selected: takeVotes().length > 0 }">0</button>
-                <button type="button" class="btn btn-danger vote" title="I'd teach it!" data-bind="text: teachCount, click: toggleTeachVote, css: { selected: teachVotes().length > 0 }">0</button>
-                <button type="button" class="btn btn-warning vote" title="I recommend it!" data-bind="text: recommendCount, click: toggleRecommendVote, css: { selected: recommendVotes().length > 0 }">0</button>
-           </div>
+                <div class="votelabel">
+                    <div class="upvote take" data-bind="click: toggleTakeVote, css: { selected: takeVotes().length > 0 }"></div>
+                    <div class="votecount take" data-bind="text: takeCount"></div>
+                    <div class="downvote take" data-bind="click: rescindTakeVote"></div>
+                </div>
+                <div class="votelabel">
+                    <div class="upvote teach" data-bind="click: toggleTeachVote, css: { selected: teachVotes().length > 0 }"></div>
+                    <div class="votecount teach" data-bind="text: teachCount"></div>
+                    <div class="downvote teach" data-bind="click: rescindTeachVote"></div>
+                </div>
+                <div class="votelabel">
+                    <div class="upvote recommend" data-bind="click: toggleRecommendVote, css: { selected: recommendVotes().length > 0 }"></div>
+                    <div class="votecount recommend" data-bind="text: recommendCount"></div>
+                    <div class="downvote recommend" data-bind="click: rescindRecommendVote"></div>
+                </div>
+            </div>
             <div class="col-md-10 idea" data-bind="click: showDetails">
-                <span class="idea-title" data-bind="text: title"></span>
-                <br>
-                <span class="idea-author" data-bind="text: authorName"></span>
+                <div class="idea-title" data-bind="text: title"></div>
+                <div class="idea-author" data-bind="text: authorName"></div>
+                <div data-bind="html: abstract"></div>
             </div>
         </div>
     </div>

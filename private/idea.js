@@ -7,11 +7,15 @@ function IdeaViewModel(user, idea) {
     this.teachVotes = ko.observableArray();
     this.recommendVotes = ko.observableArray();
     this.authorNameFact = ko.observable();
+    this.abstractFact = ko.observable();
 
     var ideaConsumer = createIdeaConsumer(idea, user);
 
     this.authorName = ko.computed(function () {
         return this.authorNameFact() ? this.authorNameFact().value : "";
+    }, this);
+    this.abstract = ko.computed(function () {
+        return this.abstractFact() ? converter.makeHtml(this.abstractFact().value) : "";
     }, this);
 
 
@@ -37,9 +41,19 @@ function IdeaViewModel(user, idea) {
             }
         };
     }
+    function rescindVote(votesObservable) {
+        return function() {
+            if (votesObservable().length) {
+                createRescindVote(user, votesObservable());
+            }
+        };
+    }
     this.toggleTakeVote = toggleVote("ImprovingU.TakeVote", this.takeVotes);
     this.toggleTeachVote = toggleVote("ImprovingU.TeachVote", this.teachVotes);
     this.toggleRecommendVote = toggleVote("ImprovingU.RecommendVote", this.recommendVotes);
+    this.rescindTakeVote = rescindVote(this.takeVotes);
+    this.rescindTeachVote = rescindVote(this.teachVotes);
+    this.rescindRecommendVote = rescindVote(this.recommendVotes);
     this.showDetails = function () {
         if (viewModel.details())
             viewModel.details().dispose();

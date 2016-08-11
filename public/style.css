@@ -37,11 +37,114 @@ body {
     cursor: pointer;
 }
 .idea-title {
-    font-weight: bold;
+    font-size: 18pt;
 }
 .idea-author {
     margin-left: 10px;
+    font-size: 8pt;
 }
 .idea-details-abstract-edit {
     height: 20em !important;
+}
+
+.votelabel {
+    float: left;
+    width: 33%;
+    text-align: center;
+}
+.votelabel.take {
+    color: #3c763d;
+}
+.votelabel.teach {
+    color: #a94442;
+}
+.votelabel.recommend {
+    color: #8a6d3b;
+}
+
+.upvote {
+    width: 0; 
+    height: 0;
+    margin: 10px auto 0 auto;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+
+    border-bottom: 20px solid #ddd;
+}
+
+.downvote {
+    width: 0; 
+    height: 0; 
+    margin: 0 auto 10px auto;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+
+    border-top: 20px solid #ddd;
+}
+
+.votecount {
+    width: 40px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 16pt;
+}
+
+.upvote.take.selected {
+    border-bottom-color:  #5cb85c
+}
+.upvote.take:hover {
+    border-bottom-color:  #449d44
+}
+.upvote.take:active {
+    border-bottom-color:  #398439
+}
+
+.downvote.take.selected {
+    border-top-color:  #5cb85c
+}
+.downvote.take:hover {
+    border-top-color:  #449d44
+}
+.downvote.take:active {
+    border-top-color:  #398439
+}
+
+.upvote.teach.selected {
+    border-bottom-color:  #D9534F
+}
+.upvote.teach:hover {
+    border-bottom-color:  #C14947
+}
+.upvote.teach:active {
+    border-bottom-color:  #AD4040
+}
+
+.downvote.teach.selected {
+    border-top-color:  #D9534F
+}
+.downvote.teach:hover {
+    border-top-color:  #C14947
+}
+.downvote.teach:active {
+    border-top-color:  #AD4040
+}
+
+.upvote.recommend.selected {
+    border-bottom-color:  #F0AD4E
+}
+.upvote.recommend:hover {
+    border-bottom-color:  #DD954D
+}
+.upvote.recommend:active {
+    border-bottom-color:  #BF8342
+}
+
+.downvote.recommend.selected {
+    border-top-color:  #F0AD4E
+}
+.downvote.recommend:hover {
+    border-top-color:  #DD954D
+}
+.downvote.recommend:active {
+    border-top-color:  #BF8342
 }
