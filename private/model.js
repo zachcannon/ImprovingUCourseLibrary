@@ -31,7 +31,8 @@ function createRemoteIdea(idea, onlineSemester) {
     return j.fact({
         type: "ImprovingU.RemoteIdea",
         idea: idea,
-        onlineSemester: onlineSemester
+        onlineSemester: onlineSemester,
+        created: new Date()
     });
 }
 
@@ -181,4 +182,10 @@ function userForIdea(i) {
     i.has("from");
     i.from.type = "Jinaga.User";
     return i.from;
+}
+
+function ideaForRemoteIdea(r) {
+    r.has("idea");
+    r.idea.type = "ImprovingU.Idea";
+    return r.idea;
 }

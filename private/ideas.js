@@ -119,11 +119,19 @@ viewModel.context.subscribe(function (c) {
         watchIdeaForVotes(ideaWatch, "ImprovingU.RecommendVote", "recommendCount");
         ideaWatch.watch([userForIdea, namesForUser], setChildValue("authorNameFact"));
         ideaWatch.watch([abstractsInIdea], setChildValue("abstractFact"));
+
+        var remoteIdeaWatch = j.watch(viewModel.onlineSemester, [remoteIdeasForOnlineSemester],
+            addTo(viewModel.ideas, function (remoteIdea) { return new RemoteIdeaViewModel(c.user, remoteIdea, viewModel.onlineSemester)}),
+            removeFrom(viewModel.ideas));
+        remoteIdeaWatch.watch([ideaForRemoteIdea, userForIdea, namesForUser], setChildValue("authorNameFact"));
+        remoteIdeaWatch.watch([ideaForRemoteIdea, abstractsInIdea], setChildValue("abstractFact"));
+
         userWatches = [
             j.watch(c.user, [namesForUser], function (n) {
                 viewModel.displayName(n.value);
             }),
-            ideaWatch
+            ideaWatch,
+            remoteIdeaWatch
         ];
     }
     else {

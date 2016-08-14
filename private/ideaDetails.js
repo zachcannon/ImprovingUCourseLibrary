@@ -38,7 +38,7 @@ function IdeaDetails(idea, onlineSemester) {
                 createRemoteIdea(idea, onlineSemester);
             }
             else {
-                createRemoteIdeaDelete(prior);
+                createRemoteIdeaDeletion(prior);
             }
         },
         owner: this
