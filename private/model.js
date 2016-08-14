@@ -165,6 +165,21 @@ function votesForIdea(type) {
     };
 }
 
+function votesForRemoteIdea(type) {
+    return function (r) {
+        return j.where({
+            type: type,
+            ideaConsumer: {
+                type: "ImprovingU.RemoteIdeaOfficeConsumer",
+                remoteIdeaOffice: {
+                    type: "ImprovingU.RemoteIdeaOffice",
+                    remoteIdea: r
+                }
+            }
+        }, [voteIsNotRescinded]);
+    }
+}
+
 function votesForIdeaConsumer(type) {
     return function(ic) {
         return j.where({

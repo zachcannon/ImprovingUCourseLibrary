@@ -1,13 +1,26 @@
 function RemoteIdeaViewModel(user, remoteIdea, semester) {
     this.title = remoteIdea.idea.title + ' (Remote)';
-    this.takeCount = ko.observable(0);
-    this.teachCount = ko.observable(0);
-    this.recommendCount = ko.observable(0);
+    this.takeVotesAll = ko.observableArray();
+    this.teachVotesAll = ko.observableArray();
+    this.recommendVotesAll = ko.observableArray();
     this.takeVotes = ko.observableArray();
     this.teachVotes = ko.observableArray();
     this.recommendVotes = ko.observableArray();
     this.authorNameFact = ko.observable();
     this.abstractFact = ko.observable();
+
+    this.takeCount = ko.computed(function () {
+        return this.takeVotesAll().filter(voteInOffice).length;
+    }, this);
+    this.teachCount = ko.computed(function () {
+        return this.teachVotesAll().filter(voteInOffice).length;
+    }, this);
+    this.recommendCount = ko.computed(function () {
+        return this.recommendVotesAll().filter(voteInOffice).length;
+    }, this);
+    function voteInOffice(v) {
+        return v.ideaConsumer.remoteIdeaOffice.semester.office.name === semester.office.name;
+    }
 
     var remoteIdeaOffice = createRemoteIdeaOffice(remoteIdea, semester);
     var ideaConsumer = createRemoteIdeaOfficeConsumer(remoteIdeaOffice, user);

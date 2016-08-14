@@ -123,6 +123,9 @@ viewModel.context.subscribe(function (c) {
         var remoteIdeaWatch = j.watch(viewModel.onlineSemester, [remoteIdeasForOnlineSemester],
             addTo(viewModel.ideas, function (remoteIdea) { return new RemoteIdeaViewModel(c.user, remoteIdea, c.semester)}),
             removeFrom(viewModel.ideas));
+        watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TakeVote", "takeVotesAll");
+        watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TeachVote", "teachVotesAll");
+        watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.RecommendVote", "recommendVotesAll");
         remoteIdeaWatch.watch([ideaForRemoteIdea, userForIdea, namesForUser], setChildValue("authorNameFact"));
         remoteIdeaWatch.watch([ideaForRemoteIdea, abstractsInIdea], setChildValue("abstractFact"));
 
@@ -143,4 +146,10 @@ function watchIdeaForVotes(ideaWatch, type, observableName) {
     ideaWatch.watch([votesForIdea(type)],
         incrementChild(observableName),
         decrementChild);
+}
+
+function watchRemoteIdeaForVotes(remoteIdeaWatch, type, observableName) {
+    remoteIdeaWatch.watch([votesForRemoteIdea(type)],
+        addToChild(observableName),
+        removeFromChild(observableName));
 }
