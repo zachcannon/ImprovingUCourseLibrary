@@ -67,6 +67,14 @@ function MainViewModel() {
             }
         };
     }, this);
+    this.onlineSemester = {
+        type: "ImprovingU.OnlineSemester",
+        name: "Fall 2016",
+        company: {
+            type: "ImprovingU.Company",
+            name: "Improving"
+        }
+    };
 
     this.context = ko.computed(function () {
         return {
@@ -104,7 +112,7 @@ viewModel.context.subscribe(function (c) {
 
     if (c && c.user && c.semester) {
         var ideaWatch = j.watch(c.semester, [ideasForSemester],
-            addTo(viewModel.ideas, function (idea) { return new IdeaViewModel(c.user, idea); }),
+            addTo(viewModel.ideas, function (idea) { return new IdeaViewModel(c.user, idea, viewModel.onlineSemester); }),
             removeFrom(viewModel.ideas));
         watchIdeaForVotes(ideaWatch, "ImprovingU.TakeVote", "takeCount");
         watchIdeaForVotes(ideaWatch, "ImprovingU.TeachVote", "teachCount");

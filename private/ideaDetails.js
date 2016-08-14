@@ -1,6 +1,6 @@
 var converter = new showdown.Converter();
 
-function IdeaDetails(idea) {
+function IdeaDetails(idea, onlineSemester) {
     this.title = idea.title;
     this.abstractValues = ko.observableArray();
     this.abstract = ko.computed(function () {
@@ -27,6 +27,23 @@ function IdeaDetails(idea) {
         this.editing(!this.editing());
     };
 
+    this.remoteIdeas = ko.observableArray([]);
+    this.isRemote = ko.computed({
+        read: function () {
+            return this.remoteIdeas().length > 0;
+        },
+        write: function (value) {
+            var prior = this.remoteIdeas();
+            if (prior.length === 0) {
+                createRemoteIdea(idea, onlineSemester);
+            }
+            else {
+                createRemoteIdeaDelete(prior);
+            }
+        },
+        owner: this
+    });
+
     this.deleteIdea = function () {
         if (window.confirm('Do you want to delete this idea?')) {
             createIdeaDeletion(idea);
@@ -46,7 +63,8 @@ function IdeaDetails(idea) {
     }
     var watches = []
         .concat([
-            j.watch(idea, [abstractsInIdea], addTo(this.abstractValues), removeFrom(this.abstractValues))
+            j.watch(idea, [abstractsInIdea], addTo(this.abstractValues), removeFrom(this.abstractValues)),
+            j.watch(idea, [remoteIdeasForIdea], addTo(this.remoteIdeas), removeFrom(this.remoteIdeas))
         ])
         .concat(watchVotes("ImprovingU.TakeVote", this.takeVotes))
         .concat(watchVotes("ImprovingU.TeachVote", this.teachVotes))

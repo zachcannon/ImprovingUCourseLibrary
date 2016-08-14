@@ -1,4 +1,4 @@
-function IdeaViewModel(user, idea) {
+function IdeaViewModel(user, idea, onlineSemester) {
     this.title = idea.title;
     this.takeCount = ko.observable(0);
     this.teachCount = ko.observable(0);
@@ -57,7 +57,7 @@ function IdeaViewModel(user, idea) {
     this.showDetails = function () {
         if (viewModel.details())
             viewModel.details().dispose();
-        viewModel.details(new IdeaDetails(idea));
+        viewModel.details(new IdeaDetails(idea, onlineSemester));
         $("#idea-details").modal();
     };
     this.dispose = dispose(watches);

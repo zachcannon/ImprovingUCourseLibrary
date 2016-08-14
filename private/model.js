@@ -27,6 +27,21 @@ function createIdeaDeletion(idea) {
     });
 }
 
+function createRemoteIdea(idea, onlineSemester) {
+    return j.fact({
+        type: "ImprovingU.RemoteIdea",
+        idea: idea,
+        onlineSemester: onlineSemester
+    });
+}
+
+function createRemoteIdeaDeletion(remoteIdeas) {
+    return j.fact({
+        type: "ImprovingU.RemoteIdea.Deletion",
+        remoteIdeas: remoteIdeas
+    });
+}
+
 function createIdeaConsumer(idea, user) {
     return j.fact({
         type: "ImprovingU.IdeaConsumer",
@@ -91,6 +106,27 @@ function ideaIsDeleted(i) {
         type: "ImprovingU.Idea.Deletion",
         idea: i
     };
+}
+
+function remoteIdeasForIdea(i) {
+    return j.where({
+        type: "ImprovingU.RemoteIdea",
+        idea: i
+    }, [j.not(remoteIdeaIsDeleted)]);
+}
+
+function remoteIdeasForOnlineSemester(s) {
+    return j.where({
+        type: "ImprovingU.RemoteIdea",
+        onlineSemester: s
+    }, [j.not(remoteIdeaIsDeleted)]);
+}
+
+function remoteIdeaIsDeleted(r) {
+    return {
+        type: "ImprovingU.RemoteIdea.Deletion",
+        remoteIdeas: r
+    }
 }
 
 function voteIsNotRescinded(v) {

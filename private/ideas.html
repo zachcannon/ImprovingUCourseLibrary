@@ -155,6 +155,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="checkbox" data-bind="checked: isRemote">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" data-bind="click: toggleEditAbstract, text: editing() ? 'Done' : 'Edit Abstract'"></button>
                     <button type="button" class="btn btn-danger" data-bind="click: deleteIdea">Delete</button>
