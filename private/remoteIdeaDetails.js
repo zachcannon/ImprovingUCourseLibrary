@@ -2,14 +2,17 @@ function RemoteIdeaDetails(remoteIdeaOffice) {
     this.title = remoteIdeaOffice.remoteIdea.idea.title;
     this.abstract = '';
     this.editAbstract = '';
-    this.editing = false;
+    this.editing = ko.observable(false);
+    this.toggleEditAbstract = function () { };
+    this.isRemote = false;
+    this.deleteIdea = function () { };
 
     this.takeVotes = ko.observableArray();
     this.teachVotes = ko.observableArray();
     this.recommendVotes = ko.observableArray();
     function watchVotes(type, observable) {
         return [
-            j.watch(remoteIdeaOffice, [votesForIdea(type), userForVote, namesForUser],
+            j.watch(remoteIdeaOffice, [votesForRemoteIdeaOffice(type), userForVote, namesForUser],
                 addTo(observable),
                 removeFrom(observable))
         ]

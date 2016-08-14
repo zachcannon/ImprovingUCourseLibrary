@@ -180,6 +180,18 @@ function votesForRemoteIdea(type) {
     }
 }
 
+function votesForRemoteIdeaOffice(type) {
+    return function (r) {
+        return j.where({
+            type: type,
+            ideaConsumer: {
+                type: "ImprovingU.RemoteIdeaOfficeConsumer",
+                remoteIdeaOffice: r
+            }
+        }, [voteIsNotRescinded]);
+    }
+}
+
 function votesForIdeaConsumer(type) {
     return function(ic) {
         return j.where({

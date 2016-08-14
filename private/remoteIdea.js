@@ -69,7 +69,10 @@ function RemoteIdeaViewModel(user, remoteIdea, semester) {
     this.rescindTeachVote = rescindVote(this.teachVotes);
     this.rescindRecommendVote = rescindVote(this.recommendVotes);
     this.showDetails = function () {
-        //
+        if (viewModel.details())
+            viewModel.details().dispose();
+        viewModel.details(new RemoteIdeaDetails(remoteIdeaOffice));
+        $("#idea-details").modal();
     };
     this.dispose = dispose(watches);
 }
