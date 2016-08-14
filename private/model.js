@@ -51,6 +51,22 @@ function createIdeaConsumer(idea, user) {
     });
 }
 
+function createRemoteIdeaOffice(remoteIdea, semester) {
+    return {
+        type: "ImprovingU.RemoteIdeaOffice",
+        remoteIdea: remoteIdea,
+        semester: semester
+    };
+}
+
+function createRemoteIdeaOfficeConsumer(remoteIdeaOffice, user) {
+    return {
+        type: "ImprovingU.RemoteIdeaOfficeConsumer",
+        remoteIdeaOffice: remoteIdeaOffice,
+        user: user
+    };
+}
+
 function createAbstract(idea, user, value, prior) {
     return j.fact({
         type: "ImprovingU.Abstract",
