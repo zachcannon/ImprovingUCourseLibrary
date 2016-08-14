@@ -44,6 +44,7 @@ function MainViewModel() {
     };
     this.ideas = ko.observableArray();
     this.details = ko.observable();
+    this.remoteDetails = ko.observable();
 
     this.status = ko.computed(function () {
         return this.error()

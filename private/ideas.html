@@ -159,9 +159,46 @@
                         <input type="checkbox" id="remote-checkbox" data-bind="checked: isRemote">
                         <label for="remote-checkbox">Offered remotely</label>
                     </div>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" data-bind="click: toggleEditAbstract, text: editing() ? 'Done' : 'Edit Abstract'"></button>
                     <button type="button" class="btn btn-danger" data-bind="click: deleteIdea">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="remote-idea-details" tabindex="-1" role="dialog" aria-labelledby="remote-idea-details-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" data-bind="with: remoteDetails">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="remote-idea-details-title" data-bind="text: title"></h4>
+                </div>
+                <div class="modal-body">
+                    <p>Offered remotely from <span data-bind="text: office"></span>.</p>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p>Take:</p>
+                            <ul data-bind="foreach: takeVotes">
+                                <li data-bind="text: value"></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Teach:</p>
+                            <ul data-bind="foreach: teachVotes">
+                                <li data-bind="text: value"></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Recommend:</p>
+                            <ul data-bind="foreach: recommendVotes">
+                                <li data-bind="text: value"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

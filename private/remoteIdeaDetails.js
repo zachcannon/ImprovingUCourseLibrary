@@ -1,11 +1,6 @@
 function RemoteIdeaDetails(remoteIdeaOffice) {
     this.title = remoteIdeaOffice.remoteIdea.idea.title;
-    this.abstract = '';
-    this.editAbstract = '';
-    this.editing = ko.observable(false);
-    this.toggleEditAbstract = function () { };
-    this.isRemote = false;
-    this.deleteIdea = function () { };
+    this.office = remoteIdeaOffice.remoteIdea.idea.semester.office.name;
 
     this.takeVotes = ko.observableArray();
     this.teachVotes = ko.observableArray();
