@@ -11,6 +11,7 @@ function IdeaViewModel(user, idea, onlineSemester) {
 
     var ideaConsumer = createIdeaConsumer(idea, user);
 
+    this.visible = true;
     this.authorName = ko.computed(function () {
         return this.authorNameFact() ? this.authorNameFact().value : "";
     }, this);

@@ -1,5 +1,5 @@
-function RemoteIdeaViewModel(user, remoteIdea, onlineSemester) {
-    this.title = remoteIdea.idea.title;
+function RemoteIdeaViewModel(user, remoteIdea, semester) {
+    this.title = remoteIdea.idea.title + ' (Remote)';
     this.takeCount = ko.observable(0);
     this.teachCount = ko.observable(0);
     this.recommendCount = ko.observable(0);
@@ -9,6 +9,7 @@ function RemoteIdeaViewModel(user, remoteIdea, onlineSemester) {
     this.authorNameFact = ko.observable();
     this.abstractFact = ko.observable();
 
+    this.visible = remoteIdea.idea.semester.office.name !== semester.office.name;
     this.authorName = ko.computed(function () {
         return this.authorNameFact() ? this.authorNameFact().value : "";
     }, this);

@@ -70,7 +70,7 @@
             <div class="votelabel recommend">Rec.</div>
         </div>
     </div>
-    <div data-bind="foreach: ideas">
+    <div data-bind="foreach: ideas().filter(function (i) { return i.visible; })">
         <div class="row row-idea">
             <div class="col-md-2">
                 <div class="votelabel">

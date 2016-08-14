@@ -121,7 +121,7 @@ viewModel.context.subscribe(function (c) {
         ideaWatch.watch([abstractsInIdea], setChildValue("abstractFact"));
 
         var remoteIdeaWatch = j.watch(viewModel.onlineSemester, [remoteIdeasForOnlineSemester],
-            addTo(viewModel.ideas, function (remoteIdea) { return new RemoteIdeaViewModel(c.user, remoteIdea, viewModel.onlineSemester)}),
+            addTo(viewModel.ideas, function (remoteIdea) { return new RemoteIdeaViewModel(c.user, remoteIdea, c.semester)}),
             removeFrom(viewModel.ideas));
         remoteIdeaWatch.watch([ideaForRemoteIdea, userForIdea, namesForUser], setChildValue("authorNameFact"));
         remoteIdeaWatch.watch([ideaForRemoteIdea, abstractsInIdea], setChildValue("abstractFact"));
