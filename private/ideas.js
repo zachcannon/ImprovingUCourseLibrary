@@ -33,7 +33,7 @@ function MainViewModel() {
 
     this.user = ko.observable();
     this.displayName = ko.observable();
-    this.offices = ['Dallas', 'Columbus', 'Houston', 'Minneapolis', 'College Station', 'Calgary'];
+    this.offices = ['Dallas', 'Columbus', 'Houston', 'Minneapolis', 'College Station'];
     this.office = ko.observable(getOffice());
     this.newIdeaTitle = ko.observable();
     this.submitNewIdea = function () {
