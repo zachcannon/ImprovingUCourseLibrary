@@ -118,6 +118,7 @@ viewModel.context.subscribe(function (c) {
         watchIdeaForVotes(ideaWatch, "ImprovingU.TakeVote", "takeCount");
         watchIdeaForVotes(ideaWatch, "ImprovingU.TeachVote", "teachCount");
         watchIdeaForVotes(ideaWatch, "ImprovingU.RecommendVote", "recommendCount");
+        ideaWatch.watch([titlesForIdea], setChildValue("titleFact"));
         ideaWatch.watch([userForIdea, namesForUser], setChildValue("authorNameFact"));
         ideaWatch.watch([abstractsInIdea], setChildValue("abstractFact"));
 
@@ -127,6 +128,7 @@ viewModel.context.subscribe(function (c) {
         watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TakeVote", "takeVotesAll");
         watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TeachVote", "teachVotesAll");
         watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.RecommendVote", "recommendVotesAll");
+        remoteIdeaWatch.watch([ideaForRemoteIdea, titlesForIdea], setChildValue("titleFact"));
         remoteIdeaWatch.watch([ideaForRemoteIdea, userForIdea, namesForUser], setChildValue("authorNameFact"));
         remoteIdeaWatch.watch([ideaForRemoteIdea, abstractsInIdea], setChildValue("abstractFact"));
 

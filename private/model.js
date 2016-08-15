@@ -20,6 +20,15 @@ function createIdea(semester, user, title) {
     });
 }
 
+function createIdeaTitle(idea, value, prior) {
+    return j.fact({
+        type: "ImprovingU.Idea.Title",
+        idea: idea,
+        value: value,
+        prior: prior
+    });
+}
+
 function createIdeaDeletion(idea) {
     return j.fact({
         type: "ImprovingU.Idea.Deletion",
@@ -116,6 +125,20 @@ function ideasForSemester(s) {
         type: "ImprovingU.Idea",
         semester: s
     }, [j.not(ideaIsDeleted)]);
+}
+
+function ideaTitleIsCurrent(n) {
+    return j.not({
+        type: "ImprovingU.Idea.Title",
+        prior: n
+    });
+}
+
+function titlesForIdea(i) {
+    return j.where({
+        type: "ImprovingU.Idea.Title",
+        idea: i
+    }, [ideaTitleIsCurrent]);
 }
 
 function ideaIsDeleted(i) {

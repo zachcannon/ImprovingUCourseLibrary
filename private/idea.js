@@ -1,5 +1,10 @@
 function IdeaViewModel(user, idea, onlineSemester) {
-    this.title = idea.title;
+    this.titleFact = ko.observable();
+    this.title = ko.computed(function () {
+        var t = this.titleFact();
+        var value = t ? t.value : idea.title;
+        return value;
+    }, this);
     this.takeCount = ko.observable(0);
     this.teachCount = ko.observable(0);
     this.recommendCount = ko.observable(0);

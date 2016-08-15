@@ -1,7 +1,8 @@
 var converter = new showdown.Converter();
 
 function IdeaDetails(idea, onlineSemester) {
-    this.title = idea.title;
+    this.titleFacts = ko.observableArray();
+    this.title = mutableValue(this.titleFacts, partial(createIdeaTitle, idea), idea.title);
     this.abstractValues = ko.observableArray();
     this.abstract = ko.computed(function () {
         var values = this.abstractValues();
@@ -64,7 +65,8 @@ function IdeaDetails(idea, onlineSemester) {
     var watches = []
         .concat([
             j.watch(idea, [abstractsInIdea], addTo(this.abstractValues), removeFrom(this.abstractValues)),
-            j.watch(idea, [remoteIdeasForIdea], addTo(this.remoteIdeas), removeFrom(this.remoteIdeas))
+            j.watch(idea, [remoteIdeasForIdea], addTo(this.remoteIdeas), removeFrom(this.remoteIdeas)),
+            j.watch(idea, [titlesForIdea], addTo(this.titleFacts), removeFrom(this.titleFacts))
         ])
         .concat(watchVotes("ImprovingU.TakeVote", this.takeVotes))
         .concat(watchVotes("ImprovingU.TeachVote", this.teachVotes))

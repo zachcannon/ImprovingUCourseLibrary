@@ -1,5 +1,7 @@
 function RemoteIdeaDetails(remoteIdeaOffice) {
     this.title = remoteIdeaOffice.remoteIdea.idea.title;
+    this.titleFacts = ko.observableArray();
+    this.title = mutableValue(this.titleFacts, null, remoteIdeaOffice.remoteIdea.idea.title);
     this.office = remoteIdeaOffice.remoteIdea.idea.semester.office.name;
 
     this.takeVotes = ko.observableArray();
@@ -12,7 +14,9 @@ function RemoteIdeaDetails(remoteIdeaOffice) {
                 removeFrom(observable))
         ]
     }
-    var watches = []
+    var watches = [
+            j.watch(remoteIdeaOffice.remoteIdea.idea, [titlesForIdea], addTo(this.titleFacts), removeFrom(this.titleFacts))
+        ]
         .concat(watchVotes("ImprovingU.TakeVote", this.takeVotes))
         .concat(watchVotes("ImprovingU.TeachVote", this.teachVotes))
         .concat(watchVotes("ImprovingU.RecommendVote", this.recommendVotes));

@@ -1,5 +1,10 @@
 function RemoteIdeaViewModel(user, remoteIdea, semester) {
-    this.title = remoteIdea.idea.title + ' (Remote)';
+    this.titleFact = ko.observable();
+    this.title = ko.computed(function () {
+        var t = this.titleFact();
+        var value = t ? t.value : remoteIdea.idea.title;
+        return value + ' (Remote)';
+    }, this);
     this.takeVotesAll = ko.observableArray();
     this.teachVotesAll = ko.observableArray();
     this.recommendVotesAll = ko.observableArray();
