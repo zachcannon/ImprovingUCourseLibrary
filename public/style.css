@@ -16,25 +16,13 @@ body {
 }
 .row-idea {
     padding: 4px 0px;
+    cursor: pointer;
 }
 .row-idea:nth-child(even) {
     background-color: #eee;
 }
-.vote {
-    border-width: 2px;
-    width: 3em;
-}
-.vote.selected.btn-success {
-    border-color: #145D16;
-}
-.vote.selected.btn-danger {
-    border-color: #611B19;
-}
-.vote.selected.btn-warning {
-    border-color: #9A6314;
-}
-.idea {
-    cursor: pointer;
+.votecontainer {
+    overflow: auto;
 }
 .idea-title {
     font-size: 18pt;

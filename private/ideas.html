@@ -72,7 +72,7 @@
     </div>
     <div data-bind="foreach: ideas().filter(function (i) { return i.visible; })">
         <div class="row row-idea">
-            <div class="col-md-2">
+            <div class="col-md-2 votecontainer">
                 <div class="votelabel">
                     <div class="upvote take" data-bind="click: toggleTakeVote, css: { selected: takeVotes().length > 0 }"></div>
                     <div class="votecount take" data-bind="text: takeCount"></div>
