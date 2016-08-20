@@ -53,11 +53,11 @@ function createRemoteIdeaDeletion(remoteIdeas) {
 }
 
 function createIdeaConsumer(idea, user) {
-    return j.fact({
+    return {
         type: "ImprovingU.IdeaConsumer",
         idea: idea,
         consumer: user
-    });
+    };
 }
 
 function createRemoteIdeaOffice(remoteIdea, semester) {
