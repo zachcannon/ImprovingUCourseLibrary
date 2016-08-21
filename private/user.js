@@ -3,6 +3,7 @@ function UserViewModel() {
 
     this.error = ko.observable();
     this.queueCount = ko.observable();
+    this.loading = ko.observable(false);
     this.showError = function () {
         if (this.error()) {
             $("#error-dialog").modal();
@@ -17,6 +18,8 @@ function UserViewModel() {
             ? "Error"
             : this.queueCount() > 0
             ? "Saving..."
+            : this.loading()
+            ? "Loading..."
             : "";
     }, this);
 
@@ -25,6 +28,7 @@ function UserViewModel() {
     function initializeJinaga(viewModel) {
         j.onError(function (message) { viewModel.error(message); });
         j.onProgress(function (queueCount) { viewModel.queueCount(queueCount); });
+        j.onLoading(function (loading) { viewModel.loading(loading); });
 
         j.login(function (u, profile) {
             if (!u) {
