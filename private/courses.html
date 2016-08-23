@@ -51,6 +51,10 @@
 <div class="container">
     <h1 data-bind="text: office"></h1>
 
+    <form class="form-inline">
+        <input type="button" class="form-control" data-bind="click: newCourse" value="Create a new course">
+    </form>
+
     <!-- Modal -->
     <div class="modal fade" id="error-dialog" tabindex="-1" role="dialog" aria-labelledby="error-dialog-title">
         <div class="modal-dialog" role="document">
@@ -70,6 +74,41 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="course-detail-dialog" tabindex="-1" role="dialog" aria-labelledby="course-detail-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" data-bind="with: courseDetail">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="course-detail-title">New Course</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="course-detail-title-edit">Title:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="course-detail-title-edit" id="course-detail-title-edit" data-bind="value: title">
+                        </div>
+                    </div>
+                    <form>
+                        <div data-bind="html: abstract, visible: !editing()"></div>
+                        <textarea class="form-control course-detail-abstract-edit" placeholder="Abstract" data-bind="value: editAbstract, visible: editing"></textarea>
+                    </form>
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-left">
+                        <input type="checkbox" id="remote-checkbox" data-bind="checked: isRemote">
+                        <label for="remote-checkbox">Offered remotely</label>
+                    </div>
+                    <button type="button" class="btn btn-primary" data-bind="click: toggleEditAbstract, text: editing() ? 'Done' : 'Edit Abstract'"></button>
+                    <button type="button" class="btn btn-danger" data-bind="click: deleteCourse">Delete</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
@@ -84,6 +123,7 @@
 <script src="/private/model.js"></script>
 <script src="/public/offices.js"></script>
 <script src="/private/user.js"></script>
+<script src="/private/courseDetails.js"></script>
 <script src="/private/courses.js"></script>
 <script>
     ko.applyBindings(new CoursesViewModel());
