@@ -1,5 +1,8 @@
-function CourseDetailViewModel() {
-    this.title = ko.observable();
+function CourseDetailViewModel(course, user) {
+    this.titleFacts = ko.observableArray();
+    this.title = mutableValue(this.titleFacts, function (title, prior) {
+        j.fact(createCourseTitle(user, course, title, prior));
+    }, '');
     this.abstractValues = ko.observableArray();
     this.abstract = ko.computed(function () {
         var values = this.abstractValues();
@@ -32,6 +35,12 @@ function CourseDetailViewModel() {
         }
     };
 
-    this.dispose = function () {
-    };
+    initializeWatches(this);
+
+    function initializeWatches(viewModel) {
+        var watches = [
+            j.watch(course, [titlesForCourse], addTo(viewModel.titleFacts), removeFrom(viewModel.titleFacts))
+        ];
+        viewModel.dispose = dispose(watches);
+    }
 }

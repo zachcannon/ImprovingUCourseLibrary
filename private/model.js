@@ -103,6 +103,25 @@ function createRescindVote(user, vote) {
     });
 }
 
+function createCourse(user, catalog) {
+    return {
+        type: "ImprovingU.Course",
+        from: user,
+        in: catalog,
+        createdAt: new Date()
+    }
+}
+
+function createCourseTitle(user, course, value, prior) {
+    return {
+        type: "ImprovingU.Course.Title",
+        from: user,
+        in: course,
+        value: value,
+        prior: prior
+    };
+}
+
 ////////////////////////
 // Template functions
 
@@ -254,4 +273,28 @@ function ideaForRemoteIdea(r) {
     r.has("idea");
     r.idea.type = "ImprovingU.Idea";
     return r.idea;
+}
+
+function coursesInSemester(s) {
+    return {
+        type: "ImprovingU.Course",
+        in: {
+            type: "ImprovingU.Catalog",
+            in: s
+        }
+    };
+}
+
+function courseTitleIsCurrent(n) {
+    return j.not({
+        type: "ImprovingU.Course.Title",
+        prior: n
+    });
+}
+
+function titlesForCourse(c) {
+    return j.where({
+        type: "ImprovingU.Course.Title",
+        in: c
+    }, [courseTitleIsCurrent]);
 }
