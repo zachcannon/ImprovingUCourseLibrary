@@ -60,12 +60,11 @@
 <script>window.jQuery || document.write('<script src="/bower_components/jquery/dist/jquery.min.js"><\/script>')</script>
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="/bower_components/js-cookie/src/js.cookie.js"></script>
-<script>
-    if (window.location.hash && window.location.hash.length > 1 && window.location.hash[0] === '#') {
-        Cookies.set('ImprovingU.Office', window.location.hash.slice(1));
-    }
-</script>
 <script src="/bower_components/knockout/dist/knockout.js"></script>
 <script src="/public/offices.js"></script>
+<script>
+    setOffice();
+    ko.applyBindings(new OfficeViewModel());
+</script>
 </body>
 </html>

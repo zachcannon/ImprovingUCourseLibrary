@@ -1,40 +1,10 @@
-function getOffice() {
-    if (window.location.hash && window.location.hash.length > 1 && window.location.hash[0] === '#') {
-        return window.location.hash.slice(1);
-    }
-    else {
-        var value = Cookies.get('ImprovingU.Office');
-        if (value) {
-            return value;
-        }
-        else {
-            return 'Dallas';
-        }
-    }
-}
+function IdeasViewModel() {
+    UserViewModel.call(this, null);
 
-window.addEventListener('hashchange', hashChanged, false);
-function hashChanged() {
-    Cookies.set('ImprovingU.Office', window.location.hash.slice(1));
-    viewModel.office(window.location.hash.slice(1));
-};
-
-function MainViewModel() {
-    this.error = ko.observable();
-    this.queueCount = ko.observable();
-    this.showError = function () {
-        if (this.error()) {
-            $("#error-dialog").modal();
-        }
-    };
     this.showSummary = function () {
         $("#summary-dialog").modal();
     };
 
-    this.user = ko.observable();
-    this.displayName = ko.observable();
-    this.offices = ['Dallas', 'Columbus', 'Houston', 'Minneapolis', 'College Station'];
-    this.office = ko.observable(getOffice());
     this.newIdeaTitle = ko.observable();
     this.submitNewIdea = function () {
         if (this.newIdeaTitle()) {
@@ -45,14 +15,6 @@ function MainViewModel() {
     this.ideas = ko.observableArray();
     this.details = ko.observable();
     this.remoteDetails = ko.observable();
-
-    this.status = ko.computed(function () {
-        return this.error()
-            ? "Error"
-            : this.queueCount() > 0
-            ? "Saving..."
-            : "";
-    }, this);
 
     this.semester = ko.computed(function () {
         return {
@@ -83,76 +45,60 @@ function MainViewModel() {
             semester: this.semester()
         };
     }, this);
-}
-var viewModel = new MainViewModel();
-j.onError(function (message) { viewModel.error(message); });
-j.onProgress(function (queueCount) { viewModel.queueCount(queueCount); });
 
-ko.applyBindings(viewModel);
+    initializeWatches(this);
 
+    function initializeWatches(viewModel) {
+        var userWatches = [];
 
-j.login(function (u, profile) {
-    if (!u) {
-        window.location = loginUrl || "http://localhost:8080/public/login.html";
-    }
-    else {
-        viewModel.user(u);
-        j.query(u, [namesForUser], function(names) {
-            if (names.length != 1 || names[0].value !== profile.displayName) {
-                createUserName(u, profile.displayName, names);
+        viewModel.context.subscribe(function (c) {
+            dispose(userWatches)();
+            viewModel.ideas.removeAll();
+
+            if (c && c.user && c.semester) {
+                var ideaWatch = j.watch(c.semester, [ideasForSemester],
+                    addTo(viewModel.ideas, function (idea) { return new IdeaViewModel(c.user, idea, viewModel.onlineSemester); }),
+                    removeFrom(viewModel.ideas));
+                watchIdeaForVotes(ideaWatch, "ImprovingU.TakeVote", "takeCount");
+                watchIdeaForVotes(ideaWatch, "ImprovingU.TeachVote", "teachCount");
+                watchIdeaForVotes(ideaWatch, "ImprovingU.RecommendVote", "recommendCount");
+                ideaWatch.watch([titlesForIdea], setChildValue("titleFact"));
+                ideaWatch.watch([userForIdea, namesForUser], setChildValue("authorNameFact"));
+                ideaWatch.watch([abstractsInIdea], setChildValue("abstractFact"));
+
+                var remoteIdeaWatch = j.watch(viewModel.onlineSemester, [remoteIdeasForOnlineSemester],
+                    addTo(viewModel.ideas, function (remoteIdea) { return new RemoteIdeaViewModel(c.user, remoteIdea, c.semester)}),
+                    removeFrom(viewModel.ideas));
+                watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TakeVote", "takeVotesAll");
+                watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TeachVote", "teachVotesAll");
+                watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.RecommendVote", "recommendVotesAll");
+                remoteIdeaWatch.watch([ideaForRemoteIdea, titlesForIdea], setChildValue("titleFact"));
+                remoteIdeaWatch.watch([ideaForRemoteIdea, userForIdea, namesForUser], setChildValue("authorNameFact"));
+                remoteIdeaWatch.watch([ideaForRemoteIdea, abstractsInIdea], setChildValue("abstractFact"));
+
+                userWatches = [
+                    j.watch(c.user, [namesForUser], function (n) {
+                        viewModel.displayName(n.value);
+                    }),
+                    ideaWatch,
+                    remoteIdeaWatch
+                ];
+            }
+            else {
+                userWatches = [];
             }
         });
     }
-});
 
-var userWatches = [];
-
-viewModel.context.subscribe(function (c) {
-    dispose(userWatches)();
-    viewModel.ideas.removeAll();
-
-    if (c && c.user && c.semester) {
-        var ideaWatch = j.watch(c.semester, [ideasForSemester],
-            addTo(viewModel.ideas, function (idea) { return new IdeaViewModel(c.user, idea, viewModel.onlineSemester); }),
-            removeFrom(viewModel.ideas));
-        watchIdeaForVotes(ideaWatch, "ImprovingU.TakeVote", "takeCount");
-        watchIdeaForVotes(ideaWatch, "ImprovingU.TeachVote", "teachCount");
-        watchIdeaForVotes(ideaWatch, "ImprovingU.RecommendVote", "recommendCount");
-        ideaWatch.watch([titlesForIdea], setChildValue("titleFact"));
-        ideaWatch.watch([userForIdea, namesForUser], setChildValue("authorNameFact"));
-        ideaWatch.watch([abstractsInIdea], setChildValue("abstractFact"));
-
-        var remoteIdeaWatch = j.watch(viewModel.onlineSemester, [remoteIdeasForOnlineSemester],
-            addTo(viewModel.ideas, function (remoteIdea) { return new RemoteIdeaViewModel(c.user, remoteIdea, c.semester)}),
-            removeFrom(viewModel.ideas));
-        watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TakeVote", "takeVotesAll");
-        watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TeachVote", "teachVotesAll");
-        watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.RecommendVote", "recommendVotesAll");
-        remoteIdeaWatch.watch([ideaForRemoteIdea, titlesForIdea], setChildValue("titleFact"));
-        remoteIdeaWatch.watch([ideaForRemoteIdea, userForIdea, namesForUser], setChildValue("authorNameFact"));
-        remoteIdeaWatch.watch([ideaForRemoteIdea, abstractsInIdea], setChildValue("abstractFact"));
-
-        userWatches = [
-            j.watch(c.user, [namesForUser], function (n) {
-                viewModel.displayName(n.value);
-            }),
-            ideaWatch,
-            remoteIdeaWatch
-        ];
+    function watchIdeaForVotes(ideaWatch, type, observableName) {
+        ideaWatch.watch([votesForIdea(type)],
+            incrementChild(observableName),
+            decrementChild);
     }
-    else {
-        userWatches = [];
+
+    function watchRemoteIdeaForVotes(remoteIdeaWatch, type, observableName) {
+        remoteIdeaWatch.watch([votesForRemoteIdea(type)],
+            addToChild(observableName),
+            removeFromChild(observableName));
     }
-});
-
-function watchIdeaForVotes(ideaWatch, type, observableName) {
-    ideaWatch.watch([votesForIdea(type)],
-        incrementChild(observableName),
-        decrementChild);
-}
-
-function watchRemoteIdeaForVotes(remoteIdeaWatch, type, observableName) {
-    remoteIdeaWatch.watch([votesForRemoteIdea(type)],
-        addToChild(observableName),
-        removeFromChild(observableName));
 }
