@@ -1,6 +1,7 @@
 function CoursesViewModel() {
     UserViewModel.call(this, null);
 
+    this.courses = ko.observableArray();
     this.courseDetail = ko.observable();
 
     this.newCourse = function () {
@@ -43,6 +44,7 @@ function CoursesViewModel() {
             var coursesWatch = j.watch(semester, [coursesInSemester], addTo(viewModel.courses, function (course) {
                 return new CourseViewModel(course, viewModel.office, viewModel.user);
             }), removeFrom(viewModel.courses));
+            coursesWatch.watch([titlesForCourse], setChildValue('titleFact'));
         }
 
         function getCatalog(office) {

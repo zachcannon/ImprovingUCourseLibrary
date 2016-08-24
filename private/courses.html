@@ -51,6 +51,19 @@
 <div class="container">
     <h1 data-bind="text: office"></h1>
 
+    <div data-bind="foreach: courses().filter(function (c) { return c.visible(); })">
+        <div class="row row-course">
+            <div class="col-md-2">
+                <input type="button" value="Register">
+            </div>
+            <div class="col-md-10">
+                <div class="course-title" data-bind="text: title"></div>
+                <div class="course-author" data-bind="text: authorName"></div>
+                <div data-bind="html: abstract"></div>
+            </div>
+        </div>
+    </div>
+
     <form class="form-inline">
         <input type="button" class="form-control" data-bind="click: newCourse" value="Create a new course">
     </form>
@@ -124,6 +137,7 @@
 <script src="/public/offices.js"></script>
 <script src="/private/user.js"></script>
 <script src="/private/courseDetails.js"></script>
+<script src="/private/course.js"></script>
 <script src="/private/courses.js"></script>
 <script>
     ko.applyBindings(new CoursesViewModel());
