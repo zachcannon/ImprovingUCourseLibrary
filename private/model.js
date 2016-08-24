@@ -116,7 +116,8 @@ function createCourseDelete(user, course) {
     return {
         type: "ImprovingU.Course.Delete",
         from: user,
-        in: course
+        course: course,
+        in: course.in
     };
 }
 
@@ -124,9 +125,10 @@ function createCourseTitle(user, course, value, prior) {
     return {
         type: "ImprovingU.Course.Title",
         from: user,
-        in: course,
+        course: course,
         value: value,
-        prior: prior
+        prior: prior,
+        in: course.in
     };
 }
 
@@ -134,9 +136,10 @@ function createCourseInstructor(user, course, value, prior) {
     return {
         type: "ImprovingU.Course.Instructor",
         from: user,
-        in: course,
+        course: course,
         value: value,
-        prior: prior
+        prior: prior,
+        in: course.in
     };
 }
 
@@ -144,9 +147,10 @@ function createCourseAbstract(user, course, value, prior) {
     return {
         type: "ImprovingU.Course.Abstract",
         from: user,
-        in: course,
+        course: course,
         value: value,
-        prior: prior
+        prior: prior,
+        in: course.in
     };
 }
 
@@ -306,7 +310,7 @@ function ideaForRemoteIdea(r) {
 function courseIsDeleted(c) {
     return {
         type: "ImprovingU.Course.Delete",
-        in: c
+        course: c
     };
 }
 
@@ -330,7 +334,7 @@ function courseTitleIsCurrent(n) {
 function titlesForCourse(c) {
     return j.where({
         type: "ImprovingU.Course.Title",
-        in: c
+        course: c
     }, [courseTitleIsCurrent]);
 }
 
@@ -344,7 +348,7 @@ function courseInstructorIsCurrent(n) {
 function instructorsForCourse(c) {
     return j.where({
         type: "ImprovingU.Course.Instructor",
-        in: c
+        course: c
     }, [courseInstructorIsCurrent]);
 }
 
@@ -358,6 +362,6 @@ function courseAbstractIsCurrent(n) {
 function abstractsForCourse(c) {
     return j.where({
         type: "ImprovingU.Course.Abstract",
-        in: c
+        course: c
     }, [courseAbstractIsCurrent]);
 }
