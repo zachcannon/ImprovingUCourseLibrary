@@ -3,7 +3,7 @@ function CourseViewModel(course, office, user) {
         return course.in.office === office();
     });
     this.titleFact = ko.observable();
-    this.authorNameFact = ko.observable();
+    this.instructorFact = ko.observable();
     this.abstractFact = ko.observable();
 
     this.title = ko.computed(function () {
@@ -11,8 +11,8 @@ function CourseViewModel(course, office, user) {
         var value = t ? t.value : '';
         return value;
     }, this);
-    this.authorName = ko.computed(function () {
-        return this.authorNameFact() ? this.authorNameFact().value : "";
+    this.instructor = ko.computed(function () {
+        return this.instructorFact() ? this.instructorFact().value : "";
     }, this);
     this.abstract = ko.computed(function () {
         return this.abstractFact() ? converter.makeHtml(this.abstractFact().value) : "";

@@ -45,6 +45,8 @@ function CoursesViewModel() {
                 return new CourseViewModel(course, viewModel.office, viewModel.user);
             }), removeFrom(viewModel.courses));
             coursesWatch.watch([titlesForCourse], setChildValue('titleFact'));
+            coursesWatch.watch([instructorsForCourse], setChildValue('instructorFact'));
+            coursesWatch.watch([abstractsForCourse], setChildValue('abstractFact'));
         }
 
         function getCatalog(office) {

@@ -1,7 +1,13 @@
+var converter = new showdown.Converter();
+
 function CourseDetailViewModel(course, user) {
     this.titleFacts = ko.observableArray();
-    this.title = mutableValue(this.titleFacts, function (title, prior) {
-        j.fact(createCourseTitle(user, course, title, prior));
+    this.title = mutableValue(this.titleFacts, function (value, prior) {
+        j.fact(createCourseTitle(user, course, value, prior));
+    }, '');
+    this.instructorFacts = ko.observableArray();
+    this.instructor = mutableValue(this.instructorFacts, function (value, prior) {
+        j.fact(createCourseInstructor(user, course, value, prior));
     }, '');
     this.abstractValues = ko.observableArray();
     this.abstract = ko.computed(function () {
@@ -21,6 +27,7 @@ function CourseDetailViewModel(course, user) {
                 : values[0].value;
         },
         write: function (value) {
+            j.fact(createCourseAbstract(user, course, value, this.abstractValues()));
         },
         owner: this
     });

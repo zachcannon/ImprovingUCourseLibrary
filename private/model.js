@@ -122,6 +122,26 @@ function createCourseTitle(user, course, value, prior) {
     };
 }
 
+function createCourseInstructor(user, course, value, prior) {
+    return {
+        type: "ImprovingU.Course.Instructor",
+        from: user,
+        in: course,
+        value: value,
+        prior: prior
+    };
+}
+
+function createCourseAbstract(user, course, value, prior) {
+    return {
+        type: "ImprovingU.Course.Abstract",
+        from: user,
+        in: course,
+        value: value,
+        prior: prior
+    };
+}
+
 ////////////////////////
 // Template functions
 
@@ -297,4 +317,32 @@ function titlesForCourse(c) {
         type: "ImprovingU.Course.Title",
         in: c
     }, [courseTitleIsCurrent]);
+}
+
+function courseInstructorIsCurrent(n) {
+    return j.not({
+        type: "ImprovingU.Course.Instructor",
+        prior: n
+    });
+}
+
+function instructorsForCourse(c) {
+    return j.where({
+        type: "ImprovingU.Course.Instructor",
+        in: c
+    }, [courseInstructorIsCurrent]);
+}
+
+function courseAbstractIsCurrent(n) {
+    return j.not({
+        type: "ImprovingU.Course.Abstract",
+        prior: n
+    });
+}
+
+function abstractsForCourse(c) {
+    return j.where({
+        type: "ImprovingU.Course.Abstract",
+        in: c
+    }, [courseAbstractIsCurrent]);
 }

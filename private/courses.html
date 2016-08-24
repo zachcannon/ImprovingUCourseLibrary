@@ -58,7 +58,7 @@
             </div>
             <div class="col-md-10">
                 <div class="course-title" data-bind="text: title"></div>
-                <div class="course-author" data-bind="text: authorName"></div>
+                <div class="course-instructor" data-bind="text: instructor"></div>
                 <div data-bind="html: abstract"></div>
             </div>
         </div>
@@ -102,6 +102,14 @@
                         </div>
                         <div class="col-md-8">
                             <input type="text" name="course-detail-title-edit" id="course-detail-title-edit" data-bind="value: title">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="course-detail-instructor-edit">Instructor:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" name="course-detail-instructor-edit" id="course-detail-instructor-edit" data-bind="value: instructor">
                         </div>
                     </div>
                     <form>
