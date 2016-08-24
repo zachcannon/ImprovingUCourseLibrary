@@ -10,13 +10,6 @@ function CourseDetailViewModel(course, user) {
         j.fact(createCourseInstructor(user, course, value, prior));
     }, '');
     this.abstractFacts = ko.observableArray();
-    this.abstract = ko.computed(function () {
-        var values = this.abstractFacts();
-        return values.length == 0
-            ? ""
-            : converter.makeHtml(values[0].value);
-    }, this);
-    this.editing = ko.observable(false);
     this.isRemote = ko.observable(false);
 
     this.editAbstract = ko.computed({
@@ -31,10 +24,6 @@ function CourseDetailViewModel(course, user) {
         },
         owner: this
     });
-
-    this.toggleEditAbstract = function () {
-        this.editing(!this.editing());
-    };
 
     this.deleteCourse = function () {
         if (window.confirm('Do you want to delete this course?')) {

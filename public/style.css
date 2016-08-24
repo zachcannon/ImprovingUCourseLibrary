@@ -35,6 +35,10 @@ body {
     height: 20em !important;
 }
 
+input[type=text] {
+    width: 100%;
+}
+
 .votelabel {
     float: left;
     width: 33%;
@@ -155,4 +159,7 @@ body {
 }
 .course-details-abstract-edit {
     height: 20em !important;
+}
+.instructional-text {
+    color: #999;
 }
