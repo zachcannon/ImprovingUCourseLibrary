@@ -67,7 +67,7 @@ function IdeasViewModel() {
                 ideaWatch.watch([abstractsInIdea], setChildValue("abstractFact"));
 
                 var remoteIdeaWatch = j.watch(viewModel.onlineSemester, [remoteIdeasForOnlineSemester],
-                    addTo(viewModel.ideas, function (remoteIdea) { return new RemoteIdeaViewModel(c.user, remoteIdea, c.semester, viewModel.details)}),
+                    addTo(viewModel.ideas, function (remoteIdea) { return new RemoteIdeaViewModel(c.user, remoteIdea, c.semester, viewModel.remoteDetails)}),
                     removeFrom(viewModel.ideas));
                 watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TakeVote", "takeVotesAll");
                 watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TeachVote", "teachVotesAll");

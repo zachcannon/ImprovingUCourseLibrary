@@ -76,7 +76,7 @@ function RemoteIdeaViewModel(user, remoteIdea, semester, details) {
     this.showDetails = function () {
         if (details())
             details().dispose();
-        remoteDetails(new RemoteIdeaDetails(remoteIdeaOffice));
+        details(new RemoteIdeaDetails(remoteIdeaOffice));
         $("#remote-idea-details").modal();
     };
     this.dispose = dispose(watches);
