@@ -1,4 +1,4 @@
-function RemoteIdeaViewModel(user, remoteIdea, semester) {
+function RemoteIdeaViewModel(user, remoteIdea, semester, details) {
     this.titleFact = ko.observable();
     this.title = ko.computed(function () {
         var t = this.titleFact();
@@ -74,9 +74,9 @@ function RemoteIdeaViewModel(user, remoteIdea, semester) {
     this.rescindTeachVote = rescindVote(this.teachVotes);
     this.rescindRecommendVote = rescindVote(this.recommendVotes);
     this.showDetails = function () {
-        if (viewModel.details())
-            viewModel.details().dispose();
-        viewModel.remoteDetails(new RemoteIdeaDetails(remoteIdeaOffice));
+        if (details())
+            details().dispose();
+        remoteDetails(new RemoteIdeaDetails(remoteIdeaOffice));
         $("#remote-idea-details").modal();
     };
     this.dispose = dispose(watches);

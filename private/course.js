@@ -1,4 +1,4 @@
-function CourseViewModel(course, office, user) {
+function CourseViewModel(course, office, user, details) {
     this.visible = ko.computed(function () {
         return course.in.office === office();
     });
@@ -17,4 +17,11 @@ function CourseViewModel(course, office, user) {
     this.abstract = ko.computed(function () {
         return this.abstractFact() ? converter.makeHtml(this.abstractFact().value) : "";
     }, this);
+
+    this.showDetails = function () {
+        if (details())
+            details().dispose();
+        details(new CourseDetailViewModel(course, user()));
+        $("#course-detail-dialog").modal();
+    };
 }

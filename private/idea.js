@@ -1,4 +1,4 @@
-function IdeaViewModel(user, idea, onlineSemester) {
+function IdeaViewModel(user, idea, onlineSemester, details) {
     this.titleFact = ko.observable();
     this.title = ko.computed(function () {
         var t = this.titleFact();
@@ -61,9 +61,9 @@ function IdeaViewModel(user, idea, onlineSemester) {
     this.rescindTeachVote = rescindVote(this.teachVotes);
     this.rescindRecommendVote = rescindVote(this.recommendVotes);
     this.showDetails = function () {
-        if (viewModel.details())
-            viewModel.details().dispose();
-        viewModel.details(new IdeaDetails(idea, onlineSemester));
+        if (details())
+            details().dispose();
+        details(new IdeaDetails(idea, onlineSemester));
         $("#idea-details").modal();
     };
     this.dispose = dispose(watches);

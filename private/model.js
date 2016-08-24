@@ -109,7 +109,15 @@ function createCourse(user, catalog) {
         from: user,
         in: catalog,
         createdAt: new Date()
-    }
+    };
+}
+
+function createCourseDelete(user, course) {
+    return {
+        type: "ImprovingU.Course.Delete",
+        from: user,
+        in: course
+    };
 }
 
 function createCourseTitle(user, course, value, prior) {
@@ -295,14 +303,21 @@ function ideaForRemoteIdea(r) {
     return r.idea;
 }
 
-function coursesInSemester(s) {
+function courseIsDeleted(c) {
     return {
+        type: "ImprovingU.Course.Delete",
+        in: c
+    };
+}
+
+function coursesInSemester(s) {
+    return j.where({
         type: "ImprovingU.Course",
         in: {
             type: "ImprovingU.Catalog",
             in: s
         }
-    };
+    }, [j.not(courseIsDeleted)]);
 }
 
 function courseTitleIsCurrent(n) {

@@ -136,3 +136,23 @@ body {
 .downvote.recommend:active {
     border-top-color:  #BF8342
 }
+
+
+
+.row-course {
+    padding: 4px 0px;
+    cursor: pointer;
+}
+.row-course:nth-child(even) {
+    background-color: #eee;
+}
+.course-title {
+    font-size: 18pt;
+}
+.course-instructor {
+    margin-left: 10px;
+    font-size: 8pt;
+}
+.course-details-abstract-edit {
+    height: 20em !important;
+}

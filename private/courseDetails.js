@@ -9,9 +9,9 @@ function CourseDetailViewModel(course, user) {
     this.instructor = mutableValue(this.instructorFacts, function (value, prior) {
         j.fact(createCourseInstructor(user, course, value, prior));
     }, '');
-    this.abstractValues = ko.observableArray();
+    this.abstractFacts = ko.observableArray();
     this.abstract = ko.computed(function () {
-        var values = this.abstractValues();
+        var values = this.abstractFacts();
         return values.length == 0
             ? ""
             : converter.makeHtml(values[0].value);
@@ -21,13 +21,13 @@ function CourseDetailViewModel(course, user) {
 
     this.editAbstract = ko.computed({
         read: function () {
-            var values = this.abstractValues();
+            var values = this.abstractFacts();
             return values.length == 0
                 ? ""
                 : values[0].value;
         },
         write: function (value) {
-            j.fact(createCourseAbstract(user, course, value, this.abstractValues()));
+            j.fact(createCourseAbstract(user, course, value, this.abstractFacts()));
         },
         owner: this
     });
@@ -38,6 +38,7 @@ function CourseDetailViewModel(course, user) {
 
     this.deleteCourse = function () {
         if (window.confirm('Do you want to delete this course?')) {
+            j.fact(createCourseDelete(user, course));
             $('#course-detail-dialog').modal('toggle');
         }
     };
@@ -46,7 +47,9 @@ function CourseDetailViewModel(course, user) {
 
     function initializeWatches(viewModel) {
         var watches = [
-            j.watch(course, [titlesForCourse], addTo(viewModel.titleFacts), removeFrom(viewModel.titleFacts))
+            j.watch(course, [titlesForCourse], addTo(viewModel.titleFacts), removeFrom(viewModel.titleFacts)),
+            j.watch(course, [instructorsForCourse], addTo(viewModel.instructorFacts), removeFrom(viewModel.instructorFacts)),
+            j.watch(course, [abstractsForCourse], addTo(viewModel.abstractFacts), removeFrom(viewModel.abstractFacts))
         ];
         viewModel.dispose = dispose(watches);
     }
