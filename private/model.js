@@ -103,11 +103,20 @@ function createRescindVote(user, vote) {
     });
 }
 
+function createAccessRequest(user, catalog) {
+    return {
+        type: 'ImprovingU.Catalog.AccessRequest',
+        from: user,
+        catalog: catalog,
+        createdAt: new Date()
+    };
+}
+
 function createCourse(user, catalog) {
     return {
         type: "ImprovingU.Course",
         from: user,
-        in: catalog,
+        _in: catalog,
         createdAt: new Date()
     };
 }
@@ -117,7 +126,7 @@ function createCourseDelete(user, course) {
         type: "ImprovingU.Course.Delete",
         from: user,
         course: course,
-        in: course.in
+        _in: course._in
     };
 }
 
@@ -128,7 +137,7 @@ function createCourseTitle(user, course, value, prior) {
         course: course,
         value: value,
         prior: prior,
-        in: course.in
+        _in: course._in
     };
 }
 
@@ -139,7 +148,7 @@ function createCourseInstructor(user, course, value, prior) {
         course: course,
         value: value,
         prior: prior,
-        in: course.in
+        _in: course._in
     };
 }
 
@@ -150,7 +159,7 @@ function createCourseAbstract(user, course, value, prior) {
         course: course,
         value: value,
         prior: prior,
-        in: course.in
+        _in: course._in
     };
 }
 
@@ -307,6 +316,22 @@ function ideaForRemoteIdea(r) {
     return r.idea;
 }
 
+function accessRequestsInSemester(s) {
+    return {
+        type: 'ImprovingU.Catalog.AccessRequest',
+        catalog: {
+            type: "ImprovingU.Catalog",
+            _in: s
+        }
+    };
+}
+
+function userForAccessRequest(r) {
+    r.has("from");
+    r.from.type = "Jinaga.User";
+    return r.from;
+}
+
 function courseIsDeleted(c) {
     return {
         type: "ImprovingU.Course.Delete",
@@ -317,9 +342,9 @@ function courseIsDeleted(c) {
 function coursesInSemester(s) {
     return j.where({
         type: "ImprovingU.Course",
-        in: {
+        _in: {
             type: "ImprovingU.Catalog",
-            in: s
+            _in: s
         }
     }, [j.not(courseIsDeleted)]);
 }

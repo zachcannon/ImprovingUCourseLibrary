@@ -3,7 +3,15 @@ function CoursesViewModel() {
 
     this.courses = ko.observableArray();
     this.courseDetail = ko.observable();
+    this.accessRequests = ko.observableArray();
 
+    this.requestAccess = function () {
+        var user = this.user();
+        var catalog = this.catalog();
+        if (user && catalog) {
+            j.fact(createAccessRequest(user, catalog));
+        }
+    };
     this.newCourse = function () {
         if (this.courseDetail())
             this.courseDetail().dispose();
@@ -19,6 +27,12 @@ function CoursesViewModel() {
 
     initializeSemester(this);
 
+    this.canAdminister = ko.computed(function () {
+        var catalog = this.catalog();
+        var user = this.user();
+        return catalog && user && catalog.from.publicKey === user.publicKey;
+    }, this);
+
     function initializeSemester(viewModel) {
         var owner = {
             type: "Jinaga.User",
@@ -32,7 +46,7 @@ function CoursesViewModel() {
         var semester = {
             type: "ImprovingU.Semester",
             name: "Fall 2016",
-            in: company,
+            _in: company,
             from: owner
         };
         viewModel.catalog = ko.computed(function () {
@@ -47,16 +61,38 @@ function CoursesViewModel() {
             coursesWatch.watch([titlesForCourse], setChildValue('titleFact'));
             coursesWatch.watch([instructorsForCourse], setChildValue('instructorFact'));
             coursesWatch.watch([abstractsForCourse], setChildValue('abstractFact'));
+
+            var requestsWatch = j.watch(semester, [accessRequestsInSemester],
+                addTo(viewModel.accessRequests, function (r) { return new AccessRequestViewModel(r); }),
+                removeFrom(viewModel.accessRequests));
+            requestsWatch.watch([userForAccessRequest, namesForUser], setChildValue('nameFact'));
         }
 
         function getCatalog(office) {
             var catalog = {
                 type: "ImprovingU.Catalog",
                 office: office,
-                in: semester,
+                _in: semester,
                 from: owner
             };
             return catalog;
         }
     }
+}
+
+function AccessRequestViewModel(request) {
+    this.nameFact = ko.observable();
+    this.name = ko.computed(function () {
+        return this.nameFact() ? this.nameFact().value : '';
+    }, this);
+    this.visible = ko.computed(function () {
+        return true;
+    }, this);
+
+    this.approve = function () {
+        //
+    };
+    this.decline = function () {
+        //
+    };
 }

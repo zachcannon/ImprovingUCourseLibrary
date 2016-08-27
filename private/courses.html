@@ -54,7 +54,7 @@
     <div data-bind="foreach: courses().filter(function (c) { return c.visible(); })">
         <div class="row row-course" data-bind="click: showDetails">
             <div class="col-md-1">
-                <input type="button" value="Register">
+                <input type="button" class="btn" value="Register">
             </div>
             <div class="col-md-11">
                 <div class="course-title" data-bind="text: title"></div>
@@ -67,6 +67,25 @@
     <form class="form-inline">
         <input type="button" class="form-control" data-bind="click: newCourse" value="Create a new course">
     </form>
+
+    <div class="row" data-bind="visible: !canAdminister()">
+        <input type="button" class="btn" data-bind="click: requestAccess" value="Request access">
+    </div>
+    <div data-bind="visible: canAdminister()">
+        <div data-bind="foreach: accessRequests().filter(function (c) { return c.visible(); })">
+            <div class="row">
+                <div class="col-md-1">
+                    <input type="button" class="btn" value="Approve" data-bind="click: approve">
+                </div>
+                <div class="col-md-1">
+                    <input type="button" class="btn" value="Decline" data-bind="click: decline">
+                </div>
+                <div class="col-md-10">
+                    <p data-bind="text: name"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="error-dialog" tabindex="-1" role="dialog" aria-labelledby="error-dialog-title">
