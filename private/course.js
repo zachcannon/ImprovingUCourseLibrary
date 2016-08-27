@@ -1,6 +1,6 @@
 function CourseViewModel(course, office, user, details) {
     this.visible = ko.computed(function () {
-        return course.in.office === office();
+        return course._in.office === office();
     });
     this.titleFact = ko.observable();
     this.instructorFact = ko.observable();

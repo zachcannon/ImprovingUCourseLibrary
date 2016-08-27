@@ -64,11 +64,10 @@
         </div>
     </div>
 
-    <form class="form-inline">
-        <input type="button" class="form-control" data-bind="click: newCourse" value="Create a new course">
-    </form>
-
-    <div class="row" data-bind="visible: !canAdminister()">
+    <div class="row" data-bind="visible: canWrite()">
+        <input type="button" class="btn" data-bind="click: newCourse" value="Create a new course">
+    </div>
+    <div class="row" data-bind="visible: !canWrite()">
         <input type="button" class="btn" data-bind="click: requestAccess" value="Request access">
     </div>
     <div data-bind="visible: canAdminister()">

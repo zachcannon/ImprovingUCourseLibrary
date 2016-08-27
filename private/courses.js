@@ -25,30 +25,26 @@ function CoursesViewModel() {
         }
     };
 
-    initializeSemester(this);
+    var owner = {
+        type: "Jinaga.User",
+        publicKey: "-----BEGIN RSA PUBLIC KEY-----\nMIGJAoGBAIBsKomutukULWw2zoTW2ECMrM8VmD2xvfpl3R4qh1whzuXV+A4EfRKMb/UAjEfw\n5nBmWvcObGyYUgygKrlNeOhf3MnDj706rej6ln9cKGL++ZNsJgJsogaAtmkPihWVGi908fdP\nLQrWTF5be0b/ZP258Zs3CTpcRTpTvhzS5TC1AgMBAAE=\n-----END RSA PUBLIC KEY-----\n"
+    };
+    var company = {
+        type: "ImprovingU.Company",
+        name: "Improving",
+        from: owner
+    };
+    var semester = {
+        type: "ImprovingU.Semester",
+        name: "Fall 2016",
+        _in: company,
+        from: owner
+    };
 
-    this.canAdminister = ko.computed(function () {
-        var catalog = this.catalog();
-        var user = this.user();
-        return catalog && user && catalog.from.publicKey === user.publicKey;
-    }, this);
+    initializeSemester(this);
+    initializeAccess(this);
 
     function initializeSemester(viewModel) {
-        var owner = {
-            type: "Jinaga.User",
-            publicKey: "-----BEGIN RSA PUBLIC KEY-----\nMIGJAoGBAIBsKomutukULWw2zoTW2ECMrM8VmD2xvfpl3R4qh1whzuXV+A4EfRKMb/UAjEfw\n5nBmWvcObGyYUgygKrlNeOhf3MnDj706rej6ln9cKGL++ZNsJgJsogaAtmkPihWVGi908fdP\nLQrWTF5be0b/ZP258Zs3CTpcRTpTvhzS5TC1AgMBAAE=\n-----END RSA PUBLIC KEY-----\n"
-        };
-        var company = {
-            type: "ImprovingU.Company",
-            name: "Improving",
-            from: owner
-        };
-        var semester = {
-            type: "ImprovingU.Semester",
-            name: "Fall 2016",
-            _in: company,
-            from: owner
-        };
         viewModel.catalog = ko.computed(function () {
             return getCatalog(viewModel.office());
         });
@@ -78,6 +74,29 @@ function CoursesViewModel() {
             return catalog;
         }
     }
+
+    function initializeAccess(viewModel) {
+        viewModel.access = ko.observableArray();
+
+        viewModel.canAdminister = ko.computed(function () {
+            var catalog = viewModel.catalog();
+            var user = viewModel.user();
+            return catalog && user && catalog.from.publicKey === user.publicKey;
+        });
+        viewModel.canWrite = ko.computed(function () {
+            if (viewModel.canAdminister())
+                return true;
+            var catalog = viewModel.catalog();
+            var user = viewModel.user();
+            return catalog && user &&
+                viewModel.access().find(function (a) {
+                    return a.write.office === catalog.office &&
+                        a.to.publicKey === user.publicKey;
+                });
+        });
+
+        j.watch(semester, [accessInSemester], addTo(viewModel.access), removeFrom(viewModel.access));
+    }
 }
 
 function AccessRequestViewModel(user, request) {
@@ -90,7 +109,7 @@ function AccessRequestViewModel(user, request) {
     }, this);
 
     this.approve = function () {
-        //
+        j.fact(createAccessRequestApproved(user, request));
     };
     this.decline = function () {
         j.fact(createAccessRequestDeclined(user, request));

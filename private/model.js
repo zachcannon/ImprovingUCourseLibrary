@@ -118,7 +118,22 @@ function createAccessRequestDeclined(user, accessRequest) {
         from: user,
         accessRequest: accessRequest,
         authorization: []
-    }
+    };
+}
+
+function createAccessRequestApproved(user, accessRequest) {
+    return {
+        type: 'ImprovingU.Catalog.AccessRequest.Response',
+        from: user,
+        accessRequest: accessRequest,
+        authorization: [{
+            type: 'ImprovingU.Catalog.Access',
+            from: user,
+            to: accessRequest.from,
+            write: accessRequest.catalog,
+            createdAt: new Date()
+        }]
+    };
 }
 
 function createCourse(user, catalog) {
@@ -340,6 +355,16 @@ function accessRequestsInSemester(s) {
             _in: s
         }
     }, [j.not(accessRequestHasResponse)]);
+}
+
+function accessInSemester(s) {
+    return {
+        type: 'ImprovingU.Catalog.Access',
+        write: {
+            type: "ImprovingU.Catalog",
+            _in: s
+        }
+    };
 }
 
 function userForAccessRequest(r) {
