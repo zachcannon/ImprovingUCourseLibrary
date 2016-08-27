@@ -3,6 +3,7 @@ function CoursesViewModel() {
 
     this.courses = ko.observableArray();
     this.courseDetail = ko.observable();
+    this.registration = ko.observable();
     this.accessRequests = ko.observableArray();
 
     this.requestAccess = function () {
@@ -52,7 +53,7 @@ function CoursesViewModel() {
 
         function watchSemester() {
             var coursesWatch = j.watch(semester, [coursesInSemester], addTo(viewModel.courses, function (course) {
-                return new CourseViewModel(course, viewModel.office, viewModel.user, viewModel.courseDetail, viewModel.canWrite);
+                return new CourseViewModel(course, viewModel.office, viewModel.user, viewModel.courseDetail, viewModel.canWrite, viewModel.registration);
             }), removeFrom(viewModel.courses));
             coursesWatch.watch([titlesForCourse], setChildValue('titleFact'));
             coursesWatch.watch([instructorsForCourse], setChildValue('instructorFact'));

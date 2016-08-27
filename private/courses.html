@@ -52,11 +52,11 @@
     <h1 data-bind="text: office"></h1>
 
     <div data-bind="foreach: courses().filter(function (c) { return c.visible(); })">
-        <div class="row row-course" data-bind="click: showDetails">
+        <div class="row row-course">
             <div class="col-md-1">
-                <input type="button" class="btn" value="Register">
+                <input type="button" class="btn" value="Register" data-bind="click: register">
             </div>
-            <div class="col-md-11">
+            <div class="col-md-11" data-bind="click: showDetails">
                 <p>
                     <span class="course-title" data-bind="text: title"></span>
                     <span class="course-title" data-bind="visible: isRemote">&nbsp;(Remote)</span>
@@ -104,6 +104,25 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="course-registration-dialog" tabindex="-1" role="dialog" aria-labelledby="course-registration-dialog-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" data-bind="with: registration">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="course-registration-dialog-title"><span data-bind="text: title"></span> Registration</h4>
+                </div>
+                <div class="modal-body">
+                    <p>If the course fills up, students will be taken in the order of registration. The office coordinator will manage the waitlist. If the dates and times are not yet determined, they will poll registrants. They will send you an Outlook meeting request with the final dates and times.</p>
+                    <p>By agreeing, you understand that instructors and coordinators are giving of their time. You honor their contribution, and will make every attempt to participate in this course.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-bind="click: agree">I Agree</button>
+                    <button type="button" class="btn" data-dismiss="modal">I Disagree</button>
                 </div>
             </div>
         </div>
@@ -165,6 +184,7 @@
 <script src="/private/user.js"></script>
 <script src="/private/courseDetails.js"></script>
 <script src="/private/course.js"></script>
+<script src="/private/courseRegistration.js"></script>
 <script src="/private/courses.js"></script>
 <script>
     ko.applyBindings(new CoursesViewModel());

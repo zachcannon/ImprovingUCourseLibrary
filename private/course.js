@@ -1,4 +1,4 @@
-function CourseViewModel(course, office, user, details, canWrite) {
+function CourseViewModel(course, office, user, details, canWrite, registration) {
     this.titleFact = ko.observable();
     this.instructorFact = ko.observable();
     this.abstractFact = ko.observable();
@@ -29,9 +29,14 @@ function CourseViewModel(course, office, user, details, canWrite) {
             details().dispose();
             details(null);
         }
-        if (canWrite()) {
+        var inThisOffice = course._in.office === office();
+        if (inThisOffice && canWrite()) {
             details(new CourseDetailViewModel(course, user()));
             $("#course-detail-dialog").modal();
         }
     };
+    this.register = function () {
+        registration(new CourseRegistrationViewModel(course, user()));
+        $('#course-registration-dialog').modal();
+    }
 }
