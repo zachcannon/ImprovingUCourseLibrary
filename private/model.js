@@ -112,6 +112,15 @@ function createAccessRequest(user, catalog) {
     };
 }
 
+function createAccessRequestDeclined(user, accessRequest) {
+    return {
+        type: 'ImprovingU.Catalog.AccessRequest.Response',
+        from: user,
+        accessRequest: accessRequest,
+        authorization: []
+    }
+}
+
 function createCourse(user, catalog) {
     return {
         type: "ImprovingU.Course",
@@ -316,14 +325,21 @@ function ideaForRemoteIdea(r) {
     return r.idea;
 }
 
-function accessRequestsInSemester(s) {
+function accessRequestHasResponse(a) {
     return {
+        type: 'ImprovingU.Catalog.AccessRequest.Response',
+        accessRequest: a
+    }
+}
+
+function accessRequestsInSemester(s) {
+    return j.where({
         type: 'ImprovingU.Catalog.AccessRequest',
         catalog: {
             type: "ImprovingU.Catalog",
             _in: s
         }
-    };
+    }, [j.not(accessRequestHasResponse)]);
 }
 
 function userForAccessRequest(r) {

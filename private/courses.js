@@ -63,7 +63,7 @@ function CoursesViewModel() {
             coursesWatch.watch([abstractsForCourse], setChildValue('abstractFact'));
 
             var requestsWatch = j.watch(semester, [accessRequestsInSemester],
-                addTo(viewModel.accessRequests, function (r) { return new AccessRequestViewModel(r); }),
+                addTo(viewModel.accessRequests, function (r) { return new AccessRequestViewModel(viewModel.user(), r); }),
                 removeFrom(viewModel.accessRequests));
             requestsWatch.watch([userForAccessRequest, namesForUser], setChildValue('nameFact'));
         }
@@ -80,7 +80,7 @@ function CoursesViewModel() {
     }
 }
 
-function AccessRequestViewModel(request) {
+function AccessRequestViewModel(user, request) {
     this.nameFact = ko.observable();
     this.name = ko.computed(function () {
         return this.nameFact() ? this.nameFact().value : '';
@@ -93,6 +93,6 @@ function AccessRequestViewModel(request) {
         //
     };
     this.decline = function () {
-        //
+        j.fact(createAccessRequestDeclined(user, request));
     };
 }
