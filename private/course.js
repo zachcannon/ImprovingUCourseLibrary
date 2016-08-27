@@ -1,10 +1,8 @@
 function CourseViewModel(course, office, user, details, canWrite) {
-    this.visible = ko.computed(function () {
-        return course._in.office === office();
-    });
     this.titleFact = ko.observable();
     this.instructorFact = ko.observable();
     this.abstractFact = ko.observable();
+    this.remoteFact = ko.observable();
 
     this.title = ko.computed(function () {
         var t = this.titleFact();
@@ -16,6 +14,14 @@ function CourseViewModel(course, office, user, details, canWrite) {
     }, this);
     this.abstract = ko.computed(function () {
         return this.abstractFact() ? converter.makeHtml(this.abstractFact().value) : "";
+    }, this);
+    this.isRemote = ko.computed(function () {
+        var inThisOffice = course._in.office === office();
+        return !inThisOffice && this.remoteFact();
+    }, this);
+    this.visible = ko.computed(function () {
+        var inThisOffice = course._in.office === office();
+        return inThisOffice || this.remoteFact();
     }, this);
 
     this.showDetails = function () {

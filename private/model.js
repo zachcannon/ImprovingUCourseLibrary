@@ -187,6 +187,25 @@ function createCourseAbstract(user, course, value, prior) {
     };
 }
 
+function createRemoteCourse(user, course) {
+    return {
+        type: "ImprovingU.Course.Remote",
+        from: user,
+        course: course,
+        created: new Date(),
+        _in: course._in
+    };
+}
+
+function createRemoteCourseDeletion(user, remoteCourses, semster) {
+    return {
+        type: "ImprovingU.Course.Remote.Deletion",
+        from: user,
+        remoteCourses: remoteCourses,
+        _in: semester
+    };
+}
+
 ////////////////////////
 // Template functions
 
@@ -430,4 +449,18 @@ function abstractsForCourse(c) {
         type: "ImprovingU.Course.Abstract",
         course: c
     }, [courseAbstractIsCurrent]);
+}
+
+function remoteCoursesForCourse(c) {
+    return j.where({
+        type: "ImprovingU.Course.Remote",
+        course: c
+    }, [j.not(remoteCourseIsDeleted)]);
+}
+
+function remoteCourseIsDeleted(r) {
+    return {
+        type: "ImprovingU.Course.Remote.Deletion",
+        remoteCourses: r
+    }
 }

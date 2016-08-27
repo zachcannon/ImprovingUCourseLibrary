@@ -57,7 +57,10 @@
                 <input type="button" class="btn" value="Register">
             </div>
             <div class="col-md-11">
-                <div class="course-title" data-bind="text: title"></div>
+                <p>
+                    <span class="course-title" data-bind="text: title"></span>
+                    <span class="course-title" data-bind="visible: isRemote">&nbsp;(Remote)</span>
+                </p>
                 <div class="course-instructor" data-bind="text: instructor"></div>
                 <div data-bind="html: abstract"></div>
             </div>

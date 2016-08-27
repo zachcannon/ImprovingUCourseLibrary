@@ -10,7 +10,23 @@ function CourseDetailViewModel(course, user) {
         j.fact(createCourseInstructor(user, course, value, prior));
     }, '');
     this.abstractFacts = ko.observableArray();
-    this.isRemote = ko.observable(false);
+
+    this.remoteCourses = ko.observableArray([]);
+    this.isRemote = ko.computed({
+        read: function () {
+            return this.remoteCourses().length > 0;
+        },
+        write: function (value) {
+            var prior = this.remoteCourses();
+            if (value && prior.length === 0) {
+                j.fact(createRemoteCourse(user, course));
+            }
+            else if (!value && prior.length > 0) {
+                j.fact(createRemoteCourseDeletion(user, prior, course._in));
+            }
+        },
+        owner: this
+    });
 
     this.editAbstract = ko.computed({
         read: function () {
@@ -38,7 +54,8 @@ function CourseDetailViewModel(course, user) {
         var watches = [
             j.watch(course, [titlesForCourse], addTo(viewModel.titleFacts), removeFrom(viewModel.titleFacts)),
             j.watch(course, [instructorsForCourse], addTo(viewModel.instructorFacts), removeFrom(viewModel.instructorFacts)),
-            j.watch(course, [abstractsForCourse], addTo(viewModel.abstractFacts), removeFrom(viewModel.abstractFacts))
+            j.watch(course, [abstractsForCourse], addTo(viewModel.abstractFacts), removeFrom(viewModel.abstractFacts)),
+            j.watch(course, [remoteCoursesForCourse], addTo(viewModel.remoteCourses), removeFrom(viewModel.remoteCourses))
         ];
         viewModel.dispose = dispose(watches);
     }
