@@ -1,5 +1,6 @@
 var passport = require('passport');
 var WsfedStrategy = require('passport-azure-ad').WsfedStrategy;
+var LocalStrategy = require('passport-local').Strategy;
 var debug = require('debug')('improvingu');
 
 module.exports = function( app, config ) {
@@ -21,6 +22,31 @@ module.exports = function( app, config ) {
             });
         })
     );
+    var users = [
+        { id: 1, username: 'mperry', password: 'password', displayName: 'Michael L Perry' },
+        { id: 2, username: 'jperry', password: 'password', displayName: 'Jenny Perry' }
+    ];
+    passport.use(new LocalStrategy(
+        function(username, password, done) {
+            var user = users.find(function (u) {
+                return u.username === username && u.password === password;
+            });
+            if (user) {
+                return done(null, {
+                    provider: "local",
+                    id: user.id,
+                    profile: {
+                        displayName: user.displayName
+                    }
+                });
+            }
+            else {
+                return done(null, false, {
+                    message: "Login failed"
+                });
+            }
+        }
+    ));
 
     passport.serializeUser(function(user, done) {
         done(null, JSON.stringify(user));
@@ -45,6 +71,10 @@ module.exports = function( app, config ) {
     }
     app.get('/login', authenticate);
     app.post('/login/callback', authenticate, authenticationCallback);
+    app.post("/loginLocal", passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/loginLocal"
+    }));
 
     return {
         initialize: doPassportInitialize,
