@@ -57,7 +57,7 @@ function IdeaDetails(idea, onlineSemester) {
     this.recommendVotes = ko.observableArray();
     function watchVotes(type, observable) {
         return [
-            j.watch(idea, [votesForIdea(type), userForVote, namesForUser],
+            j.watch(idea, [votesForIdea(type), userForFact, namesForUser],
                 addTo(observable),
                 removeFrom(observable))
         ]

@@ -160,6 +160,9 @@ input[type=text] {
 .course-details-abstract-edit {
     height: 20em !important;
 }
+.course-registration-notes-edit {
+    height: auto;
+}
 .instructional-text {
     color: #999;
 }

@@ -118,7 +118,20 @@
                 </div>
                 <div class="modal-body">
                     <p>If the course fills up, students will be taken in the order of registration. The office coordinator will manage the waitlist. If the dates and times are not yet determined, they will poll registrants. They will send you an Outlook meeting request with the final dates and times.</p>
+                    <p>Guests, or notes to the organizer:</p>
+                    <form>
+                        <textarea class="form-control course-registration-notes-edit" placeholder="Guests or notes" data-bind="value: notes" rows="5"></textarea>
+                    </form>
                     <p>By agreeing, you understand that instructors and coordinators are giving of their time. You honor their contribution, and will make every attempt to participate in this course.</p>
+                    <hr>
+                    <p>Other registrants:</p>
+                    <ul data-bind="foreach: registrations">
+                        <li><span data-bind="text: name"></span>
+                            <ul data-bind="foreach: notes">
+                                <li data-bind="text: $data"></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bind="click: agree">I Agree</button>

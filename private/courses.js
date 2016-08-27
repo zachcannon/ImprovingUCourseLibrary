@@ -63,7 +63,7 @@ function CoursesViewModel() {
             var requestsWatch = j.watch(semester, [accessRequestsInSemester],
                 addTo(viewModel.accessRequests, function (r) { return new AccessRequestViewModel(viewModel.user, viewModel.catalog, r); }),
                 removeFrom(viewModel.accessRequests));
-            requestsWatch.watch([userForAccessRequest, namesForUser], setChildValue('nameFact'));
+            requestsWatch.watch([userForFact, namesForUser], setChildValue('nameFact'));
         }
 
         function getCatalog(office) {

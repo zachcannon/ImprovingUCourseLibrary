@@ -9,7 +9,7 @@ function RemoteIdeaDetails(remoteIdeaOffice) {
     this.recommendVotes = ko.observableArray();
     function watchVotes(type, observable) {
         return [
-            j.watch(remoteIdeaOffice, [votesForRemoteIdeaOffice(type), userForVote, namesForUser],
+            j.watch(remoteIdeaOffice, [votesForRemoteIdeaOffice(type), userForFact, namesForUser],
                 addTo(observable),
                 removeFrom(observable))
         ]

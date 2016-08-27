@@ -206,6 +206,24 @@ function createRemoteCourseDeletion(user, remoteCourses, semster) {
     };
 }
 
+function createCourseRegistration(user, course, notes) {
+    return {
+        type: 'ImprovingU.Course.Registration',
+        from: user,
+        course: course,
+        notes: notes,
+        createdAt: new Date()
+    }
+}
+
+function createCourseRegistrationDeletion(courseRegistration) {
+    return {
+        type: 'ImprovingU.Course.Registration.Deletion',
+        from: courseRegistration.from,
+        courseRegistration: courseRegistration
+    }
+}
+
 ////////////////////////
 // Template functions
 
@@ -341,18 +359,6 @@ function abstractIsCurrent(a) {
     });
 }
 
-function userForVote(v) {
-    v.has("from");
-    v.from.type = "Jinaga.User";
-    return v.from;
-}
-
-function userForIdea(i) {
-    i.has("from");
-    i.from.type = "Jinaga.User";
-    return i.from;
-}
-
 function ideaForRemoteIdea(r) {
     r.has("idea");
     r.idea.type = "ImprovingU.Idea";
@@ -386,7 +392,7 @@ function accessInSemester(s) {
     };
 }
 
-function userForAccessRequest(r) {
+function userForFact(r) {
     r.has("from");
     r.from.type = "Jinaga.User";
     return r.from;
@@ -462,5 +468,12 @@ function remoteCourseIsDeleted(r) {
     return {
         type: "ImprovingU.Course.Remote.Deletion",
         remoteCourses: r
+    }
+}
+
+function registrationsForCourse(c) {
+    return {
+        type: 'ImprovingU.Course.Registration',
+        course: c
     }
 }

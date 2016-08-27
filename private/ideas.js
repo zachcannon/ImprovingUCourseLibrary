@@ -63,7 +63,7 @@ function IdeasViewModel() {
                 watchIdeaForVotes(ideaWatch, "ImprovingU.TeachVote", "teachCount");
                 watchIdeaForVotes(ideaWatch, "ImprovingU.RecommendVote", "recommendCount");
                 ideaWatch.watch([titlesForIdea], setChildValue("titleFact"));
-                ideaWatch.watch([userForIdea, namesForUser], setChildValue("authorNameFact"));
+                ideaWatch.watch([userForFact, namesForUser], setChildValue("authorNameFact"));
                 ideaWatch.watch([abstractsInIdea], setChildValue("abstractFact"));
 
                 var remoteIdeaWatch = j.watch(viewModel.onlineSemester, [remoteIdeasForOnlineSemester],
@@ -73,7 +73,7 @@ function IdeasViewModel() {
                 watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TeachVote", "teachVotesAll");
                 watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.RecommendVote", "recommendVotesAll");
                 remoteIdeaWatch.watch([ideaForRemoteIdea, titlesForIdea], setChildValue("titleFact"));
-                remoteIdeaWatch.watch([ideaForRemoteIdea, userForIdea, namesForUser], setChildValue("authorNameFact"));
+                remoteIdeaWatch.watch([ideaForRemoteIdea, userForFact, namesForUser], setChildValue("authorNameFact"));
                 remoteIdeaWatch.watch([ideaForRemoteIdea, abstractsInIdea], setChildValue("abstractFact"));
 
                 userWatches = [
