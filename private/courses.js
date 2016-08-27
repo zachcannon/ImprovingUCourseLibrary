@@ -59,6 +59,7 @@ function CoursesViewModel() {
             coursesWatch.watch([instructorsForCourse], setChildValue('instructorFact'));
             coursesWatch.watch([abstractsForCourse], setChildValue('abstractFact'));
             coursesWatch.watch([remoteCoursesForCourse], setChildValue('remoteFact'));
+            coursesWatch.watch([registrationsForCourse], addToChild('registrations'), removeFromChild('registrations'));
 
             var requestsWatch = j.watch(semester, [accessRequestsInSemester],
                 addTo(viewModel.accessRequests, function (r) { return new AccessRequestViewModel(viewModel.user, viewModel.catalog, r); }),

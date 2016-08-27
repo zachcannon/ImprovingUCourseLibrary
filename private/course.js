@@ -3,6 +3,7 @@ function CourseViewModel(course, office, user, details, canWrite, registration) 
     this.instructorFact = ko.observable();
     this.abstractFact = ko.observable();
     this.remoteFact = ko.observable();
+    this.registrations = ko.observableArray();
 
     this.title = ko.computed(function () {
         var t = this.titleFact();
@@ -35,8 +36,21 @@ function CourseViewModel(course, office, user, details, canWrite, registration) 
             $("#course-detail-dialog").modal();
         }
     };
+    this.isRegistered = ko.computed(function () {
+        return myRegistrations(this.registrations());
+    }, this);
     this.register = function () {
         registration(new CourseRegistrationViewModel(course, user()));
         $('#course-registration-dialog').modal();
+    };
+    this.viewRegistration = function () {
+        registration(new CourseRegistrationViewModel(course, user()));
+        $('#course-registered-dialog').modal();
+    };
+
+    function myRegistrations(allRegistrations) {
+        return allRegistrations.find(function (r) {
+            return r.from.publicKey === user().publicKey;
+        });
     }
 }

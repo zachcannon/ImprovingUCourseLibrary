@@ -10,6 +10,15 @@ function CourseRegistrationViewModel(course, user) {
         j.fact(createCourseRegistration(user, course, this.notes()));
         $('#course-registration-dialog').modal('toggle');
     }
+    this.cancel = function () {
+        if (window.confirm('Do you want to cancel your registration?')) {
+            j.fact(createCourseRegistrationDeletion(user,
+                myRegistrations(this.registrations().map(function (r) {
+                    return r.registration;
+                }))));
+            $('#course-registered-dialog').modal('toggle');
+        }
+    }
 
     initializeWatches(this);
 
@@ -30,10 +39,17 @@ function CourseRegistrationViewModel(course, user) {
     }
 
     function RegistrationViewModel(registration) {
+        this.registration = registration;
         this.nameFact = ko.observable();
         this.name = ko.computed(function () {
             return this.nameFact() ? this.nameFact().value : '';
         }, this);
         this.notes = registration.notes ? registration.notes.split('\n') : [];
+    }
+
+    function myRegistrations(allRegistrations) {
+        return allRegistrations.filter(function (r) {
+            return r.from.publicKey === user.publicKey;
+        });
     }
 }

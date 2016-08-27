@@ -216,11 +216,11 @@ function createCourseRegistration(user, course, notes) {
     }
 }
 
-function createCourseRegistrationDeletion(courseRegistration) {
+function createCourseRegistrationDeletion(user, courseRegistrations) {
     return {
         type: 'ImprovingU.Course.Registration.Deletion',
-        from: courseRegistration.from,
-        courseRegistration: courseRegistration
+        from: user,
+        courseRegistrations: courseRegistrations
     }
 }
 
@@ -472,8 +472,15 @@ function remoteCourseIsDeleted(r) {
 }
 
 function registrationsForCourse(c) {
-    return {
+    return j.where({
         type: 'ImprovingU.Course.Registration',
         course: c
+    }, [j.not(registrationIsDeleted)]);
+}
+
+function registrationIsDeleted(r) {
+    return {
+        type: 'ImprovingU.Course.Registration.Deletion',
+        courseRegistrations: r
     }
 }
