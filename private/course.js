@@ -1,4 +1,4 @@
-function CourseViewModel(course, office, user, details) {
+function CourseViewModel(course, office, user, details, canWrite) {
     this.visible = ko.computed(function () {
         return course._in.office === office();
     });
@@ -19,9 +19,13 @@ function CourseViewModel(course, office, user, details) {
     }, this);
 
     this.showDetails = function () {
-        if (details())
+        if (details()) {
             details().dispose();
-        details(new CourseDetailViewModel(course, user()));
-        $("#course-detail-dialog").modal();
+            details(null);
+        }
+        if (canWrite()) {
+            details(new CourseDetailViewModel(course, user()));
+            $("#course-detail-dialog").modal();
+        }
     };
 }
