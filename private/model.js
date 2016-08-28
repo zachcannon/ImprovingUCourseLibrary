@@ -206,21 +206,30 @@ function createRemoteCourseDeletion(user, remoteCourses, semster) {
     };
 }
 
-function createCourseRegistration(user, course, notes) {
+function createCourseRegistration(user, course) {
     return {
         type: 'ImprovingU.Course.Registration',
         from: user,
         course: course,
-        notes: notes,
         createdAt: new Date()
     }
 }
 
-function createCourseRegistrationDeletion(user, courseRegistrations) {
+function createCourseRegistrationNote(user, registration, note, prior) {
+    return {
+        type: 'ImprovingU.Course.Registration.Note',
+        from: user,
+        registration: registration,
+        value: note,
+        prior: prior
+    }
+}
+
+function createCourseRegistrationDeletion(user, courseRegistration) {
     return {
         type: 'ImprovingU.Course.Registration.Deletion',
         from: user,
-        courseRegistrations: courseRegistrations
+        courseRegistration: courseRegistration
     }
 }
 
@@ -468,7 +477,7 @@ function remoteCourseIsDeleted(r) {
     return {
         type: "ImprovingU.Course.Remote.Deletion",
         remoteCourses: r
-    }
+    };
 }
 
 function registrationsForCourse(c) {
@@ -481,6 +490,20 @@ function registrationsForCourse(c) {
 function registrationIsDeleted(r) {
     return {
         type: 'ImprovingU.Course.Registration.Deletion',
-        courseRegistrations: r
+        courseRegistration: r
     }
+}
+
+function notesForRegistration(r) {
+    return j.where({
+        type: 'ImprovingU.Course.Registration.Note',
+        registration: r
+    }, [noteIsCurrent]);
+}
+
+function noteIsCurrent(n) {
+    return j.not({
+        type: "ImprovingU.Course.Registration.Note",
+        prior: n
+    });
 }

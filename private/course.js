@@ -37,18 +37,18 @@ function CourseViewModel(course, office, user, details, canWrite, registration) 
         }
     };
     this.isRegistered = ko.computed(function () {
-        return myRegistrations(this.registrations());
+        return myRegistration(this.registrations());
     }, this);
     this.register = function () {
-        registration(new CourseRegistrationViewModel(course, user()));
+        registration(new CourseRegistrationViewModel(createCourseRegistration(user(), course)));
         $('#course-registration-dialog').modal();
     };
     this.viewRegistration = function () {
-        registration(new CourseRegistrationViewModel(course, user()));
+        registration(new CourseRegistrationViewModel(myRegistration(this.registrations())));
         $('#course-registered-dialog').modal();
     };
 
-    function myRegistrations(allRegistrations) {
+    function myRegistration(allRegistrations) {
         return allRegistrations.find(function (r) {
             return r.from.publicKey === user().publicKey;
         });

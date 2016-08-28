@@ -150,7 +150,11 @@
                     <h4 class="modal-title" id="course-registered-dialog-title"><span data-bind="text: title"></span> Registration</h4>
                 </div>
                 <div class="modal-body">
-                    <p>You are registered for this course.</p>
+                    <p>You are registered for this course. The organizer will send you an Outlook meeting request with the final dates and times.</p>
+                    <p>Guests, or notes to the organizer:</p>
+                    <form>
+                        <textarea class="form-control course-registration-notes-edit" placeholder="Guests or notes" data-bind="value: notes" rows="5"></textarea>
+                    </form>
                     <hr>
                     <p>Other registrants:</p>
                     <ul data-bind="foreach: registrations">
@@ -162,7 +166,8 @@
                     </ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bind="click: cancel">Cancel Registration</button>
+                    <button type="button" class="btn btn-danger pull-left" data-bind="click: cancel">Cancel Registration</button>
+                    <button type="button" class="btn btn-primary" data-bind="click: save">Save</button>
                     <button type="button" class="btn" data-dismiss="modal">Close</button>
                 </div>
             </div>
