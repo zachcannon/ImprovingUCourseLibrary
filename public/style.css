@@ -5,6 +5,10 @@ body {
     padding: 40px 15px;
     text-align: center;
 }
+.call-to-action img {
+    width: 100%;
+    height: auto;
+}
 .text-involvement {
     color: #008800;
 }
