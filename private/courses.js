@@ -97,12 +97,21 @@ function CoursesViewModel() {
                         a.to.publicKey === user.publicKey;
                 });
         });
+        viewModel.hasRequest = ko.computed(function () {
+            var catalog = viewModel.catalog();
+            var user = viewModel.user();
+            return viewModel.accessRequests().find(function (r) {
+                return r.request.from.publicKey === user.publicKey &&
+                    r.request.catalog.office === catalog.office;
+            })
+        })
 
         j.watch(semester, [accessInSemester], addTo(viewModel.access), removeFrom(viewModel.access));
     }
 }
 
 function AccessRequestViewModel(user, catalog, request) {
+    this.request = request;
     this.nameFact = ko.observable();
     this.name = ko.computed(function () {
         return this.nameFact() ? this.nameFact().value : '';

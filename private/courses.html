@@ -71,8 +71,11 @@
     <div class="row" data-bind="visible: canWrite()">
         <input type="button" class="btn" data-bind="click: newCourse" value="Create a new course">
     </div>
-    <div class="row" data-bind="visible: !canWrite()">
+    <div class="row" data-bind="visible: !canWrite() && !hasRequest()">
         <input type="button" class="btn" data-bind="click: requestAccess" value="Request access">
+    </div>
+    <div class="row" data-bind="visible: !canWrite() && hasRequest()">
+        <p>Access request has been sent. Pending approval.</p>
     </div>
     <div data-bind="visible: canAdminister()">
         <div data-bind="foreach: accessRequests().filter(function (c) { return c.visible(); })">
