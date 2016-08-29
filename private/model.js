@@ -206,11 +206,12 @@ function createRemoteCourseDeletion(user, remoteCourses, semster) {
     };
 }
 
-function createCourseRegistration(user, course) {
+function createCourseRegistration(user, course, office) {
     return {
         type: 'ImprovingU.Course.Registration',
         from: user,
         course: course,
+        office: office,
         createdAt: new Date()
     }
 }

@@ -77,6 +77,7 @@ function CourseRegistrationViewModel(registration) {
         this.name = ko.computed(function () {
             return this.nameFact() ? this.nameFact().value : '';
         }, this);
+        this.office = registration.office;
         this.noteFacts = ko.observableArray();
         this.notes = ko.computed(function () {
             return [].concat.apply([], this.noteFacts().map(function (note) {
@@ -90,4 +91,12 @@ function CourseRegistrationViewModel(registration) {
             return r.from.publicKey === registration.user.publicKey;
         });
     }
+}
+
+function byRegistrationCreatedAt(a, b) {
+    if (a.registration.createdAt < b.registration.createdAt)
+        return -1;
+    if (a.registration.createdAt > b.registration.createdAt)
+        return 1;
+    return 0;
 }

@@ -40,7 +40,7 @@ function CourseViewModel(course, office, user, details, canWrite, registration) 
         return myRegistration(this.registrations());
     }, this);
     this.register = function () {
-        registration(new CourseRegistrationViewModel(createCourseRegistration(user(), course)));
+        registration(new CourseRegistrationViewModel(createCourseRegistration(user(), course, office())));
         $('#course-registration-dialog').modal();
     };
     this.viewRegistration = function () {
