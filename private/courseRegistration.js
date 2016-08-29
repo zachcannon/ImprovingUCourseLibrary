@@ -32,13 +32,13 @@ function CourseRegistrationViewModel(registration) {
 
     this.agree = function () {
         j.fact(registration);
-        if (this.noteChanged() && this.noteFacts.length !== 1 || this.noteFacts()[0].value !== this.noteValue()) {
+        if (this.noteChanged() && (this.noteFacts.length !== 1 || this.noteFacts()[0].value !== this.noteValue())) {
             j.fact(createCourseRegistrationNote(registration.user, registration, this.noteValue(), this.noteFacts()));
         }
         $('#course-registration-dialog').modal('toggle');
     }
     this.save = function () {
-        if (this.noteChanged() && this.noteFacts.length !== 1 || this.noteFacts()[0].value !== this.noteValue()) {
+        if (this.noteChanged() && (this.noteFacts.length !== 1 || this.noteFacts()[0].value !== this.noteValue())) {
             j.fact(createCourseRegistrationNote(registration.user, registration, this.noteValue(), this.noteFacts()));
         }
         $('#course-registered-dialog').modal('toggle');
