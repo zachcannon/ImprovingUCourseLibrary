@@ -120,3 +120,13 @@ function AccessRequestViewModel(user, catalog, request) {
             j.fact(createAccessRequestDeclined(user(), request));
     };
 }
+
+function byCourseTitle(a, b) {
+    var aTitle = a.title();
+    var bTitle = b.title();
+    if (aTitle < bTitle)
+        return -1;
+    if (aTitle > bTitle)
+        return 1;
+    return 0;
+}
