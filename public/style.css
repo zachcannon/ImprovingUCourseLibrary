@@ -39,6 +39,10 @@ body {
     height: 20em !important;
 }
 
+.link {
+    cursor: pointer;
+}
+
 input[type=text] {
     width: 100%;
 }

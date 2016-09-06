@@ -72,7 +72,7 @@
         <input type="button" class="btn" data-bind="click: newCourse" value="Create a new course">
     </div>
     <div class="row" data-bind="visible: !canWrite() && !hasRequest()">
-        <input type="button" class="btn" data-bind="click: requestAccess" value="Request access">
+        <a class="link" data-bind="click: requestAccess">Request administrator access</a>
     </div>
     <div class="row" data-bind="visible: !canWrite() && hasRequest()">
         <p>Access request has been sent. Pending approval.</p>
