@@ -40,17 +40,21 @@ function CourseViewModel(course, office, user, details, canWrite, registration) 
         return myRegistration(this.registrations());
     }, this);
     this.register = function () {
-        registration(new CourseRegistrationViewModel(createCourseRegistration(user(), course, office())));
-        $('#course-registration-dialog').modal();
+        if (user()) {
+            registration(new CourseRegistrationViewModel(createCourseRegistration(user(), course, office())));
+            $('#course-registration-dialog').modal();
+        }
     };
     this.viewRegistration = function () {
-        registration(new CourseRegistrationViewModel(myRegistration(this.registrations())));
-        $('#course-registered-dialog').modal();
+        if (user()) {
+            registration(new CourseRegistrationViewModel(myRegistration(this.registrations())));
+            $('#course-registered-dialog').modal();
+        }
     };
 
     function myRegistration(allRegistrations) {
         return allRegistrations.find(function (r) {
-            return r.from.publicKey === user().publicKey;
+            return r.from && user() && (r.from.publicKey === user().publicKey);
         });
     }
 }

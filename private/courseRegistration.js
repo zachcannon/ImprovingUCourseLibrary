@@ -88,7 +88,7 @@ function CourseRegistrationViewModel(registration) {
 
     function myRegistrations(allRegistrations) {
         return allRegistrations.filter(function (r) {
-            return r.from.publicKey === registration.user.publicKey;
+            return r.from && (r.from.publicKey === registration.user.publicKey);
         });
     }
 }
@@ -99,4 +99,8 @@ function byRegistrationCreatedAt(a, b) {
     if (a.registration.createdAt > b.registration.createdAt)
         return 1;
     return 0;
+}
+
+function hasFrom(r) {
+    return r.registration.from;
 }

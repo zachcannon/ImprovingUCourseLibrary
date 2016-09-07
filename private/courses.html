@@ -129,7 +129,7 @@
                     <p>By agreeing, you understand that instructors and coordinators are giving of their time. You honor their contribution, and will make every attempt to participate in this course.</p>
                     <hr>
                     <p>Other registrants:</p>
-                    <ul data-bind="foreach: registrations().sort(byRegistrationCreatedAt)">
+                    <ul data-bind="foreach: registrations().filter(hasFrom).sort(byRegistrationCreatedAt)">
                         <li><span data-bind="text: name"></span> (<span data-bind="text: office"></span>)
                             <ul data-bind="foreach: notes">
                                 <li data-bind="text: $data"></li>
