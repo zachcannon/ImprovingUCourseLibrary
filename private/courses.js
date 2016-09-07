@@ -101,8 +101,9 @@ function CoursesViewModel() {
             var catalog = viewModel.catalog();
             var user = viewModel.user();
             return viewModel.accessRequests().find(function (r) {
-                return r.request.from.publicKey === user.publicKey &&
-                    r.request.catalog.office === catalog.office;
+                return r.request.from && user &&
+                    (r.request.from.publicKey === user.publicKey) &&
+                    (r.request.catalog.office === catalog.office);
             })
         })
 
