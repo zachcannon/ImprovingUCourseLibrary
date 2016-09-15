@@ -1,6 +1,12 @@
 body {
     padding-top: 50px;
 }
+.cloaked {
+    display: none;
+}
+body.loaded .cloaked {
+    display: block;
+}
 .call-to-action {
     padding: 40px 15px;
     text-align: center;
