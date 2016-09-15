@@ -10,6 +10,7 @@ function CourseDetailViewModel(course, user) {
         j.fact(createCourseInstructor(user, course, value, prior));
     }, '');
     this.abstractFacts = ko.observableArray();
+    this.closed = ko.observableArray();
 
     this.remoteCourses = ko.observableArray([]);
     this.isRemote = ko.computed({
@@ -48,6 +49,18 @@ function CourseDetailViewModel(course, user) {
         }
     };
 
+    this.isClosed = ko.computed(function () {
+        return this.closed().length > 0;
+    }, this);
+
+    this.closeCourse = function () {
+        j.fact(createCourseClose(user, course));
+    }
+
+    this.reopenCourse = function () {
+        j.fact(createCourseReopen(user, this.closed()));
+    }
+
     initializeWatches(this);
 
     function initializeWatches(viewModel) {
@@ -55,7 +68,8 @@ function CourseDetailViewModel(course, user) {
             j.watch(course, [titlesForCourse], addTo(viewModel.titleFacts), removeFrom(viewModel.titleFacts)),
             j.watch(course, [instructorsForCourse], addTo(viewModel.instructorFacts), removeFrom(viewModel.instructorFacts)),
             j.watch(course, [abstractsForCourse], addTo(viewModel.abstractFacts), removeFrom(viewModel.abstractFacts)),
-            j.watch(course, [remoteCoursesForCourse], addTo(viewModel.remoteCourses), removeFrom(viewModel.remoteCourses))
+            j.watch(course, [remoteCoursesForCourse], addTo(viewModel.remoteCourses), removeFrom(viewModel.remoteCourses)),
+            j.watch(course, [courseIsClosed], addTo(viewModel.closed), removeFrom(viewModel.closed))
         ];
         viewModel.dispose = dispose(watches);
     }
