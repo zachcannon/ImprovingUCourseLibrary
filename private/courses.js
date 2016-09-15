@@ -93,7 +93,7 @@ function CoursesViewModel() {
             var catalog = viewModel.catalog();
             var user = viewModel.user();
             return catalog && user &&
-                viewModel.access().find(function (a) {
+                viewModel.access().some(function (a) {
                     return a.write.office === catalog.office &&
                         a.to.publicKey === user.publicKey;
                 });
@@ -101,7 +101,7 @@ function CoursesViewModel() {
         viewModel.hasRequest = ko.computed(function () {
             var catalog = viewModel.catalog();
             var user = viewModel.user();
-            return viewModel.accessRequests().find(function (r) {
+            return viewModel.accessRequests().some(function (r) {
                 return r.request.from && user &&
                     (r.request.from.publicKey === user.publicKey) &&
                     (r.request.catalog.office === catalog.office);

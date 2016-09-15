@@ -58,8 +58,9 @@ function CourseViewModel(course, office, user, details, canWrite, registration) 
     }, this);
 
     function myRegistration(allRegistrations) {
-        return allRegistrations.find(function (r) {
+        var mine = allRegistrations.filter(function (r) {
             return r.from && user() && (r.from.publicKey === user().publicKey);
         });
+        return (mine.length > 0) ? mine[0] : null;
     }
 }
