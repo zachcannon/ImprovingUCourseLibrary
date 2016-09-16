@@ -7,7 +7,7 @@ function setOffice() {
 function OfficeViewModel() {
     var viewModel = this;
     
-    this.offices = ['Dallas', 'Columbus', 'Houston', 'Minneapolis', 'College Station', 'Calgary'];
+    this.offices = ['Calgary', 'College Station', 'Columbus', 'Dallas', 'Houston', 'Minneapolis'];
     this.office = ko.observable(getOffice());
 
     window.addEventListener('hashchange', hashChanged, false);
