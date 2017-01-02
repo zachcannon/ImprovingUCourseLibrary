@@ -19,7 +19,7 @@ function IdeasViewModel() {
     this.semester = ko.computed(function () {
         return {
             type: "ImprovingU.Semester",
-            name: "Fall 2016",
+            name: "Spring 2017",
             office: {
                 type: "ImprovingU.Office",
                 name: this.office(),
@@ -32,7 +32,7 @@ function IdeasViewModel() {
     }, this);
     this.onlineSemester = {
         type: "ImprovingU.OnlineSemester",
-        name: "Fall 2016",
+        name: "Spring 2017",
         company: {
             type: "ImprovingU.Company",
             name: "Improving"
