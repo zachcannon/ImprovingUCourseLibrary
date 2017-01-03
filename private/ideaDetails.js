@@ -1,6 +1,6 @@
 var converter = new showdown.Converter();
 
-function IdeaDetails(idea, onlineSemester) {
+function IdeaDetails(idea, onlineSemester, user) {
     this.titleFacts = ko.observableArray();
     this.title = mutableValue(this.titleFacts, partial(createIdeaTitle, idea), idea.title);
     this.abstractValues = ko.observableArray();
@@ -19,7 +19,7 @@ function IdeaDetails(idea, onlineSemester) {
                 : values[0].value;
         },
         write: function (value) {
-            createAbstract(idea, viewModel.user(), value, this.abstractValues());
+            createAbstract(idea, user, value, this.abstractValues());
         },
         owner: this
     });

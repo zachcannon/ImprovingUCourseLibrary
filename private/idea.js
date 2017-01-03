@@ -63,7 +63,7 @@ function IdeaViewModel(user, idea, onlineSemester, details) {
     this.showDetails = function () {
         if (details())
             details().dispose();
-        details(new IdeaDetails(idea, onlineSemester));
+        details(new IdeaDetails(idea, onlineSemester, user));
         $("#idea-details").modal();
     };
     this.dispose = dispose(watches);
