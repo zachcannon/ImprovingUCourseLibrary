@@ -72,7 +72,7 @@
     <div class="row" data-bind="visible: canWrite()">
         <input type="button" class="btn" data-bind="click: newCourse" value="Create a new course">
     </div>
-    <div class="row" data-bind="visible: !canWrite() && !hasRequest()">
+    <div class="row" data-bind="visible: !canWrite() && !hasRequest() && ready()">
         <a class="link" data-bind="click: requestAccess">Request administrator access</a>
     </div>
     <div class="row" data-bind="visible: !canWrite() && hasRequest()">
