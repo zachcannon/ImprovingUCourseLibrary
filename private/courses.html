@@ -54,11 +54,10 @@
     <div data-bind="foreach: courses().filter(function (c) { return c.visible(); }).sort(byCourseTitle)">
         <div class="row row-course">
             <div class="col-md-1">
-                <input type="button" class="btn" value="Register" data-bind="click: register, visible: !isRegistered() && !isClosed()">
-                <input type="button" class="btn btn-primary" value="Registered" data-bind="click: viewRegistration, visible: isRegistered">
-                <input type="button" class="btn btn-danger" value="Closed" data-bind="click: register, visible: !isRegistered() && isClosed()">
+                <input type="button" class="btn" value="Details" data-bind="click: details">
+                <input type="button" class="btn" value="Edit" data-bind="click: edit, visible: $parent.canWrite()">
             </div>
-            <div class="col-md-11" data-bind="click: showDetails">
+            <div class="col-md-11">
                 <p>
                     <span class="course-title" data-bind="text: title"></span>
                     <span class="course-title" data-bind="visible: isRemote">&nbsp;(Remote)</span>

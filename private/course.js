@@ -26,7 +26,7 @@ function CourseViewModel(course, office, user, details, canWrite, registration) 
         return inThisOffice || this.remoteFact();
     }, this);
 
-    this.showDetails = function () {
+    this.edit = function () {
         if (details()) {
             details().dispose();
             details(null);
@@ -40,7 +40,7 @@ function CourseViewModel(course, office, user, details, canWrite, registration) 
     this.isRegistered = ko.computed(function () {
         return myRegistration(this.registrations());
     }, this);
-    this.register = function () {
+    this.details = function () {
         if (user() && (canWrite() || !this.isClosed())) {
             registration(new CourseRegistrationViewModel(createCourseRegistration(user(), course, office())));
             $('#course-registration-dialog').modal();
