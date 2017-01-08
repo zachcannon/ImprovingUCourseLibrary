@@ -123,6 +123,9 @@
                     <div data-bind="html: abstract"></div>
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-primary" data-bind="click: register, visible: !isRegistered() && !isClosed()">Register</button>
+                    <button class="btn" data-bind="click: viewRegistration, visible: isRegistered()">Modify Registration</button>
+                    <button class="btn btn-danger" data-bind="visible: !isRegistered() && isClosed()">Closed</button>
                     <button class="btn" data-dismiss="modal">Close</button>
                 </div>
             </div>

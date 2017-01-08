@@ -3,7 +3,6 @@ function CourseViewModel(course, office, user, courseEdit, courseDetails, canWri
     this.instructorFact = ko.observable();
     this.remoteFact = ko.observable();
     this.registrations = ko.observableArray();
-    this.closed = ko.observableArray();
 
     this.title = ko.computed(function () {
         var t = this.titleFact();
@@ -34,30 +33,20 @@ function CourseViewModel(course, office, user, courseEdit, courseDetails, canWri
         }
     };
     this.isRegistered = ko.computed(function () {
-        return myRegistration(this.registrations());
+        return myRegistrationFrom(this.registrations());
     }, this);
     this.details = function () {
-        courseDetails(new CourseDetailsViewModel(course));
+        courseDetails(new CourseDetailsViewModel(course, this.title, user, office, myRegistration(this), canWrite, registration));
         $('#course-details-dialog').modal();
     }
-    this.register = function () {
-        if (user() && (canWrite() || !this.isClosed())) {
-            registration(new CourseRegistrationViewModel(createCourseRegistration(user(), course, office())));
-            $('#course-registration-dialog').modal();
-        }
-    };
-    this.viewRegistration = function () {
-        if (user()) {
-            registration(new CourseRegistrationViewModel(myRegistration(this.registrations())));
-            $('#course-registered-dialog').modal();
-        }
-    };
 
-    this.isClosed = ko.computed(function () {
-        return this.closed().length > 0;
-    }, this);
+    function myRegistration(viewModel) {
+        return function () {
+            return myRegistrationFrom(viewModel.registrations());
+        }
+    }
 
-    function myRegistration(allRegistrations) {
+    function myRegistrationFrom(allRegistrations) {
         var mine = allRegistrations.filter(function (r) {
             return r.from && user() && (r.from.publicKey === user().publicKey);
         });
