@@ -159,10 +159,12 @@ input[type=text] {
 
 .row-course {
     padding: 4px 0px;
-    cursor: pointer;
 }
 .row-course:nth-child(even) {
     background-color: #eee;
+}
+.course-edit-button {
+    margin-top: 4px;
 }
 .course-title {
     font-size: 18pt;
