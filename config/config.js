@@ -11,5 +11,5 @@ module.exports = {
         //identityMetadata: 'Please set AD_IDENTITY_METADATA environment variable'
     },
     mongoDB: 'mongodb://localhost:27017/improvingu',
-    secure: false
+    secure: true
 };
