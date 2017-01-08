@@ -1,7 +1,6 @@
-function CourseViewModel(course, office, user, details, canWrite, registration) {
+function CourseViewModel(course, office, user, courseEdit, courseDetails, canWrite, registration) {
     this.titleFact = ko.observable();
     this.instructorFact = ko.observable();
-    this.abstractFact = ko.observable();
     this.remoteFact = ko.observable();
     this.registrations = ko.observableArray();
     this.closed = ko.observableArray();
@@ -14,9 +13,6 @@ function CourseViewModel(course, office, user, details, canWrite, registration) 
     this.instructor = ko.computed(function () {
         return this.instructorFact() ? this.instructorFact().value : "";
     }, this);
-    this.abstract = ko.computed(function () {
-        return this.abstractFact() ? converter.makeHtml(this.abstractFact().value) : "";
-    }, this);
     this.isRemote = ko.computed(function () {
         var inThisOffice = course._in.office === office();
         return !inThisOffice && this.remoteFact();
@@ -27,20 +23,24 @@ function CourseViewModel(course, office, user, details, canWrite, registration) 
     }, this);
 
     this.edit = function () {
-        if (details()) {
-            details().dispose();
-            details(null);
+        if (courseEdit()) {
+            courseEdit().dispose();
+            courseEdit(null);
         }
         var inThisOffice = course._in.office === office();
         if (inThisOffice && canWrite()) {
-            details(new CourseDetailViewModel(course, user()));
-            $("#course-detail-dialog").modal();
+            courseEdit(new CourseEditViewModel(course, user()));
+            $("#course-edit-dialog").modal();
         }
     };
     this.isRegistered = ko.computed(function () {
         return myRegistration(this.registrations());
     }, this);
     this.details = function () {
+        courseDetails(new CourseDetailsViewModel(course));
+        $('#course-details-dialog').modal();
+    }
+    this.register = function () {
         if (user() && (canWrite() || !this.isClosed())) {
             registration(new CourseRegistrationViewModel(createCourseRegistration(user(), course, office())));
             $('#course-registration-dialog').modal();

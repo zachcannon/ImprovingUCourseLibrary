@@ -2,7 +2,8 @@ function CoursesViewModel() {
     UserViewModel.call(this, null);
 
     this.courses = ko.observableArray();
-    this.courseDetail = ko.observable();
+    this.courseEdit = ko.observable();
+    this.courseDetails = ko.observable();
     this.registration = ko.observable();
     this.accessRequests = ko.observableArray();
 
@@ -14,15 +15,15 @@ function CoursesViewModel() {
         }
     };
     this.newCourse = function () {
-        if (this.courseDetail())
-            this.courseDetail().dispose();
+        if (this.courseEdit())
+            this.courseEdit().dispose();
 
         var user = this.user();
         var catalog = this.catalog();
         if (user && catalog) {
             var course = createCourse(user, catalog);
-            this.courseDetail(new CourseDetailViewModel(course, user));
-            $("#course-detail-dialog").modal();
+            this.courseEdit(new CourseEditViewModel(course, user));
+            $("#course-edit-dialog").modal();
         }
     };
 
@@ -53,11 +54,10 @@ function CoursesViewModel() {
 
         function watchSemester() {
             var coursesWatch = j.watch(semester, [coursesInSemester], addTo(viewModel.courses, function (course) {
-                return new CourseViewModel(course, viewModel.office, viewModel.user, viewModel.courseDetail, viewModel.canWrite, viewModel.registration);
+                return new CourseViewModel(course, viewModel.office, viewModel.user, viewModel.courseEdit, viewModel.courseDetails, viewModel.canWrite, viewModel.registration);
             }), removeFrom(viewModel.courses));
             coursesWatch.watch([titlesForCourse], setChildValue('titleFact'));
             coursesWatch.watch([instructorsForCourse], setChildValue('instructorFact'));
-            coursesWatch.watch([abstractsForCourse], setChildValue('abstractFact'));
             coursesWatch.watch([remoteCoursesForCourse], setChildValue('remoteFact'));
             coursesWatch.watch([registrationsForCourse], addToChild('registrations'), removeFromChild('registrations'));
             coursesWatch.watch([courseIsClosed], addToChild('closed'), removeFromChild('closed'));

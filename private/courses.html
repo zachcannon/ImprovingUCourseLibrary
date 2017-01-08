@@ -63,7 +63,6 @@
                     <span class="course-title" data-bind="visible: isRemote">&nbsp;(Remote)</span>
                 </p>
                 <div class="course-instructor" data-bind="text: instructor"></div>
-                <div data-bind="html: abstract"></div>
             </div>
         </div>
     </div>
@@ -108,6 +107,23 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="course-details-dialog" tabindex="-1" role="dialog" aria-labelledby="course-details-dialog-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" data-bind="with: courseDetails">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="course-details-dialog-title"><span data-bind="text: title"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <div data-bind="html: abstract"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -177,32 +193,32 @@
         </div>
     </div>
 
-    <div class="modal fade" id="course-detail-dialog" tabindex="-1" role="dialog" aria-labelledby="course-detail-title">
+    <div class="modal fade" id="course-edit-dialog" tabindex="-1" role="dialog" aria-labelledby="course-edit-title">
         <div class="modal-dialog" role="document">
-            <div class="modal-content" data-bind="with: courseDetail">
+            <div class="modal-content" data-bind="with: courseEdit">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="course-detail-title">Course Details</h4>
+                    <h4 class="modal-title" id="course-edit-title">Course Details</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-2">
-                            <label for="course-detail-title-edit">Title:</label>
+                            <label for="course-edit-title-edit">Title:</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" name="course-detail-title-edit" id="course-detail-title-edit" data-bind="value: title">
+                            <input type="text" name="course-edit-title-edit" id="course-edit-title-edit" data-bind="value: title">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <label for="course-detail-instructor-edit">Instructor:</label>
+                            <label for="course-edit-instructor-edit">Instructor:</label>
                         </div>
                         <div class="col-md-10">
-                            <input type="text" name="course-detail-instructor-edit" id="course-detail-instructor-edit" data-bind="value: instructor">
+                            <input type="text" name="course-edit-instructor-edit" id="course-edit-instructor-edit" data-bind="value: instructor">
                         </div>
                     </div>
                     <form>
-                        <textarea class="form-control course-detail-abstract-edit" placeholder="Abstract" data-bind="value: editAbstract" rows="10"></textarea>
+                        <textarea class="form-control course-edit-abstract-edit" placeholder="Abstract" data-bind="value: editAbstract" rows="10"></textarea>
                     </form>
                     <p class="instructional-text">Enter abstract in <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown</a>. In particular, remember to leave a blank line before and after bulleted lists. I always forget that.</p>
                 </div>
@@ -234,6 +250,7 @@
 <script src="/public/offices.js"></script>
 <script src="/private/user.js"></script>
 <script src="/private/closeCourse.js"></script>
+<script src="/private/courseEdit.js"></script>
 <script src="/private/courseDetails.js"></script>
 <script src="/private/course.js"></script>
 <script src="/private/courseRegistration.js"></script>
