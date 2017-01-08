@@ -165,6 +165,7 @@ input[type=text] {
 }
 .course-edit-button {
     margin-top: 4px;
+    width: 100%;
 }
 .course-title {
     font-size: 18pt;

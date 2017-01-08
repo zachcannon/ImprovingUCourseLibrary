@@ -21,16 +21,17 @@ function CourseViewModel(course, office, user, courseEdit, courseDetails, canWri
         return inThisOffice || this.remoteFact();
     }, this);
 
+    this.canEdit = ko.computed(function () {
+        var inThisOffice = course._in.office === office();
+        return inThisOffice && canWrite();
+    }, this);
     this.edit = function () {
         if (courseEdit()) {
             courseEdit().dispose();
             courseEdit(null);
         }
-        var inThisOffice = course._in.office === office();
-        if (inThisOffice && canWrite()) {
-            courseEdit(new CourseEditViewModel(course, user()));
-            $("#course-edit-dialog").modal();
-        }
+        courseEdit(new CourseEditViewModel(course, user()));
+        $("#course-edit-dialog").modal();
     };
     this.isRegistered = ko.computed(function () {
         return myRegistrationFrom(this.registrations());
