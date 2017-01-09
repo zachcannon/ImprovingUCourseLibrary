@@ -136,6 +136,16 @@ function createAccessRequestApproved(user, accessRequest) {
     };
 }
 
+function createCatalogAccess(user, coordinator, catalog) {
+    return {
+        type: 'ImprovingU.Catalog.Access',
+        from: user,
+        to: coordinator,
+        write: catalog,
+        createdAt: new Date()
+    };
+}
+
 function createCourse(user, catalog) {
     return {
         type: "ImprovingU.Course",
@@ -400,6 +410,24 @@ function accessInSemester(s) {
             _in: s
         }
     };
+}
+
+function accessInCompany(c) {
+    return {
+        type: 'ImprovingU.Catalog.Access',
+        write: {
+            type: "ImprovingU.Catalog",
+            _in: {
+                type: "ImprovingU.Semester",
+                _in: c
+            }
+        }
+    };
+}
+
+function userForAccess(a) {
+    a.has('to');
+    return a.to;
 }
 
 function userForFact(r) {

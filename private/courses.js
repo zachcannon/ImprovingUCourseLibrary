@@ -15,8 +15,10 @@ function CoursesViewModel() {
         }
     };
     this.newCourse = function () {
-        if (this.courseEdit())
+        if (this.courseEdit()) {
             this.courseEdit().dispose();
+            this.courseEdit(null);
+        }
 
         var user = this.user();
         var catalog = this.catalog();
@@ -45,6 +47,7 @@ function CoursesViewModel() {
 
     initializeSemester(this);
     initializeAccess(this);
+    initializeAccessControl(this);
 
     function initializeSemester(viewModel) {
         viewModel.catalog = ko.computed(function () {
@@ -108,6 +111,22 @@ function CoursesViewModel() {
         })
 
         j.watch(semester, [accessInSemester], addTo(viewModel.access), removeFrom(viewModel.access));
+    }
+
+    function initializeAccessControl(viewModel) {
+        viewModel.accessControl = ko.observable();
+
+        viewModel.showAccessControl = function () {
+            if (viewModel.accessControl()) {
+                viewModel.accessControl().dispose();
+                viewModel.accessControl(null);
+            }
+
+            if (viewModel.canAdminister()) {
+                viewModel.accessControl(new AccessControlViewModel(company, viewModel.catalog, viewModel.accessRequests, viewModel.access, viewModel.user));
+                $('#access-dialog').modal();
+            }
+        }
     }
 }
 

@@ -76,20 +76,8 @@
     <div class="row" data-bind="visible: !canWrite() && hasRequest()">
         <p>Access request has been sent. Pending approval.</p>
     </div>
-    <div data-bind="visible: canAdminister()">
-        <div data-bind="foreach: accessRequests().filter(function (c) { return c.visible(); })">
-            <div class="row">
-                <div class="col-md-1">
-                    <input type="button" class="btn" value="Approve" data-bind="click: approve">
-                </div>
-                <div class="col-md-1">
-                    <input type="button" class="btn" value="Decline" data-bind="click: decline">
-                </div>
-                <div class="col-md-10">
-                    <p data-bind="text: name"></p>
-                </div>
-            </div>
-        </div>
+    <div class="row" data-bind="visible: canAdminister()">
+        <a class="link" data-bind="click: showAccessControl">Access control</a>
     </div>
 
     <!-- Modal -->
@@ -238,6 +226,46 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="access-dialog" tabindex="-1" role="dialog" aria-labelledby="access-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" data-bind="with: accessControl">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="access-title">Access Control</h4>
+                </div>
+                <div class="modal-body">
+                    <h2>Access Requests</h2>
+                    <div data-bind="foreach: accessRequests().filter(function (c) { return c.visible(); })">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input type="button" class="btn" value="Approve" data-bind="click: approve">
+                            </div>
+                            <div class="col-md-2">
+                                <input type="button" class="btn" value="Decline" data-bind="click: decline">
+                            </div>
+                            <div class="col-md-8">
+                                <p data-bind="text: name"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>Prior Coordinators</h2>
+                    <div data-bind="foreach: coordinators">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input type="button" class="btn" value="Grant" data-bind="visible: !hasAccess(), click: grant">
+                            </div>
+                            <div class="col-md-10">
+                                <p data-bind="text: name"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
@@ -258,6 +286,8 @@
 <script src="/private/course.js"></script>
 <script src="/private/courseRegistration.js"></script>
 <script src="/private/courses.js"></script>
+<script src="/private/coordinator.js"></script>
+<script src="/private/accessControl.js"></script>
 <script>
     ko.applyBindings(new CoursesViewModel());
 </script>
