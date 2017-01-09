@@ -40,7 +40,7 @@ function CoursesViewModel() {
     };
     var semester = {
         type: "ImprovingU.Semester",
-        name: "Fall 2016",
+        name: "Spring 2017",
         _in: company,
         from: owner
     };
