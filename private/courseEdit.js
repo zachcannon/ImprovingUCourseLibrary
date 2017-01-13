@@ -69,7 +69,8 @@ function CourseEditViewModel(course, user) {
             j.watch(course, [instructorsForCourse], addTo(viewModel.instructorFacts), removeFrom(viewModel.instructorFacts)),
             j.watch(course, [abstractsForCourse], addTo(viewModel.abstractFacts), removeFrom(viewModel.abstractFacts)),
             j.watch(course, [remoteCoursesForCourse], addTo(viewModel.remoteCourses), removeFrom(viewModel.remoteCourses)),
-            j.watch(course, [courseIsClosed], addTo(viewModel.closed), removeFrom(viewModel.closed))
+            j.watch(course, [courseIsClosed], addTo(viewModel.closed), removeFrom(viewModel.closed)),
+            initializeSessions(viewModel, course, user)
         ];
         viewModel.dispose = dispose(watches);
     }

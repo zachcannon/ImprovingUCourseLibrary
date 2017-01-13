@@ -109,6 +109,29 @@
                 </div>
                 <div class="modal-body">
                     <div data-bind="html: abstract"></div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="course-edit-session-add">Sessions:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">Date</div>
+                        <div class="col-md-2">Time</div>
+                        <div class="col-md-4">Place</div>
+                    </div>
+                    <div data-bind="foreach: sessions.items().sort(byDate)">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <span data-bind="text: date"></span>
+                            </div>
+                            <div class="col-md-2">
+                                <span data-bind="text: time"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <span data-bind="text: place"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" data-bind="click: register, visible: !isRegistered() && !isClosed()">Register</button>
@@ -212,6 +235,46 @@
                         <textarea class="form-control course-edit-abstract-edit" placeholder="Abstract" data-bind="value: editAbstract" rows="10"></textarea>
                     </form>
                     <p class="instructional-text">Enter abstract in <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown</a>. In particular, remember to leave a blank line before and after bulleted lists. I always forget that.</p>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="course-edit-session-add">Sessions:</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">Date</div>
+                        <div class="col-md-2">Time</div>
+                        <div class="col-md-4">Place</div>
+                    </div>
+                    <div data-bind="foreach: sessions.items().sort(byDate)">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span data-bind="text: date"></span>
+                            </div>
+                            <div class="col-md-2">
+                                <span data-bind="text: time"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <span data-bind="text: place"></span>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn" data-bind="click: remove">-</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" data-bind="with: newSession">
+                        <div class="col-md-4">
+                            <input type="date" data-bind="value: date">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" data-bind="value: time">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" data-bind="value: place">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn" data-bind="click: add">+</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="pull-left">
@@ -275,6 +338,7 @@
 <script src="/bower_components/knockout/dist/knockout.js"></script>
 <script src="/bower_components/showdown/dist/showdown.js"></script>
 <script src="/bower_components/js-cookie/src/js.cookie.js"></script>
+<script src="/bower_components/jinaga.app/jinaga.knockout.js"></script>
 <script src="/config.js"></script>
 <script src="/private/knockoutHelpers.js"></script>
 <script src="/private/model.js"></script>
@@ -288,6 +352,7 @@
 <script src="/private/courses.js"></script>
 <script src="/private/coordinator.js"></script>
 <script src="/private/accessControl.js"></script>
+<script src="/private/sessions.js"></script>
 <script>
     ko.applyBindings(new CoursesViewModel());
 </script>

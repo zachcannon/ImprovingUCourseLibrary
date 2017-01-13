@@ -1,5 +1,6 @@
 var j = new Jinaga();
 j.sync(new JinagaDistributor(distributorUrl || "ws://localhost:8080/"));
+var jko = new JinagaKnockout(j, ko);
 
 function createUserName(user, value, prior) {
     return j.fact({

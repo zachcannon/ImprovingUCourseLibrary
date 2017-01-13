@@ -1,0 +1,21 @@
+{
+  "name": "jinaga.app",
+  "homepage": "https://github.com/michaellperry/jinaga.app.client",
+  "authors": [
+    "Michael L Perry <michael@qedcode.com>"
+  ],
+  "description": "The simplest way to build a collaborative web app",
+  "main": "jinaga.app.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "knockout": "^3.4.0",
+    "jinaga": "^1.8.0"
+  }
+}

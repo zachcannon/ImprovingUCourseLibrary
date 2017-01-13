@@ -36,7 +36,8 @@ function CourseDetailsViewModel(course, title, user, office, myRegistration, can
     function initializeWatches(viewModel) {
         var watches = [
             j.watch(course, [abstractsForCourse], setValue(viewModel.abstractFact)),
-            j.watch(course, [courseIsClosed], addTo(viewModel.closed), removeFrom(viewModel.closed))
+            j.watch(course, [courseIsClosed], addTo(viewModel.closed), removeFrom(viewModel.closed)),
+            initializeSessions(viewModel, course, user)
         ];
         viewModel.dispose = dispose(watches);
     }
