@@ -79,6 +79,9 @@
     <div class="row" data-bind="visible: canAdminister()">
         <a class="link" data-bind="click: showAccessControl">Access control</a>
     </div>
+    <div class="row" data-bind="visible: canAdminister()">
+        <input type="button" data-bind="click: copyForward" value="Copy forward">
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="error-dialog" tabindex="-1" role="dialog" aria-labelledby="error-dialog-title">
@@ -353,6 +356,7 @@
 <script src="/private/coordinator.js"></script>
 <script src="/private/accessControl.js"></script>
 <script src="/private/sessions.js"></script>
+<script src="/private/utilities.js"></script>
 <script>
     ko.applyBindings(new CoursesViewModel());
 </script>
