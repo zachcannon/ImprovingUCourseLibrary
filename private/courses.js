@@ -48,7 +48,6 @@ function CoursesViewModel() {
     initializeSemester(this);
     initializeAccess(this);
     initializeAccessControl(this);
-    initializeUtilities(this);
 
     function initializeSemester(viewModel) {
         viewModel.catalog = ko.computed(function () {
