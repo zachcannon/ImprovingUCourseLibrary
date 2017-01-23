@@ -51,6 +51,11 @@
 
 <div class="container cloaked">
     <h1 data-bind="text: office() + ' - Spring 2016'"></h1>
+    <div class="row">
+        <div class="col-md-12">
+            <p class="alert-danger">This is archived information. View the <a data-bind="attr: { href: '/private/courses.html#' + office() }">current semester</a>.</p>
+        </div>
+    </div>
 
     <div data-bind="foreach: courses().filter(function (c) { return c.visible(); }).sort(byCourseTitle)">
         <div class="row row-course">
