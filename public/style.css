@@ -7,6 +7,27 @@ body {
 body.loaded .cloaked {
     display: block;
 }
+body.error {
+    background-color: #ece0e0;
+}
+body.error .navbar.navbar-inverse {
+    background-color: #AD4040;
+}
+body.error .navbar-inverse .navbar-nav>li>a {
+    color: #ffffff;
+}
+body.error .navbar-inverse .navbar-brand {
+    color: #ffffff;
+}
+body.saving .navbar.navbar-inverse {
+    background-color: #645909;
+}
+body.saving .navbar-inverse .navbar-nav>li>a {
+    color: #ffffff;
+}
+body.saving .navbar-inverse .navbar-brand {
+    color: #ffffff;
+}
 .call-to-action {
     padding: 40px 15px;
     text-align: center;

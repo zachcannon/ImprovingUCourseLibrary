@@ -23,7 +23,7 @@
     <![endif]-->
 </head>
 
-<body data-bind="css: { loaded: user }">
+<body data-bind="css: { loaded: user, error: status() == 'Error', saving: status() == 'Saving...' }">
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
