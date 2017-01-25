@@ -2,7 +2,7 @@ function UserViewModel() {
     OfficeViewModel.call(this, null);
 
     this.error = ko.observable();
-    this.queueCount = ko.observable();
+    this.queueCount = ko.observable(0);
     this.loading = ko.observable(false);
     this.ready = ko.observable(false);
     this.showError = function () {
@@ -45,12 +45,15 @@ function UserViewModel() {
                 viewModel.ready(true);
             }
         });
-        viewModel.whenDone = function(done) {
+        viewModel.save = function(prepare, done, self) {
             if (viewModel.queueCount() === 0) {
-                done();
-            }
-            else {
-                waiting.push(done);
+                prepare.call(self);
+                if (viewModel.queueCount() === 0) {
+                    done.call(self);
+                }
+                else {
+                    waiting.push(done.bind(self));
+                }
             }
         }
 

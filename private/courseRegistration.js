@@ -31,30 +31,39 @@ function CourseRegistrationViewModel(registration, vm) {
     this.registrations = ko.observableArray();
 
     this.agree = function () {
-        j.fact(registration);
-        if (this.noteChanged() && (this.noteFacts.length !== 1 || this.noteFacts()[0].value !== this.noteValue())) {
-            j.fact(createCourseRegistrationNote(registration.user, registration, this.noteValue(), this.noteFacts()));
-        }
-        vm.whenDone(function () {
+        vm.save(function () {
+            j.fact(registration);
+            if (this.noteChanged() && (this.noteFacts.length !== 1 || this.noteFacts()[0].value !== this.noteValue())) {
+                j.fact(createCourseRegistrationNote(registration.user, registration, this.noteValue(), this.noteFacts()));
+            }
+            return true;
+        }, function () {
             $('#course-registration-dialog').modal('toggle');
-        });
+        }, this);
     }
     this.save = function () {
-        if (this.noteChanged() && (this.noteFacts.length !== 1 || this.noteFacts()[0].value !== this.noteValue())) {
-            j.fact(createCourseRegistrationNote(registration.user, registration, this.noteValue(), this.noteFacts()));
-        }
-        vm.whenDone(function () {
+        vm.save(function () {
+            if (this.noteChanged() && (this.noteFacts.length !== 1 || this.noteFacts()[0].value !== this.noteValue())) {
+                j.fact(createCourseRegistrationNote(registration.user, registration, this.noteValue(), this.noteFacts()));
+            }
+            return true;
+        }, function () {
             $('#course-registered-dialog').modal('toggle');
-        });
+        }, this);
     }
     this.cancel = function () {
-        if (window.confirm('Do you want to cancel your registration?')) {
-            j.fact(createCourseRegistrationDeletion(registration.user,
-                registration));
-            vm.whenDone(function () {
-                $('#course-registered-dialog').modal('toggle');
-            });
-        }
+        vm.save(function () {
+            if (window.confirm('Do you want to cancel your registration?')) {
+                j.fact(createCourseRegistrationDeletion(registration.user,
+                    registration));
+                return true;
+            }
+            else {
+                return false;
+            }
+        }, function () {
+            $('#course-registered-dialog').modal('toggle');
+        }, this);
     }
 
     initializeWatches(this);
