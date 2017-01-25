@@ -1,5 +1,21 @@
 var j = new Jinaga();
-j.sync(new JinagaDistributor(distributorUrl || "ws://localhost:8080/"));
+var allFacts = [];
+(function () {
+    var distributor = new JinagaDistributor(distributorUrl || "ws://localhost:8080/");
+    distributor.capture(function (id, fact) {
+        allFacts.push({
+            type: 'fact',
+            id: id,
+            fact: fact
+        });
+    });
+    j.sync(distributor);
+    if (cachedFacts) {
+        cachedFacts.forEach(function (cachedFact) {
+            distributor.channel.messageReceived(cachedFact);
+        });
+    }
+})();
 var jko = new JinagaKnockout(j, ko);
 
 function createUserName(user, value, prior) {

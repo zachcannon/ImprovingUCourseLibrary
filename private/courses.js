@@ -45,30 +45,15 @@ function CoursesViewModel() {
         from: owner
     };
 
-    initializeSemester(this);
+    initializeCatalog(this);
     initializeAccess(this);
     initializeAccessControl(this);
+    initializeSemester(this);
 
-    function initializeSemester(viewModel) {
+    function initializeCatalog(viewModel) {
         viewModel.catalog = ko.computed(function () {
             return getCatalog(viewModel.office());
         });
-        watchSemester();
-
-        function watchSemester() {
-            var coursesWatch = j.watch(semester, [coursesInSemester], addTo(viewModel.courses, function (course) {
-                return new CourseViewModel(course, viewModel.office, viewModel.user, viewModel.courseEdit, viewModel.courseDetails, viewModel.canWrite, viewModel.registration, viewModel);
-            }), removeFrom(viewModel.courses));
-            coursesWatch.watch([titlesForCourse], setChildValue('titleFact'));
-            coursesWatch.watch([instructorsForCourse], setChildValue('instructorFact'));
-            coursesWatch.watch([remoteCoursesForCourse], setChildValue('remoteFact'));
-            coursesWatch.watch([registrationsForCourse], addToChild('registrations'), removeFromChild('registrations'));
-
-            var requestsWatch = j.watch(semester, [accessRequestsInSemester],
-                addTo(viewModel.accessRequests, function (r) { return new AccessRequestViewModel(viewModel.user, viewModel.catalog, r); }),
-                removeFrom(viewModel.accessRequests));
-            requestsWatch.watch([userForFact, namesForUser], setChildValue('nameFact'));
-        }
 
         function getCatalog(office) {
             var catalog = {
@@ -79,6 +64,21 @@ function CoursesViewModel() {
             };
             return catalog;
         }
+    }
+
+    function initializeSemester(viewModel) {
+        var coursesWatch = j.watch(semester, [coursesInSemester], addTo(viewModel.courses, function (course) {
+            return new CourseViewModel(course, viewModel.office, viewModel.user, viewModel.courseEdit, viewModel.courseDetails, viewModel.canWrite, viewModel.registration, viewModel);
+        }), removeFrom(viewModel.courses));
+        coursesWatch.watch([titlesForCourse], setChildValue('titleFact'));
+        coursesWatch.watch([instructorsForCourse], setChildValue('instructorFact'));
+        coursesWatch.watch([remoteCoursesForCourse], setChildValue('remoteFact'));
+        coursesWatch.watch([registrationsForCourse], addToChild('registrations'), removeFromChild('registrations'));
+
+        var requestsWatch = j.watch(semester, [accessRequestsInSemester],
+            addTo(viewModel.accessRequests, function (r) { return new AccessRequestViewModel(viewModel.user, viewModel.catalog, r); }),
+            removeFrom(viewModel.accessRequests));
+        requestsWatch.watch([userForFact, namesForUser], setChildValue('nameFact'));
     }
 
     function initializeAccess(viewModel) {
