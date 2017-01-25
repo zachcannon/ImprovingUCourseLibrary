@@ -27,14 +27,32 @@ function UserViewModel() {
     initializeJinaga(this);
 
     function initializeJinaga(viewModel) {
+        var waiting = [];
+
         j.onError(function (message) { viewModel.error(message); });
-        j.onProgress(function (queueCount) { viewModel.queueCount(queueCount); });
+        j.onProgress(function (queueCount) {
+            viewModel.queueCount(queueCount);
+            if (queueCount === 0) {
+                waiting.forEach(function (done) {
+                    done();
+                });
+                waiting = [];
+            }
+        });
         j.onLoading(function (loading) {
             viewModel.loading(loading);
             if (!loading) {
                 viewModel.ready(true);
             }
         });
+        viewModel.whenDone = function(done) {
+            if (viewModel.queueCount() === 0) {
+                done();
+            }
+            else {
+                waiting.push(done);
+            }
+        }
 
         j.login(function (u, profile) {
             if (!u) {

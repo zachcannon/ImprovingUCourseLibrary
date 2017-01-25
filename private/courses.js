@@ -57,7 +57,7 @@ function CoursesViewModel() {
 
         function watchSemester() {
             var coursesWatch = j.watch(semester, [coursesInSemester], addTo(viewModel.courses, function (course) {
-                return new CourseViewModel(course, viewModel.office, viewModel.user, viewModel.courseEdit, viewModel.courseDetails, viewModel.canWrite, viewModel.registration);
+                return new CourseViewModel(course, viewModel.office, viewModel.user, viewModel.courseEdit, viewModel.courseDetails, viewModel.canWrite, viewModel.registration, viewModel);
             }), removeFrom(viewModel.courses));
             coursesWatch.watch([titlesForCourse], setChildValue('titleFact'));
             coursesWatch.watch([instructorsForCourse], setChildValue('instructorFact'));

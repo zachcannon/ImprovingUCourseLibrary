@@ -1,4 +1,4 @@
-function CourseRegistrationViewModel(registration) {
+function CourseRegistrationViewModel(registration, vm) {
     this.titleFact = ko.observableArray();
     this.title = ko.computed(function () {
         return this.titleFact() ? this.titleFact().value : '';
@@ -35,19 +35,25 @@ function CourseRegistrationViewModel(registration) {
         if (this.noteChanged() && (this.noteFacts.length !== 1 || this.noteFacts()[0].value !== this.noteValue())) {
             j.fact(createCourseRegistrationNote(registration.user, registration, this.noteValue(), this.noteFacts()));
         }
-        $('#course-registration-dialog').modal('toggle');
+        vm.whenDone(function () {
+            $('#course-registration-dialog').modal('toggle');
+        });
     }
     this.save = function () {
         if (this.noteChanged() && (this.noteFacts.length !== 1 || this.noteFacts()[0].value !== this.noteValue())) {
             j.fact(createCourseRegistrationNote(registration.user, registration, this.noteValue(), this.noteFacts()));
         }
-        $('#course-registered-dialog').modal('toggle');
+        vm.whenDone(function () {
+            $('#course-registered-dialog').modal('toggle');
+        });
     }
     this.cancel = function () {
         if (window.confirm('Do you want to cancel your registration?')) {
             j.fact(createCourseRegistrationDeletion(registration.user,
                 registration));
-            $('#course-registered-dialog').modal('toggle');
+            vm.whenDone(function () {
+                $('#course-registered-dialog').modal('toggle');
+            });
         }
     }
 

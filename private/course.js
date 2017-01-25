@@ -1,4 +1,4 @@
-function CourseViewModel(course, office, user, courseEdit, courseDetails, canWrite, registration) {
+function CourseViewModel(course, office, user, courseEdit, courseDetails, canWrite, registration, vm) {
     this.titleFact = ko.observable();
     this.instructorFact = ko.observable();
     this.remoteFact = ko.observable();
@@ -37,7 +37,7 @@ function CourseViewModel(course, office, user, courseEdit, courseDetails, canWri
         return myRegistrationFrom(this.registrations());
     }, this);
     this.details = function () {
-        courseDetails(new CourseDetailsViewModel(course, this.title, user, office, myRegistration(this), canWrite, registration));
+        courseDetails(new CourseDetailsViewModel(course, this.title, user, office, myRegistration(this), canWrite, registration, vm));
         $('#course-details-dialog').modal();
     }
 

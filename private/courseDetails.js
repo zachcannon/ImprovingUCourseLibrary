@@ -1,4 +1,4 @@
-function CourseDetailsViewModel(course, title, user, office, myRegistration, canWrite, registration) {
+function CourseDetailsViewModel(course, title, user, office, myRegistration, canWrite, registration, vm) {
     this.title = title;
 
     this.abstractFact = ko.observable();
@@ -20,13 +20,13 @@ function CourseDetailsViewModel(course, title, user, office, myRegistration, can
 
     this.register = function () {
         if (user() && (canWrite() || !this.isClosed())) {
-            registration(new CourseRegistrationViewModel(createCourseRegistration(user(), course, office())));
+            registration(new CourseRegistrationViewModel(createCourseRegistration(user(), course, office()), vm));
             $('#course-registration-dialog').modal();
         }
     };
     this.viewRegistration = function () {
         if (user()) {
-            registration(new CourseRegistrationViewModel(myRegistration()));
+            registration(new CourseRegistrationViewModel(myRegistration(), vm));
             $('#course-registered-dialog').modal();
         }
     };
