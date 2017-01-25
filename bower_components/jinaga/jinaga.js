@@ -616,6 +616,7 @@ var MemoryProvider = require("./memory");
 var QueryInverter = require("./queryInverter");
 var Debug = require("debug");
 var Collections = require("./collections");
+var FactChannel = require("./factChannel");
 var _isEqual = Collections._isEqual;
 var _some = Collections._some;
 var debug = Debug ? Debug("jinaga") : function () { };
@@ -953,6 +954,14 @@ var Jinaga = (function () {
     Jinaga.prototype.login = function (callback) {
         this.coordinator.login(callback);
     };
+    Jinaga.prototype.preload = function (cachedFacts) {
+        var _this = this;
+        var source = {};
+        var channel = new FactChannel(1, function (message) { }, function (fact) { _this.coordinator.onReceived(fact, null, source); });
+        cachedFacts.forEach(function (cachedFact) {
+            channel.messageReceived(cachedFact);
+        });
+    };
     Jinaga.prototype.where = function (specification, conditions) {
         return new Interface.ConditionalSpecification(specification, conditions, true);
     };
@@ -970,7 +979,7 @@ var Jinaga = (function () {
 })();
 module.exports = Jinaga;
 
-},{"./collections":2,"./interface":4,"./memory":7,"./queryInverter":8,"./queryParser":9,"debug":17}],7:[function(require,module,exports){
+},{"./collections":2,"./factChannel":3,"./interface":4,"./memory":7,"./queryInverter":8,"./queryParser":9,"debug":17}],7:[function(require,module,exports){
 /// <reference path="jinaga.ts" />
 var Interface = require("./interface");
 var Direction = Interface.Direction;
