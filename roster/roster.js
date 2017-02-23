@@ -22,23 +22,96 @@ function get(j, office, res) {
     };
 
     j.query(catalog, [coursesInCatalog, registrationsInCourse], function (registrations) {
-        res.send(JSON.stringify(registrations));
-        res.end();
+        //j.query(catalog, [coursesInCatalog, titlesForCourse], function (titles) {
+            //j.query(catalog, [coursesInCatalog, registrationsInCourse, notesForRegistration], function (notes) {
+                //j.query(catalog, [coursesInCatalog, registrationsInCourse, userForRegistration, namesForUser], function (names) {
+                    res.send(JSON.stringify({
+                        r: registrations,
+                        //t: titles,
+                        //n: notes,
+                        //a: names
+                    }));
+                    res.end();
+                //});
+            //});
+        //});
     });
-}
 
-function coursesInCatalog(c) {
-    return {
-        type: "ImprovingU.Course",
-        _in: c
-    };
-}
+    function coursesInCatalog(c) {
+        return j.where({
+            type: "ImprovingU.Course",
+            _in: c
+        }, [j.not(courseIsDeleted)]);
+    }
 
-function registrationsInCourse(c) {
-    return {
-        type: 'ImprovingU.Course.Registration',
-        course: c
-    };
+    function courseIsDeleted(c) {
+        return {
+            type: "ImprovingU.Course.Delete",
+            course: c
+        };
+    }
+
+    function titlesForCourse(c) {
+        return j.where({
+            type: "ImprovingU.Course.Title",
+            course: c
+        }, [courseTitleIsCurrent]);
+    }
+
+    function courseTitleIsCurrent(n) {
+        return j.not({
+            type: "ImprovingU.Course.Title",
+            prior: n
+        });
+    }
+
+    function registrationsInCourse(c) {
+        return j.where({
+            type: 'ImprovingU.Course.Registration',
+            course: c
+        }, [j.not(registrationIsDeleted)]);
+    }
+
+    function registrationIsDeleted(r) {
+        return {
+            type: 'ImprovingU.Course.Registration.Deletion',
+            courseRegistration: r
+        }
+    }
+
+    function notesForRegistration(r) {
+        return j.where({
+            type: 'ImprovingU.Course.Registration.Note',
+            registration: r
+        }, [noteIsCurrent]);
+    }
+
+    function noteIsCurrent(n) {
+        return j.not({
+            type: "ImprovingU.Course.Registration.Note",
+            prior: n
+        });
+    }
+
+    function userForRegistration(r) {
+        r.has("from");
+        r.from.type = "Jinaga.User";
+        return r.from;
+    }
+
+    function namesForUser(u) {
+        return j.where({
+            type: "ImprovingU.UserName",
+            from: u
+        }, [nameIsCurrent]);
+    }
+
+    function nameIsCurrent(n) {
+        return j.not({
+            type: "ImprovingU.UserName",
+            prior: n
+        });
+    }
 }
 
 exports.get = get;
