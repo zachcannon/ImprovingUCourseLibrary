@@ -77,6 +77,9 @@
     <div class="row" data-bind="visible: !canWrite() && hasRequest()">
         <p>Access request has been sent. Pending approval.</p>
     </div>
+    <div class="row" data-bind="visible: canWrite()">
+        <a class="link" data-bind="attr: { href: '/roster/' + office() + '.csv' }">Download roster</a>
+    </div>
     <div class="row" data-bind="visible: canAdminister()">
         <a class="link" data-bind="click: showAccessControl">Access control</a>
     </div>
