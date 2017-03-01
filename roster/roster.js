@@ -21,7 +21,11 @@ function Roster(j) {
     this.start = function start() {
         this.stop();
 
-        var coursesWatch = j.watch(semester, [coursesInSemester], addCourse, removeCourse);
+        var coursesWatch = j.watch(semester, [coursesInSemester], addTo(courses, Course), removeFrom(courses));
+        coursesWatch.watch([titlesForCourse], setChildValue('title'));
+        var registrationsWatch = coursesWatch.watch([registrationsForCourse], addToChild('registrations', Registration), removeFromChild('registrations'));
+        registrationsWatch.watch([userForRegistration, namesForUser], setChildValue('name'));
+        registrationsWatch.watch([notesForRegistration], setChildValue('note'));
         watches.push(coursesWatch);
     }
 
@@ -33,18 +37,6 @@ function Roster(j) {
 
     this.get = function get(office) {
         return JSON.stringify(courses);
-    }
-
-    function addCourse(course) {
-        courses.push(course);
-        return course;
-    }
-
-    function removeCourse(course) {
-        var index = courses.indexOf(course);
-        if (index >= 0) {
-            courses.splice(index, 1);
-        }
     }
 
     function coursesInSemester(s) {
@@ -78,7 +70,7 @@ function Roster(j) {
         });
     }
 
-    function registrationsInCourse(c) {
+    function registrationsForCourse(c) {
         return j.where({
             type: 'ImprovingU.Course.Registration',
             course: c
@@ -124,6 +116,55 @@ function Roster(j) {
             type: "ImprovingU.UserName",
             prior: n
         });
+    }
+
+    function Course(fact) {
+        this.office = fact._in.office;
+        this.registrations = [];
+    }
+
+    function Registration(fact) {
+
+    }
+
+    function addTo(collection, constructor) {
+        return function (fact) {
+            var object = new constructor(fact);
+            collection.push(object);
+            return object;
+        };
+    }
+
+    function removeFrom(collection) {
+        return function (object) {
+            var index = collection.indexOf(object);
+            if (index >= 0) {
+                collection.splice(index, 1);
+            }
+        };
+    }
+
+    function setChildValue(property) {
+        return function (obj, fact) {
+            obj[property] = fact.value;
+        };
+    }
+
+    function addToChild(property, constructor) {
+        return function (parent, fact) {
+            var object = new constructor(fact);
+            parent[property].push(object);
+            return object;
+        }
+    }
+
+    function removeFromChild(property) {
+        return function (parent, object) {
+            var index = parent[property].indexOf(object);
+            if (index >= 0) {
+                parent[property].splice(index, 1);
+            }
+        }
     }
 }
 
