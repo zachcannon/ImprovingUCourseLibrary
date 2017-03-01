@@ -10,6 +10,7 @@ roster.start();
 
 app.get("/roster/:office.csv", function(req, res, next) {
     var office = req.params.office;
+    res.setHeader('content-type', 'text/csv');
     res.send(roster.get(office));
     res.end();
 });
