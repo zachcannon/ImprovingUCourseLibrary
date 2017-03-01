@@ -1,4 +1,4 @@
-function get(j, office, res) {
+function Roster(j) {
     var owner = {
         type: "Jinaga.User",
         publicKey: "-----BEGIN RSA PUBLIC KEY-----\nMIGJAoGBAIBsKomutukULWw2zoTW2ECMrM8VmD2xvfpl3R4qh1whzuXV+A4EfRKMb/UAjEfw\n5nBmWvcObGyYUgygKrlNeOhf3MnDj706rej6ln9cKGL++ZNsJgJsogaAtmkPihWVGi908fdP\nLQrWTF5be0b/ZP258Zs3CTpcRTpTvhzS5TC1AgMBAAE=\n-----END RSA PUBLIC KEY-----\n"
@@ -14,33 +14,46 @@ function get(j, office, res) {
         _in: company,
         from: owner
     };
-    var catalog = {
-        type: "ImprovingU.Catalog",
-        office: office,
-        _in: semester,
-        from: owner
-    };
 
-    j.query(catalog, [coursesInCatalog, registrationsInCourse], function (registrations) {
-        //j.query(catalog, [coursesInCatalog, titlesForCourse], function (titles) {
-            //j.query(catalog, [coursesInCatalog, registrationsInCourse, notesForRegistration], function (notes) {
-                //j.query(catalog, [coursesInCatalog, registrationsInCourse, userForRegistration, namesForUser], function (names) {
-                    res.send(JSON.stringify({
-                        r: registrations,
-                        //t: titles,
-                        //n: notes,
-                        //a: names
-                    }));
-                    res.end();
-                //});
-            //});
-        //});
-    });
+    var watches = [];
+    var courses = []
+    
+    this.start = function start() {
+        this.stop();
 
-    function coursesInCatalog(c) {
+        var coursesWatch = j.watch(semester, [coursesInSemester], addCourse, removeCourse);
+        watches.push(coursesWatch);
+    }
+
+    this.stop = function stop() {
+        watches.forEach(function (w) { w.stop(); });
+        watches = [];
+        courses = [];
+    }
+
+    this.get = function get(office) {
+        return JSON.stringify(courses);
+    }
+
+    function addCourse(course) {
+        courses.push(course);
+        return course;
+    }
+
+    function removeCourse(course) {
+        var index = courses.indexOf(course);
+        if (index >= 0) {
+            courses.splice(index, 1);
+        }
+    }
+
+    function coursesInSemester(s) {
         return j.where({
             type: "ImprovingU.Course",
-            _in: c
+            _in: {
+                type: "ImprovingU.Catalog",
+                _in: s
+            }
         }, [j.not(courseIsDeleted)]);
     }
 
@@ -114,4 +127,4 @@ function get(j, office, res) {
     }
 }
 
-exports.get = get;
+module.exports = Roster;
