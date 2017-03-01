@@ -36,7 +36,7 @@ function Roster(j) {
     }
 
     this.get = function get(office) {
-        return courses.reduce(
+        return courses.filter(coursesFor(office)).reduce(
             function(text, course) {
                 return course.registrations.reduce(
                     function (text, registration) {
@@ -49,6 +49,12 @@ function Roster(j) {
             },
             'Course,Student,Note');
     };
+
+    function coursesFor(office) {
+        return function (object) {
+            return object.office === office;
+        };
+    }
 
     function coursesInSemester(s) {
         return j.where({
