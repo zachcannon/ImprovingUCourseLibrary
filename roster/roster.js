@@ -36,8 +36,19 @@ function Roster(j) {
     }
 
     this.get = function get(office) {
-        return JSON.stringify(courses);
-    }
+        return courses.reduce(
+            function(text, course) {
+                return course.registrations.reduce(
+                    function (text, registration) {
+                        return text + '\n' +
+                            JSON.stringify(course.title) + ',' +
+                            JSON.stringify(registration.name) + ',' +
+                            JSON.stringify(registration.note);
+                    },
+                    text);
+            },
+            'Course,Student,Note');
+    };
 
     function coursesInSemester(s) {
         return j.where({
@@ -124,7 +135,8 @@ function Roster(j) {
     }
 
     function Registration(fact) {
-
+        this.name = '';
+        this.note = '';
     }
 
     function addTo(collection, constructor) {
