@@ -758,7 +758,7 @@ var JinagaCoordinator = (function () {
                 }
             };
             this.queries.push({ token: this.nextToken, callback: watchFinished });
-            this.network.query(start, full, this.nextToken);
+            this.network.watch(start, full, this.nextToken);
             this.nextToken++;
             this.watchCount++;
             if (this.watchCount === 1) {
