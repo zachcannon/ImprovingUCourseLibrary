@@ -31,7 +31,7 @@ function CalendarViewModel() {
     };
     var semester = {
         type: "ImprovingU.Semester",
-        name: "Summer 2017",
+        name: "Spring 2017",
         _in: company,
         from: owner
     };

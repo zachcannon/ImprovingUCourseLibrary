@@ -43,7 +43,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#" data-bind="text: status, click: showError">Loading...</a></li>
-                <li><a data-bind="attr: { href: '/private/prior/calendar.html#' + office() }">Prior Semester</a></li>
+                <li><a data-bind="attr: { href: '/private/calendar.html#' + office() }">Current Semester</a></li>
                 <li><a href="#" data-bind="text: displayName, click: showError"></a></li>
             </ul>
         </div><!--/.nav-collapse -->
@@ -52,6 +52,11 @@
 
 <div class="container">
     <h1>Calendar for: <span data-bind="text: office"></span></h1>
+    <div class="row">
+        <div class="col-md-12">
+            <p class="alert-danger">This is archived information. View the <a data-bind="attr: { href: '/private/calendar.html#' + office() }">current semester</a>.</p>
+        </div>
+    </div>
     
     <div id="calgary-calendar" data-bind="visible: office() === 'Calgary'" class="fc fc-ltr fc-unthemed"></div>
     <div id="college-station-calendar" data-bind="visible: office() === 'College Station'" class="fc fc-ltr fc-unthemed"></div>
@@ -78,7 +83,7 @@
 <script src="/private/model-courses.js"></script>
 <script src="/public/offices.js"></script>
 <script src="/private/user.js"></script>
-<script src="/private/calendar.js"></script>
+<script src="/private/prior/calendar.js"></script>
 <script>
     ko.applyBindings(new CalendarViewModel());
 </script>
