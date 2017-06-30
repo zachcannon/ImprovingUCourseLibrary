@@ -10,7 +10,7 @@ function Roster(j) {
     };
     var semester = {
         type: "ImprovingU.Semester",
-        name: "Spring 2017",
+        name: "Summer 2017",
         _in: company,
         from: owner
     };

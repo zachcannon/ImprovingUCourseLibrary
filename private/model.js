@@ -1,19 +1,7 @@
 var j = new Jinaga();
-var allFacts = [];
 (function () {
     var distributor = new JinagaDistributor(distributorUrl || "ws://localhost:8080/");
-
-    distributor.capture(function (id, fact) {
-        allFacts.push({
-            type: 'fact',
-            id: id,
-            fact: fact
-        });
-    });
     j.sync(distributor);
-    if (typeof cachedFacts !== 'undefined') {
-        j.preload(cachedFacts);
-    }
 })();
 var jko = new JinagaKnockout(j, ko);
 
