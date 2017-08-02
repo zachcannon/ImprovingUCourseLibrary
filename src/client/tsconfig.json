@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "none",
+        "target": "es5",
+        "noImplicitAny": true,
+        "moduleResolution": "classic",
+        "sourceMap": true,
+        "outDir": "../../dist/public/js",
+        "baseUrl": ".",
+        "paths": {
+            "*": [
+                "../types/*"
+            ]
+        }
+    },
+    "include": [
+        "**/*.ts"
+    ]
+}

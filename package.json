@@ -4,7 +4,14 @@
   "description": "ImprovingU course survey",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "start": "npm run build && npm run watch",
+    "build": "npm run build-ts",
+    "build-ts": "tsc -p src/server && tsc -p src/client",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScriptServer,TypeScriptClient,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts-server\" \"npm run watch-ts-client\" \"npm run serve\"",
+    "watch-ts-server": "tsc -w -p src/server",
+    "watch-ts-client": "tsc -w -p src/client",
+    "serve": "nodemon dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -16,9 +23,23 @@
     "url": "https://github.com/michaellperry/improvingu/issues"
   },
   "homepage": "https://github.com/michaellperry/improvingu#readme",
+  "devDependencies": {
+    "@types/body-parser": "^1.16.4",
+    "@types/connect-mongo": "0.0.33",
+    "@types/express": "^4.0.36",
+    "@types/express-session": "^1.15.1",
+    "@types/knockout": "^3.4.43",
+    "@types/node": "^8.0.17",
+    "@types/passport": "^0.3.3",
+    "@types/passport-google-oauth": "^1.0.35",
+    "concurrently": "^3.5.0",
+    "nodemon": "^1.11.0",
+    "typescript": "^2.4.2"
+  },
   "dependencies": {
     "body-parser": "^1.16.1",
     "chain-middleware": "^1.0.1",
+    "connect-mongo": "^1.3.2",
     "cookie-parser": "^1.4.1",
     "debug": "^2.6.1",
     "express": "^4.14.1",
@@ -27,7 +48,8 @@
     "jinaga.app": "^1.1.2",
     "jsonwebtoken": "^6.2.0",
     "passport": "^0.3.2",
-    "passport-azure-ad": "^1.3.6",
-    "passport-local": "^1.0.0"
+    "passport-azure-ad": "^1.4.8",
+    "passport-local": "^1.0.0",
+    "pug": "^2.0.0-rc.2"
   }
 }

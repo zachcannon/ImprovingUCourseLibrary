@@ -1,0 +1,34 @@
+import engine = require("engine.io-client");
+import Socket = engine.Socket;
+import Interface = require("./interface");
+import NetworkProvider = Interface.NetworkProvider;
+import Query = Interface.Query;
+import Coordinator = Interface.Coordinator;
+import FactChannel = require("./factChannel");
+declare class JinagaDistributor implements NetworkProvider {
+    private endpoint;
+    socket: Socket;
+    coordinator: Coordinator;
+    isOpen: boolean;
+    channel: FactChannel;
+    pending: Array<string>;
+    watches: Array<string>;
+    private maxTimeout;
+    private log;
+    constructor(endpoint: string);
+    init(coordinator: Coordinator): void;
+    capture(log: (id: number, fact: any) => void): void;
+    watch(start: Object, query: Query, token: number): void;
+    stopWatch(start: Object, query: Query): void;
+    query(start: Object, query: Query, token: number): void;
+    fact(fact: Object): void;
+    private createSocket();
+    private send(message);
+    private onOpen();
+    private onError(error);
+    private onMessage(message);
+    private onClose();
+    private retry();
+    private resendMessages();
+}
+export = JinagaDistributor;
