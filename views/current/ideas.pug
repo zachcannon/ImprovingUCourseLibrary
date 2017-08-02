@@ -1,0 +1,171 @@
+extends ../templates/layout
+
+block variables
+    - var title = 'ImprovingU Ideas'
+
+block content
+    h1(data-bind="text: office")
+    p Vote on your favorite course ideas.
+    p.alert-success
+        | I would like to 
+        strong take
+        |  this class.
+    p.alert-danger
+        | I would be willing to 
+        strong teach
+        |  this class.
+    p.alert-warning
+        | I have taken this class and would 
+        strong recommend
+        |  it.
+    p Don't see the course you want? Suggest it.
+    form.form-inline
+        label(for="newIdeaTitle") Title
+        input#newIdeaTitle.form-control(type="text", data-bind="value: newIdeaTitle", placeholder="Underwater basketweaving")
+        input.form-control(type="button", data-bind="click: submitNewIdea", value="Submit a new idea")
+    hr
+    .row
+        .col-md-2
+            .votelabel.take Take
+            .votelabel.teach Teach
+            .votelabel.recommend Rec.
+    div(data-bind="foreach: ideas().filter(function (i) { return i.visible; })")
+        .row.row-idea
+            .col-md-2.votecontainer
+                .votelabel
+                    .upvote.take(data-bind="click: toggleTakeVote, css: { selected: takeVotes().length > 0 }")
+                    .votecount.take(data-bind="text: takeCount")
+                    .downvote.take(data-bind="click: rescindTakeVote")
+                .votelabel
+                    .upvote.teach(data-bind="click: toggleTeachVote, css: { selected: teachVotes().length > 0 }")
+                    .votecount.teach(data-bind="text: teachCount")
+                    .downvote.teach(data-bind="click: rescindTeachVote")
+                .votelabel
+                    .upvote.recommend(data-bind="click: toggleRecommendVote, css: { selected: recommendVotes().length > 0 }")
+                    .votecount.recommend(data-bind="text: recommendCount")
+                    .downvote.recommend(data-bind="click: rescindRecommendVote")
+            .col-md-10.idea(data-bind="click: showDetails")
+                .idea-title(data-bind="text: title")
+                .idea-author(data-bind="text: authorName")
+                div(data-bind="html: abstract")
+    hr
+    form.form-inline
+        input.form-control(type="button", data-bind="click: showSummary", value="Summary")
+    // Modal
+    #error-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="error-dialog-title")
+        .modal-dialog(role="document")
+            .modal-content
+                .modal-header
+                    button.close(type="button", data-dismiss="modal", aria-label="Close")
+                        span(aria-hidden="true") ×
+                    h4#error-dialog-title.modal-title Error
+                .modal-body
+                    form
+                    p(data-bind="text: error")
+                .modal-footer
+                    button.btn.btn-default(type="button", data-dismiss="modal") Close
+    #idea-details.modal.fade(tabindex="-1", role="dialog", aria-labelledby="idea-details-title")
+        .modal-dialog(role="document")
+            .modal-content(data-bind="with: details")
+                .modal-header
+                    button.close(type="button", data-dismiss="modal", aria-label="Close")
+                        span(aria-hidden="true") ×
+                    h4#idea-details-title.modal-title(data-bind="text: title")
+                .modal-body
+                    .row
+                        .col-md-4
+                            label(for="idea-details-title-edit") Title:
+                        .col-md-8
+                            input#idea-details-title-edit(type="text", name="idea-details-title-edit", data-bind="value: title")
+                    form
+                        div(data-bind="html: abstract, visible: !editing()")
+                        textarea.form-control.idea-details-abstract-edit(placeholder="Abstract", data-bind="value: editAbstract, visible: editing")
+                    hr
+                    .row
+                        .col-md-4
+                            p Take:
+                            ul(data-bind="foreach: takeVotes")
+                                li(data-bind="text: value")
+                        .col-md-4
+                            p Teach:
+                            ul(data-bind="foreach: teachVotes")
+                                li(data-bind="text: value")
+                        .col-md-4
+                            p Recommend:
+                            ul(data-bind="foreach: recommendVotes")
+                                li(data-bind="text: value")
+                .modal-footer
+                    .pull-left
+                        input#remote-checkbox(type="checkbox", data-bind="checked: isRemote")
+                        label(for="remote-checkbox")  Offered remotely
+                    button.btn.btn-primary(type="button", data-bind="click: toggleEditAbstract, text: editing() ? 'Done' : 'Edit Abstract'")
+                    button.btn.btn-danger(type="button", data-bind="click: deleteIdea") Delete
+                    button.btn.btn-default(type="button", data-dismiss="modal") Close
+    #remote-idea-details.modal.fade(tabindex="-1", role="dialog", aria-labelledby="remote-idea-details-title")
+        .modal-dialog(role="document")
+            .modal-content(data-bind="with: remoteDetails")
+                .modal-header
+                    button.close(type="button", data-dismiss="modal", aria-label="Close")
+                        span(aria-hidden="true") ×
+                    h4#remote-idea-details-title.modal-title(data-bind="text: title")
+                .modal-body
+                    p
+                    | Offered remotely from 
+                    span(data-bind="text: office")
+                    | .
+                    hr
+                    .row
+                        .col-md-4
+                            p Take:
+                            ul(data-bind="foreach: takeVotes")
+                            li(data-bind="text: value")
+                        .col-md-4
+                            p Teach:
+                            ul(data-bind="foreach: teachVotes")
+                            li(data-bind="text: value")
+                        .col-md-4
+                            p Recommend:
+                            ul(data-bind="foreach: recommendVotes")
+                            li(data-bind="text: value")
+                .modal-footer
+                    button.btn.btn-default(type="button", data-dismiss="modal") Close
+    #summary-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="summary-dialog-title")
+        .modal-dialog(role="document")
+            .modal-content
+                .modal-header
+                    button.close(type="button", data-dismiss="modal", aria-label="Close")
+                        span(aria-hidden="true") ×
+                    h4#summary-dialog-title.modal-title Summary
+                .modal-body
+                    table
+                        thead
+                            tr
+                            th Idea
+                            th Suggested by
+                            th Take
+                            th Teach
+                            th Recommend
+                        tbody(data-bind="foreach: ideas")
+                            tr
+                            td(data-bind="text: title")
+                            td(data-bind="text: authorName")
+                            td(data-bind="text: takeCount")
+                            td(data-bind="text: teachCount")
+                            td(data-bind="text: recommendCount")
+                .modal-footer
+                    button.btn.btn-default(type="button", data-dismiss="modal") Close
+
+block scripts
+    script(src="/js/app/config.js")
+    script(src="/private/knockoutHelpers.js")
+    script(src="/private/model.js")
+    script(src="/private/model-ideas.js")
+    script(src="/private/ideaDetails.js")
+    script(src="/private/remoteIdeaDetails.js")
+    script(src="/private/idea.js")
+    script(src="/private/remoteIdea.js")
+    script(src="/public/offices.js")
+    script(src="/private/user.js")
+    script(src="/private/ideas.js")
+    script.
+        ko.applyBindings(new IdeasViewModel());

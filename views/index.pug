@@ -1,0 +1,25 @@
+extends templates/layout
+
+block variables
+    - var title = 'ImprovingU'
+
+block content
+    .call-to-action
+        h1 ImprovingU
+        p.lead
+            | Show your 
+            span.text-dedication dedication
+            | . Get 
+            span.text-involvement involved
+            | . Share your 
+            span.text-excellence excellence
+            | .
+        img(src="/public/Logo.png", alt="ImprovingU Logo")
+
+block scripts
+    script(src="/public/offices.js")
+    script(src="/js/app/config.js")
+    script(src="/private/model.js")
+    script(src="/private/user.js")
+    script.
+        ko.applyBindings(new UserViewModel());

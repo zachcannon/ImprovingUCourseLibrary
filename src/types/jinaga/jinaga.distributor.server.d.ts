@@ -1,0 +1,32 @@
+import Engine = require("engine.io");
+import Interface = require("./interface");
+import Query = Interface.Query;
+import PersistenceProvider = Interface.PersistenceProvider;
+import Coordinator = Interface.Coordinator;
+declare class JinagaDistributor implements Coordinator {
+    private storage;
+    private keystore;
+    private authenticate;
+    server: Engine;
+    connections: Array<Interface.Spoke>;
+    constructor(storage: PersistenceProvider, keystore: Interface.KeystoreProvider, authenticate: (socket: any, done: (user: Object) => void) => void);
+    static listen(storage: PersistenceProvider, keystore: Interface.KeystoreProvider, port: number, authenticate: (socket: any, done: (user: Object) => void) => void): JinagaDistributor;
+    static attach(storage: PersistenceProvider, keystore: Interface.KeystoreProvider, http: any, authenticate: (req: any, done: (user: Object) => void) => void): JinagaDistributor;
+    private start();
+    connect(spoke: Interface.Spoke): void;
+    onConnection(socket: any): void;
+    onClose(connection: any): void;
+    executeParialQuery(start: Object, query: Query, readerFact: Object, result: (error: string, facts: Array<Object>) => void): void;
+    send(fact: Object, sender: any): void;
+    onReceived(fact: Object, userFact: Object, source: any): void;
+    onDelivered(token: number, destination: any): void;
+    onSaved(fact: Object, source: any): void;
+    onDone(token: number): void;
+    onProgress(queueCount: number): void;
+    onError(err: string): void;
+    onLoggedIn(userFact: Object): void;
+    resendMessages(): void;
+    private authorizeRead(fact, readerFact, done);
+    private authorizeWrite(fact, userFact);
+}
+export = JinagaDistributor;
