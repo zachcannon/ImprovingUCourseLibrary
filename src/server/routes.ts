@@ -24,6 +24,10 @@ export function configureRoutes(app: express.Express, authenticate: express.Hand
         });
     });
     
+    app.get("/ideas", (req, res, next) => {
+        res.render("ideas");
+    });
+    
     app.get("/", (req, res, next) => {
         res.render("index");
     });
