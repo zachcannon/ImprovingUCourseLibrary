@@ -14,12 +14,12 @@ export function configureRoutes(app: express.Express, authenticate: express.Hand
         res.end();
     });
 
-    app.use("/js/ext", express.static(path.join(__dirname, "../bower_components")));
-    app.use("/js/app", express.static(path.join(__dirname, "public/js")));
-    app.use("/src/client", express.static(path.join(__dirname, "../src/client")));
+    app.use("/bower_components", express.static(path.join(__dirname, "../bower_components")));
+    app.use("/public", express.static(path.join(__dirname, "../public")));
+    app.use("/private", express.static(path.join(__dirname, "../private")));
 
-    app.get("/todo", authenticate, (req, res, next) => {
-        res.render("todo", {
+    app.get("/courses", authenticate, (req, res, next) => {
+        res.render("courses", {
             user: req.user.profile.displayName
         });
     });
