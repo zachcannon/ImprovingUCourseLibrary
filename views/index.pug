@@ -17,13 +17,9 @@ block content
         img(src="/public/Logo.png", alt="ImprovingU Logo")
 
 block scripts
-    // Placed at the end of the document so the pages load faster
-    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js")
-    script.
-        window.jQuery || document.write('<script src="/bower_components/jquery/dist/jquery.min.js"><\\/script>')
-    script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
-    script(src="/bower_components/js-cookie/src/js.cookie.js")
-    script(src="/bower_components/knockout/dist/knockout.js")
     script(src="/public/offices.js")
+    script(src="/js/app/config.js")
+    script(src="/private/model.js")
+    script(src="/private/user.js")
     script.
-        ko.applyBindings(new OfficeViewModel());
+        ko.applyBindings(new UserViewModel());

@@ -40,4 +40,13 @@ html(lang="en")
         .container
             block content
 
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js")
+        script.
+            window.jQuery || document.write('<script src="/bower_components/jquery/dist/jquery.min.js"><\\/script>')
+        script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
+        script(src="/bower_components/jinaga/jinaga.js")
+        script(src="/bower_components/knockout/dist/knockout.js")
+        script(src="/bower_components/js-cookie/src/js.cookie.js")
+        script(src="/bower_components/showdown/dist/showdown.js")
+        script(src="/bower_components/jinaga.app/jinaga.knockout.js")
         block scripts
