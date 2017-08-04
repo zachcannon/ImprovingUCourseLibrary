@@ -1,0 +1,36 @@
+extends templates/layout
+
+block variables
+    - var title = 'ImprovingU Course Calendar'
+
+block content
+    h1
+        | Calendar for: 
+        span(data-bind="text: office")
+    #calgary-calendar.fc.fc-ltr.fc-unthemed(data-bind="visible: office() === 'Calgary'")
+    #college-station-calendar.fc.fc-ltr.fc-unthemed(data-bind="visible: office() === 'College Station'")
+    #columbus-calendar.fc.fc-ltr.fc-unthemed(data-bind="visible: office() === 'Columbus'")
+    #dallas-calendar.fc.fc-ltr.fc-unthemed(data-bind="visible: office() === 'Dallas'")
+    #houston-calendar.fc.fc-ltr.fc-unthemed(data-bind="visible: office() === 'Houston'")
+    #minneapolis-calendar.fc.fc-ltr.fc-unthemed(data-bind="visible: office() === 'Minneapolis'")
+
+block scripts
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js")
+    script.
+        window.jQuery || document.write('<script src="/bower_components/jquery/dist/jquery.min.js"><\\/script>')
+    script(src="/bower_components/bootstrap/dist/js/bootstrap.min.js")
+    script(src="/bower_components/jinaga/jinaga.js")
+    script(src="/bower_components/knockout/dist/knockout.js")
+    script(src="/bower_components/showdown/dist/showdown.js")
+    script(src="/bower_components/js-cookie/src/js.cookie.js")
+    script(src="/bower_components/jinaga.app/jinaga.knockout.js")
+    script(src="/bower_components/moment/min/moment.min.js")
+    script(src="/bower_components/fullcalendar/dist/fullcalendar.js")
+    script(src="/config.js")
+    script(src="/private/model.js")
+    script(src="/private/model-courses.js")
+    script(src="/public/offices.js")
+    script(src="/private/user.js")
+    script(src="/private/calendar.js")
+    script.
+        ko.applyBindings(new CalendarViewModel());
