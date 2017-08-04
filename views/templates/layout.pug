@@ -31,7 +31,7 @@ html(lang="en")
                 #navbar.collapse.navbar-collapse
                     ul.nav.navbar-nav(data-bind="foreach: offices")
                         li(data-bind="css: { active: $parent.office() === $data }")
-                            a(data-bind="attr: { href: '/private/ideas.html#' + $data }, text: $data")
+                            a(data-bind="attr: { href: '/courses#' + $data }, text: $data")
                     ul.nav.navbar-nav.navbar-right
                         li
                             a(href="#", data-bind="text: status, click: showError") Saving...

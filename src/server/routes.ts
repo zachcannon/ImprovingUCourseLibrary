@@ -19,13 +19,15 @@ export function configureRoutes(app: express.Express, authenticate: express.Hand
     app.use("/private", express.static(path.join(__dirname, "../private")));
 
     app.get("/courses", authenticate, (req, res, next) => {
-        res.render("courses", {
-            user: req.user.profile.displayName
-        });
+        res.render("courses");
     });
     
-    app.get("/ideas", (req, res, next) => {
+    app.get("/ideas", authenticate, (req, res, next) => {
         res.render("ideas");
+    });
+
+    app.get("/calendar", authenticate, (req, res, next) => {
+        res.render("calendar");
     });
     
     app.get("/", (req, res, next) => {
