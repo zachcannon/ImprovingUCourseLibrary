@@ -10,7 +10,7 @@ export function configureRoutes(app: express.Express, authenticate: express.Hand
                 config.secure;
         res.send(
             "var distributorUrl = \"" + (secure ? "wss" : "ws") + "://" + req.headers.host + "/\";\n" +
-            "var loginUrl = \"" + (secure ? "https" : "http") + "://" + req.headers.host + "/public/login.html\";\n");
+            "var loginUrl = \"" + (secure ? "https" : "http") + "://" + req.headers.host + "/login\";\n");
         res.end();
     });
 

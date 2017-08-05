@@ -29,12 +29,23 @@ html(lang="en")
                         span.icon-bar
                     a.navbar-brand(href="/") ImprovingU
                 #navbar.collapse.navbar-collapse
-                    ul.nav.navbar-nav(data-bind="foreach: offices")
-                        li(data-bind="css: { active: $parent.office() === $data }")
-                            a(data-bind="attr: { href: '/courses#' + $data }, text: $data")
+                    ul.nav.navbar-nav
+                        li.nav-item
+                            a.nav-link(href="/ideas", data-bind="attr: { href: '/ideas#' + office() }") Ideas
+                        li.nav-item
+                            a.nav-link(href="/courses", data-bind="attr: { href: '/courses#' + office() }") Registration
+                        li.nav-item
+                            a.nav-link(href="/calendar", data-bind="attr: { href: '/calendar#' + office() }") Calendar
                     ul.nav.navbar-nav.navbar-right
                         li
                             a(href="#", data-bind="text: status, click: showError") Saving...
+                        li.dropdown
+                            a.dropdown-toggle(href="#", data-toggle="dropdown", role="button")
+                                span(data-bind="text: office() || 'Select office'")
+                                span.caret
+                            ul.dropdown-menu(data-bind="foreach: offices")
+                                li(data-bind="css: { active: $parent.office() === $data }")
+                                    a(data-bind="attr: { href: '/courses#' + $data }, text: $data")
                         li
                             a(href="#", data-bind="text: displayName, click: showError")
         .container
