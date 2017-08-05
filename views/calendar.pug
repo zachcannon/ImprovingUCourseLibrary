@@ -3,6 +3,9 @@ extends templates/layout
 block variables
     - var title = 'ImprovingU Course Calendar'
 
+block styles
+    link(href='/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet')
+
 block content
     h1
         | Calendar for: 
