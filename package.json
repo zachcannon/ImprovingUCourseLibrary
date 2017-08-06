@@ -2,7 +2,7 @@
   "name": "improvingu",
   "version": "1.0.0",
   "description": "ImprovingU course survey",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
     "test": "mocha",
     "start": "npm run build && npm run watch",
