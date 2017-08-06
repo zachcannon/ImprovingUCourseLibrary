@@ -10,7 +10,7 @@ export function configureDistributor(
     server: Server,
     sessionHandler: RequestHandler,
     authorization: Authorization,
-    config: Configuration) {
+    config: Configuration): JinagaDistributor {
 
     var mongo = new MongoProvider(process.env.MONGO_DB || config.mongoDB || "mongodb://localhost:27017/dev");
 
@@ -31,5 +31,5 @@ export function configureDistributor(
         handler(request, response, done);
     }
 
-    JinagaDistributor.attach(mongo, mongo, server, authenticateUser);
+    return JinagaDistributor.attach(mongo, mongo, server, authenticateUser);
 }

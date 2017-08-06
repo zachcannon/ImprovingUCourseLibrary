@@ -4,10 +4,13 @@ import * as bodyParser from "body-parser";
 import * as mongo from "connect-mongo";
 import * as path from "path";
 import * as http from "http";
+import Jinaga = require("jinaga/jinaga");
+import JinagaConnector = require('jinaga/connector');
 import { loadConfiguration } from "./configuration";
 import { configureAuthorization } from "./authorization";
 import { configureDistributor } from "./distributor";
 import { configureRoutes } from "./routes";
+import { configureRoster } from "./roster";
 
 const app = express();
 const server = http.createServer(app);
@@ -32,7 +35,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(sessionHandler);
 
 const authorization = configureAuthorization(app, config);
-configureDistributor(server, sessionHandler, authorization, config);
+const distributor = configureDistributor(server, sessionHandler, authorization, config);
+
+const j = new Jinaga();
+j.sync(new JinagaConnector(distributor));
+
+configureRoster(app, j);
 configureRoutes(app, authorization.authenticate, config);
 
 server.listen(app.get("port"), () => {
