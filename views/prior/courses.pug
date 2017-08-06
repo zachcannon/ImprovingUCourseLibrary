@@ -11,211 +11,65 @@ block content
                 p.alert-danger This is archived information. View the
                     a(data-bind="attr: { href: '/courses#' + office() }") current semester
                     | .
-        div(data-bind="foreach: courses().filter(function (c) { return c.visible(); }).sort(byCourseTitle)")
-            .row.row-course
-                .col-md-1
-                    input.btn(type="button", value="Details", data-bind="click: details, css: { 'btn-primary': isRegistered() }")
-                    input.btn.course-edit-button(type="button", value="Edit", data-bind="click: edit, visible: canEdit()")
-                .col-md-11
-                    p
-                        span.course-title(data-bind="text: title")
-                        span.course-title(data-bind="visible: isRemote")  (Remote)
-                    .course-instructor(data-bind="text: instructor")
-        .row(data-bind="visible: canWrite()")
-            input.btn(type="button", data-bind="click: newCourse", value="Create a new course")
-        .row(data-bind="visible: !canWrite() && !hasRequest() && ready()")
-            a.link(data-bind="click: requestAccess") Request administrator access
-        .row(data-bind="visible: !canWrite() && hasRequest()")
-            p Access request has been sent. Pending approval.
-        .row(data-bind="visible: canWrite()")
-            a.link(data-bind="attr: { href: '/roster/' + office() + '.csv' }") Download roster
-        .row(data-bind="visible: canAdminister()")
-            a.link(data-bind="click: showAccessControl") Access control
-        // Modal
-        #error-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="error-dialog-title")
-            .modal-dialog(role="document")
-                .modal-content
-                    .modal-header
-                        button.close(type="button", data-dismiss="modal", aria-label="Close")
-                            span(aria-hidden="true") ×
-                        h4#error-dialog-title.modal-title Error
-                    .modal-body
-                        form
-                            p(data-bind="text: error")
-                    .modal-footer
-                        button.btn.btn-default(type="button", data-dismiss="modal") Close
-        #course-details-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="course-details-dialog-title")
-            .modal-dialog(role="document")
-                .modal-content(data-bind="with: courseDetails")
-                    .modal-header
-                        button.close(data-dismiss="modal", aria-label="Close")
-                            span(aria-hidden="true") ×
-                        h4#course-details-dialog-title.modal-title
-                            span(data-bind="text: title")
-                    .modal-body
-                        div(data-bind="html: abstract")
-                        .row
-                            .col-md-2
-                                label(for="course-edit-session-add") Sessions:
-                        .row
-                            .col-md-3 Date
-                            .col-md-2 Time
-                            .col-md-4 Place
-                        div(data-bind="foreach: sessions.items().sort(byDate)")
-                            .row
-                                .col-md-3
-                                    span(data-bind="text: date")
-                                .col-md-2
-                                    span(data-bind="text: time")
-                                .col-md-4
-                                    span(data-bind="text: place")
-                    .modal-footer
-                        button.btn.btn-primary(data-bind="click: register, visible: !isRegistered() && !isClosed()") Register
-                        button.btn(data-bind="click: viewRegistration, visible: isRegistered()") Modify Registration
-                        button.btn.btn-danger(data-bind="visible: !isRegistered() && isClosed()") Closed
-                        button.btn(data-dismiss="modal") Close
-        #course-registration-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="course-registration-dialog-title")
-            .modal-dialog(role="document")
-                .modal-content(data-bind="with: registration")
-                    .modal-header
-                        button.close(type="button", data-dismiss="modal", aria-label="Close")
-                            span(aria-hidden="true") ×
-                        h4#course-registration-dialog-title.modal-title
-                            span(data-bind="text: title")
-                            |    Registration
-                    .modal-body
+            div(data-bind="foreach: courses().filter(function (c) { return c.visible(); }).sort(byCourseTitle)")
+                .row.row-course
+                    .col-md-1
+                        input.btn(type="button", value="Details", data-bind="click: details, css: { 'btn-primary': isRegistered() }")
+                    .col-md-11
                         p
-                            | If the course fills up, students will be taken in the order of registration. The office coordinator will manage the waitlist. If the dates and times are not yet determined, they will poll registrants. They will send you an Outlook meeting request with the final dates and times.
-                        p Guests, or notes to the organizer:
-                        form
-                            textarea.form-control.course-registration-notes-edit(placeholder="Guests or notes", data-bind="value: notes", rows="5")
-                        p
-                            | By agreeing, you understand that instructors and coordinators are giving of their time. You honor their contribution, and will make every attempt to participate in this course.
-                        hr
-                        p Other registrants:
-                        ul(data-bind="foreach: registrations().filter(hasFrom).sort(byRegistrationCreatedAt)")
-                            li
-                                span(data-bind="text: name")
-                                |    (
-                                span(data-bind="text: office")
-                                | )
-                                ul(data-bind="foreach: notes")
-                                    li(data-bind="text: $data")
-                    .modal-footer
-                        button.btn.btn-default(type="button", data-bind="click: agree") I Agree
-                        button.btn(type="button", data-dismiss="modal") I Disagree
-        #course-registered-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="course-registered-dialog-title")
-            .modal-dialog(role="document")
-                .modal-content(data-bind="with: registration")
-                    .modal-header
-                        button.close(type="button", data-dismiss="modal", aria-label="Close")
-                            span(aria-hidden="true") ×
-                        h4#course-registered-dialog-title.modal-title
-                            span(data-bind="text: title")
-                            |    Registration
-                    .modal-body
-                        p
-                            | You are registered for this course. The organizer will send you an Outlook meeting request with the final dates and times.
-                        p Guests, or notes to the organizer:
-                        form
-                            textarea.form-control.course-registration-notes-edit(placeholder="Guests or notes", data-bind="value: notes", rows="5")
-                        hr
-                        p Other registrants:
-                        ul(data-bind="foreach: registrations().sort(byRegistrationCreatedAt)")
-                            li
-                                span(data-bind="text: name")
-                                |    (
-                                span(data-bind="text: office")
-                                | )
-                                ul(data-bind="foreach: notes")
-                                    li(data-bind="text: $data")
-                    .modal-footer
-                        button.btn.btn-danger.pull-left(type="button", data-bind="click: cancel") Cancel Registration
-                        button.btn.btn-primary(type="button", data-bind="click: save") Save
-                        button.btn(type="button", data-dismiss="modal") Close
-        #course-edit-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="course-edit-title")
-            .modal-dialog(role="document")
-                .modal-content(data-bind="with: courseEdit")
-                    .modal-header
-                        button.close(type="button", data-dismiss="modal", aria-label="Close")
-                            span(aria-hidden="true") ×
-                        h4#course-edit-title.modal-title Course Details
-                    .modal-body
-                        .row
-                            .col-md-2
-                                label(for="course-edit-title-edit") Title:
-                            .col-md-10
-                                input#course-edit-title-edit(type="text", name="course-edit-title-edit", data-bind="value: title")
-                        .row
-                            .col-md-2
-                                label(for="course-edit-instructor-edit") Instructor:
-                            .col-md-10
-                                input#course-edit-instructor-edit(type="text", name="course-edit-instructor-edit", data-bind="value: instructor")
-                        form
-                            textarea.form-control.course-edit-abstract-edit(placeholder="Abstract", data-bind="value: editAbstract", rows="10")
-                        p.instructional-text
-                            | Enter abstract in 
-                            a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet", target="_blank") Markdown
-                            | . In particular, remember to leave a blank line before and after bulleted lists. I always forget that.
-                        .row
-                            .col-md-2
-                                label(for="course-edit-session-add") Sessions:
-                        .row
-                            .col-md-4 Date
-                            .col-md-2 Time
-                            .col-md-4 Place
-                        div(data-bind="foreach: sessions.items().sort(byDate)")
-                            .row
-                                .col-md-4
-                                    span(data-bind="text: date")
-                                .col-md-2
-                                    span(data-bind="text: time")
-                                .col-md-4
-                                    span(data-bind="text: place")
-                                .col-md-1
-                                    button.btn(type="button", data-bind="click: remove") -
-                        .row(data-bind="with: newSession")
-                            .col-md-4
-                                input(type="date", data-bind="value: date")
-                            .col-md-2
-                                input(type="text", data-bind="value: time")
-                            .col-md-4
-                                input(type="text", data-bind="value: place")
-                            .col-md-1
-                                button.btn(type="button", data-bind="click: add") +
-                    .modal-footer
-                        .pull-left
-                            input#remote-checkbox(type="checkbox", data-bind="checked: isRemote")
-                            label(for="remote-checkbox") Offered remotely
-                        button.btn.btn-danger(type="button", data-bind="click: deleteCourse") Delete
-                        button.btn.btn-primary(type="button", data-bind="click: closeCourse, visible: !isClosed()") Close Registration
-                        button.btn.btn-primary(type="button", data-bind="click: reopenCourse, visible: isClosed") Reopen Registration
-                        button.btn.btn-default(type="button", data-dismiss="modal") OK
-        #access-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="access-title")
-            .modal-dialog(role="document")
-                .modal-content(data-bind="with: accessControl")
-                    .modal-header
-                        button.close(type="button", data-dismiss="modal", aria-label="Close")
-                            span(aria-hidden="true") ×
-                        h4#access-title.modal-title Access Control
-                    .modal-body
-                        h2 Access Requests
-                        div(data-bind="foreach: accessRequests().filter(function (c) { return c.visible(); })")
+                            span.course-title(data-bind="text: title")
+                            span.course-title(data-bind="visible: isRemote")  (Remote)
+                        .course-instructor(data-bind="text: instructor")
+            // Modal
+            #error-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="error-dialog-title")
+                .modal-dialog(role="document")
+                    .modal-content
+                        .modal-header
+                            button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") ×
+                            h4#error-dialog-title.modal-title Error
+                        .modal-body
+                            form
+                                p(data-bind="text: error")
+                        .modal-footer
+                            button.btn.btn-default(type="button", data-dismiss="modal") Close
+            #course-details-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="course-details-dialog-title")
+                .modal-dialog(role="document")
+                    .modal-content(data-bind="with: courseDetails")
+                        .modal-header
+                            button.close(data-dismiss="modal", aria-label="Close")
+                                span(aria-hidden="true") ×
+                            h4#course-details-dialog-title.modal-title
+                                span(data-bind="text: title")
+                        .modal-body
+                            div(data-bind="html: abstract")
                             .row
                                 .col-md-2
-                                    input.btn(type="button", value="Approve", data-bind="click: approve")
-                                .col-md-2
-                                    input.btn(type="button", value="Decline", data-bind="click: decline")
-                                .col-md-8
-                                    p(data-bind="text: name")
-                        h2 Prior Coordinators
-                        div(data-bind="foreach: coordinators")
+                                    label(for="course-edit-session-add") Sessions:
                             .row
-                                .col-md-2
-                                    input.btn(type="button", value="Grant", data-bind="visible: !hasAccess(), click: grant")
-                                .col-md-10
-                                    p(data-bind="text: name")
-                    .modal-footer
+                                .col-md-3 Date
+                                .col-md-2 Time
+                                .col-md-4 Place
+                            div(data-bind="foreach: sessions.items().sort(byDate)")
+                                .row
+                                    .col-md-3
+                                        span(data-bind="text: date")
+                                    .col-md-2
+                                        span(data-bind="text: time")
+                                    .col-md-4
+                                        span(data-bind="text: place")
+                            hr
+                            p Registrants:
+                            ul(data-bind="foreach: registrations().sort(byRegistrationCreatedAt)")
+                                li
+                                    span(data-bind="text: name")
+                                    |    (
+                                    span(data-bind="text: office")
+                                    | )
+                                    ul(data-bind="foreach: notes")
+                                        li(data-bind="text: $data")
+                        .modal-footer
+                            button.btn(data-dismiss="modal") Close
 
 block scripts
     script(src="/js/app/config.js")
