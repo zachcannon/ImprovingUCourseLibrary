@@ -8,7 +8,7 @@ block content
         h1(data-bind="text: office() + ' - Prior Semester'")
         .row
             .col-md-12
-                p.alert-danger This is archived information. View the
+                p.alert-danger This is archived information. View the 
                     a(data-bind="attr: { href: '/courses#' + office() }") current semester
                     | .
             div(data-bind="foreach: courses().filter(function (c) { return c.visible(); }).sort(byCourseTitle)")
@@ -78,14 +78,9 @@ block scripts
     script(src="/private/model-courses.js")
     script(src="/public/offices.js")
     script(src="/private/user.js")
-    script(src="/private/closeCourse.js")
-    script(src="/private/courseEdit.js")
-    script(src="/private/courseDetails.js")
-    script(src="/private/course.js")
-    script(src="/private/courseRegistration.js")
-    script(src="/private/courses.js")
-    script(src="/private/coordinator.js")
-    script(src="/private/accessControl.js")
-    script(src="/private/sessions.js")
+    script(src="/private/prior/sessions.js")
+    script(src="/private/prior/course.js")
+    script(src="/private/prior/courseDetails.js")
+    script(src="/private/prior/courses.js")
     script.
         ko.applyBindings(new CoursesViewModel());

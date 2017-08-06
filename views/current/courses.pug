@@ -18,6 +18,8 @@ block content
                     .course-instructor(data-bind="text: instructor")
         .row(data-bind="visible: canWrite()")
             input.btn(type="button", data-bind="click: newCourse", value="Create a new course")
+        .row
+            a.link(data-bind="attr: { href: '/courses/prior#' + office() }") Prior semester
         .row(data-bind="visible: !canWrite() && !hasRequest() && ready()")
             a.link(data-bind="click: requestAccess") Request administrator access
         .row(data-bind="visible: !canWrite() && hasRequest()")
