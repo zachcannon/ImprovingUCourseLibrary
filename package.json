@@ -11,7 +11,8 @@
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScriptServer,TypeScriptClient,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts-server\" \"npm run watch-ts-client\" \"npm run serve\"",
     "watch-ts-server": "tsc -w -p src/server",
     "watch-ts-client": "tsc -w -p src/client",
-    "serve": "nodemon dist/server.js"
+    "serve": "nodemon dist/server.js",
+    "postinstall": "tsc -p src/server && tsc -p src/client"
   },
   "repository": {
     "type": "git",
