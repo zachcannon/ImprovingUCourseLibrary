@@ -5,7 +5,8 @@
   "main": "dist/server.js",
   "scripts": {
     "test": "mocha",
-    "start": "npm run build && npm run watch",
+    "start": "node dist/server.js",
+    "start-dev": "npm run build && npm run watch",
     "build": "npm run build-ts",
     "build-ts": "tsc -p src/server && tsc -p src/client",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScriptServer,TypeScriptClient,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts-server\" \"npm run watch-ts-client\" \"npm run serve\"",
