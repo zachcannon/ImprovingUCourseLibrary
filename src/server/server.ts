@@ -18,7 +18,7 @@ const config = loadConfiguration();
 //const MongoStore = mongo(session);
 
 app.set("port", process.env.PORT || config.port);
-app.set("views", path.join(__dirname, "../views"));
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
 // const sessionHandler = session({
@@ -31,7 +31,7 @@ app.set("view engine", "pug");
 //     })
 // });
 
-app.use(bodyParser.urlencoded({extended: true}));
+//app.use(bodyParser.urlencoded({extended: true}));
 //app.use(sessionHandler);
 
 //const authorization = configureAuthorization(app, config);
