@@ -14,36 +14,44 @@ import { configureRoster } from "./roster";
 
 const app = express();
 const server = http.createServer(app);
-const config = loadConfiguration();
-//const MongoStore = mongo(session);
 
-app.set("port", process.env.PORT || config.port);
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+try {
+    const config = loadConfiguration();
+    const MongoStore = mongo(session);
 
-// const sessionHandler = session({
-//     secret: process.env.SESSION_SECRET || config.sessionSecret || "randomCharacters",
-//     saveUninitialized: true,
-//     resave: true,
-//     store: new MongoStore({
-//         url: process.env.MONGO_DB || config.mongoDB || "mongodb://localhost:27017/dev",
-//         autoReconnect: true
-//     })
-// });
+    app.set("port", process.env.PORT || config.port);
+    app.set("views", path.join(__dirname, "views"));
+    app.set("view engine", "pug");
 
-//app.use(bodyParser.urlencoded({extended: true}));
-//app.use(sessionHandler);
+    // const sessionHandler = session({
+    //     secret: process.env.SESSION_SECRET || config.sessionSecret || "randomCharacters",
+    //     saveUninitialized: true,
+    //     resave: true,
+    //     store: new MongoStore({
+    //         url: process.env.MONGO_DB || config.mongoDB || "mongodb://localhost:27017/dev",
+    //         autoReconnect: true
+    //     })
+    // });
 
-//const authorization = configureAuthorization(app, config);
-//const distributor = configureDistributor(server, sessionHandler, authorization, config);
+    //app.use(bodyParser.urlencoded({extended: true}));
+    //app.use(sessionHandler);
 
-//const j = new Jinaga();
-//j.sync(new JinagaConnector(distributor));
+    //const authorization = configureAuthorization(app, config);
+    //const distributor = configureDistributor(server, sessionHandler, authorization, config);
 
-//configureRoster(app, j);
-//const authenticate = authorization.authenticate;
-const authenticate: express.Handler = (req,res,next) => { next(null); };
-configureRoutes(app, authenticate, config);
+    //const j = new Jinaga();
+    //j.sync(new JinagaConnector(distributor));
+
+    //configureRoster(app, j);
+    //const authenticate = authorization.authenticate;
+    const authenticate: express.Handler = (req,res,next) => { next(null); };
+    configureRoutes(app, authenticate, config);
+}
+catch (x) {
+    app.get("/status", (req, res, next) => {
+        res.send("<html><body><p>" + x + "</p></body></html>")
+    })
+}
 
 server.listen(app.get("port"), () => {
     console.log(("  App is running at http://localhost:%d in %s mode"), app.get("port"), app.get("env"));

@@ -15,8 +15,8 @@ export function configureRoutes(app: express.Express, authenticate: express.Hand
     });
 
     app.use("/bower_components", express.static(path.join(__dirname, "../bower_components")));
-    app.use("/public", express.static(path.join(__dirname, "../public")));
-    app.use("/private", express.static(path.join(__dirname, "../private")));
+    app.use("/public", express.static(path.join(__dirname, "public")));
+    app.use("/private", express.static(path.join(__dirname, "private")));
 
     app.get("/courses", authenticate, (req, res, next) => {
         res.render("current/courses");
