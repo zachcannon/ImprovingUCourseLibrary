@@ -37,10 +37,10 @@ app.use(sessionHandler);
 const authorization = configureAuthorization(app, config);
 const distributor = configureDistributor(server, sessionHandler, authorization, config);
 
-const j = new Jinaga();
-j.sync(new JinagaConnector(distributor));
+//const j = new Jinaga();
+//j.sync(new JinagaConnector(distributor));
 
-configureRoster(app, j);
+//configureRoster(app, j);
 configureRoutes(app, authorization.authenticate, config);
 
 server.listen(app.get("port"), () => {

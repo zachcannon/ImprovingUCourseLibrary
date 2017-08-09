@@ -7,8 +7,9 @@
     "test": "mocha",
     "start": "node dist/server.js",
     "start-dev": "npm run build && npm run watch",
-    "build": "npm run build-ts",
+    "build": "npm run build-ts && npm run copy-static-assets",
     "build-ts": "tsc -p src/server && tsc -p src/client",
+    "copy-static-assets": "node copyStaticAssets.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScriptServer,TypeScriptClient,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts-server\" \"npm run watch-ts-client\" \"npm run serve\"",
     "watch-ts-server": "tsc -w -p src/server",
     "watch-ts-client": "tsc -w -p src/client",
@@ -35,6 +36,7 @@
     "@types/passport-google-oauth": "^1.0.35",
     "concurrently": "^3.5.0",
     "nodemon": "^1.11.0",
+    "shelljs": "^0.7.8",
     "typescript": "^2.4.2"
   },
   "dependencies": {

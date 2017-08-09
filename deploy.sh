@@ -117,7 +117,7 @@ if [ -e "$DEPLOYMENT_TARGET/package.json" ]; then
   cd - > /dev/null
 fi
 
-:: 4\. Compile TypeScript
+# 4. Compile TypeScript
 echo Transpiling TypeScript in %DEPLOYMENT_TARGET%...
 call :ExecuteCmd node %DEPLOYMENT_TARGET%\node_modules\typescript\bin\tsc -p "%DEPLOYMENT_TARGET%"
 
