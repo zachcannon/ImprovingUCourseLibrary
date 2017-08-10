@@ -5,8 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "test": "mocha",
-    "start": "node dist/server.js",
-    "start-dev": "npm run build && npm run watch",
+    "start": "npm run build && npm run watch",
     "build": "npm run build-ts && npm run copy-static-assets",
     "build-ts": "tsc -p src/server && tsc -p src/client",
     "copy-static-assets": "node copyStaticAssets.js",
