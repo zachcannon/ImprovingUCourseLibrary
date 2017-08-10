@@ -46,19 +46,17 @@ try {
         })
     });
 
-    //app.use(bodyParser.urlencoded({extended: true}));
-    //app.use(sessionHandler);
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(sessionHandler);
 
-    //const authorization = configureAuthorization(app, config);
-    //const distributor = configureDistributor(server, sessionHandler, authorization, config);
+    const authorization = configureAuthorization(app, config);
+    const distributor = configureDistributor(server, sessionHandler, authorization, config);
 
-    //const j = new Jinaga();
-    //j.sync(new JinagaConnector(distributor));
+    const j = new Jinaga();
+    j.sync(new JinagaConnector(distributor));
 
-    //configureRoster(app, j);
-    //const authenticate = authorization.authenticate;
-    const authenticate: express.Handler = (req,res,next) => { next(null); };
-    configureRoutes(app, authenticate, config);
+    configureRoster(app, j);
+    configureRoutes(app, authorization.authenticate, config);
 }
 catch (x) {
     exception = x.toString();
