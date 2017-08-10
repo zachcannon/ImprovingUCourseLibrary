@@ -15,6 +15,19 @@ import { configureRoster } from "./roster";
 const app = express();
 const server = http.createServer(app);
 
+let exception: string = null;
+process.on("uncaughtException", (err) => {
+    exception = err.toString();
+});
+app.get("/status", (req, res, next) => {
+    if (!exception) {
+        res.send("<html><body><p>All good!</p></body></html>")
+    }
+    else {
+        res.send("<html><body><p>Problem: " + exception + "</p></body></html>")
+    }
+});
+
 try {
     const config = loadConfiguration();
     const MongoStore = mongo(session);
@@ -23,15 +36,15 @@ try {
     app.set("views", path.join(__dirname, "views"));
     app.set("view engine", "pug");
 
-    // const sessionHandler = session({
-    //     secret: process.env.SESSION_SECRET || config.sessionSecret || "randomCharacters",
-    //     saveUninitialized: true,
-    //     resave: true,
-    //     store: new MongoStore({
-    //         url: process.env.MONGO_DB || config.mongoDB || "mongodb://localhost:27017/dev",
-    //         autoReconnect: true
-    //     })
-    // });
+    const sessionHandler = session({
+        secret: process.env.SESSION_SECRET || config.sessionSecret || "randomCharacters",
+        saveUninitialized: true,
+        resave: true,
+        store: new MongoStore({
+            url: process.env.MONGO_DB || config.mongoDB || "mongodb://localhost:27017/dev",
+            autoReconnect: true
+        })
+    });
 
     //app.use(bodyParser.urlencoded({extended: true}));
     //app.use(sessionHandler);
@@ -48,9 +61,7 @@ try {
     configureRoutes(app, authenticate, config);
 }
 catch (x) {
-    app.get("/status", (req, res, next) => {
-        res.send("<html><body><p>" + x + "</p></body></html>")
-    })
+    exception = x.toString();
 }
 
 server.listen(app.get("port"), () => {
