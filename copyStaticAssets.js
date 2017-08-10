@@ -1,6 +1,8 @@
 var shell = require('shelljs');
 
-shell.cp('-R', 'views', 'dist/views/');
-shell.cp('-R', 'public', 'dist/public/');
-shell.cp('-R', 'private', 'dist/private/');
-shell.cp('-R', 'bower_components', 'dist/bower_components/');
+shell.mkdir('-p', 'dist/');
+
+shell.cp('-R', 'views', 'dist/');
+shell.cp('-R', 'public', 'dist/');
+shell.cp('-R', 'private', 'dist/');
+shell.cp('-R', 'bower_components', 'dist/');
