@@ -6,3 +6,4 @@ shell.cp('-R', 'views', 'dist/');
 shell.cp('-R', 'public', 'dist/');
 shell.cp('-R', 'private', 'dist/');
 shell.cp('-R', 'bower_components', 'dist/');
+shell.cp('-R', 'node_modules', 'dist/');
