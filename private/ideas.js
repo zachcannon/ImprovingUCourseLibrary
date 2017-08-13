@@ -32,7 +32,7 @@ function IdeasViewModel() {
     }, this);
     this.onlineSemester = {
         type: "ImprovingU.OnlineSemester",
-        name: "Spring 2017",
+        name: "Fall 2017",
         company: {
             type: "ImprovingU.Company",
             name: "Improving"
