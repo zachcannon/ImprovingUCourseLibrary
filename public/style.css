@@ -30,10 +30,9 @@ body.saving .navbar-inverse .navbar-brand {
 }
 .call-to-action {
     padding: 40px 15px;
-    text-align: center;
 }
 .call-to-action img {
-    width: 100%;
+    padding-top: 22px;
     height: auto;
 }
 .text-involvement {

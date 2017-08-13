@@ -5,16 +5,23 @@ block variables
 
 block content
     .call-to-action
-        h1 ImprovingU
-        p.lead
-            | Show your 
-            span.text-dedication dedication
-            | . Get 
-            span.text-involvement involved
-            | . Share your 
-            span.text-excellence excellence
-            | .
-        img(src="/public/Logo.png", alt="ImprovingU Logo")
+        .row
+            .col-md-4.col-md-offset-2.container
+                img.pull-left(src="/public/Logo.png", alt="ImprovingU Logo")
+                h1
+                    | ImprovingU
+                p.lead
+                    | Fall 2017 Semester
+            .col-md-4
+                h2 August 21
+                p Share your ideas
+                h2 September 5
+                p Registration opens
+                h2 September 18
+                p Classes begin
+        .row
+            .col-md-2.col-md-offset-5
+                a.btn.btn-primary(href="/ideas", data-bind="attr: { href: '/ideas#' + office() }") Share your ideas
 
 block scripts
     script(src="/public/offices.js")
