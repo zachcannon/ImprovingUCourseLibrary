@@ -1,6 +1,8 @@
 var converter = new showdown.Converter();
 
 function CoursesViewModel() {
+    var semesterName = "Summer 2017";
+    
     UserViewModel.call(this, null);
 
     this.courses = ko.observableArray();
@@ -17,7 +19,7 @@ function CoursesViewModel() {
     };
     var semester = {
         type: "ImprovingU.Semester",
-        name: "Spring 2017",
+        name: semesterName,
         _in: company,
         from: owner
     };
@@ -25,6 +27,7 @@ function CoursesViewModel() {
     initializeSemester(this);
 
     function initializeSemester(viewModel) {
+        viewModel.semesterName = semesterName;
         viewModel.catalog = ko.computed(function () {
             return getCatalog(viewModel.office());
         });

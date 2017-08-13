@@ -1,4 +1,6 @@
 function CoursesViewModel() {
+    var semesterName = "Fall 2017";
+    
     UserViewModel.call(this, null);
 
     this.courses = ko.observableArray();
@@ -40,7 +42,7 @@ function CoursesViewModel() {
     };
     var semester = {
         type: "ImprovingU.Semester",
-        name: "Summer 2017",
+        name: semesterName,
         _in: company,
         from: owner
     };
@@ -67,6 +69,7 @@ function CoursesViewModel() {
     }
 
     function initializeSemester(viewModel) {
+        viewModel.semesterName = semesterName;
         var coursesWatch = j.watch(semester, [coursesInSemester], addTo(viewModel.courses, function (course) {
             return new CourseViewModel(course, viewModel.office, viewModel.user, viewModel.courseEdit, viewModel.courseDetails, viewModel.canWrite, viewModel.registration, viewModel);
         }), removeFrom(viewModel.courses));

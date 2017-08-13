@@ -1,4 +1,6 @@
 function IdeasViewModel() {
+    var semesterName = "Fall 2017";
+
     UserViewModel.call(this, null);
 
     this.showSummary = function () {
@@ -16,10 +18,11 @@ function IdeasViewModel() {
     this.details = ko.observable();
     this.remoteDetails = ko.observable();
 
+    this.semesterName = semesterName;
     this.semester = ko.computed(function () {
         return {
             type: "ImprovingU.Semester",
-            name: "Spring 2017",
+            name: semesterName,
             office: {
                 type: "ImprovingU.Office",
                 name: this.office(),
@@ -32,7 +35,7 @@ function IdeasViewModel() {
     }, this);
     this.onlineSemester = {
         type: "ImprovingU.OnlineSemester",
-        name: "Fall 2017",
+        name: semesterName,
         company: {
             type: "ImprovingU.Company",
             name: "Improving"

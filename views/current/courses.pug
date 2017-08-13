@@ -5,7 +5,7 @@ block variables
 
 block content
     .cloaked
-        h1(data-bind="text: office")
+        h1(data-bind="text: office() + ' ' + semesterName")
         div(data-bind="foreach: courses().filter(function (c) { return c.visible(); }).sort(byCourseTitle)")
             .row.row-course
                 .col-md-1

@@ -4,7 +4,7 @@ block variables
     - var title = 'ImprovingU Ideas'
 
 block content
-    h1(data-bind="text: office")
+    h1(data-bind="text: office() + ' ' + semesterName")
     p Vote on your favorite course ideas.
     p.alert-success
         | I would like to 
