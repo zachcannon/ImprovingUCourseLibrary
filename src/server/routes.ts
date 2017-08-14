@@ -26,6 +26,10 @@ export function configureRoutes(app: express.Express, authenticate: express.Hand
         res.render("current/ideas");
     });
 
+    app.get("/ideas/prior", authenticate, (req, res, next) => {
+        res.render("prior/ideas");
+    });
+
     app.get("/calendar", authenticate, (req, res, next) => {
         res.render("current/calendar");
     });

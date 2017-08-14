@@ -43,7 +43,7 @@ gulp.task("copy", function () {
 });
 
 // Start node, or restart if it is already running.
-gulp.task("start", function () {
+gulp.task("compileAndStart", [ "compile" ], function () {
     if (node) {
         node.kill();
     }
@@ -57,7 +57,7 @@ gulp.task("start", function () {
 });
 
 // Compile and restart node on change.
-gulp.task("default", [ "compile", "copy", "start" ], function () {
+gulp.task("default", [ "copy", "compileAndStart" ], function () {
     gulp.watch([ "./src/**/*.ts", "./views/**/*.pug", "./public/**/*.*", "./private/**/*.*" ],
-        [ "compile", "start" ]);
+        [ "compileAndStart" ]);
 });

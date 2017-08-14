@@ -51,6 +51,8 @@ block content
     hr
     form.form-inline
         input.form-control(type="button", data-bind="click: showSummary", value="Summary")
+    .row
+        a.link(data-bind="attr: { href: '/ideas/prior#' + office() }") Prior semester
     // Modal
     #error-dialog.modal.fade(tabindex="-1", role="dialog", aria-labelledby="error-dialog-title")
         .modal-dialog(role="document")
