@@ -15,8 +15,8 @@ declare class Jinaga {
     query(start: Object, templates: Array<(target: Proxy) => Object>, done: (result: Array<Object>) => void): void;
     login(callback: (userFact: Object) => void): void;
     preload(cachedFacts: Array<any>): void;
-    where(specification: Object, conditions: Array<(target: Proxy) => Object>): Interface.ConditionalSpecification;
-    not(condition: (target: Proxy) => Object): (target: Proxy) => Object;
-    not(specification: Object): Object;
+    where<TSpecification>(specification: TSpecification, conditions: Array<(target: TSpecification) => Object>): TSpecification;
+    not<TTarget, TSpecification>(condition: (target: TTarget) => TSpecification): (target: TTarget) => TSpecification;
+    not<TSpecification>(specification: TSpecification): TSpecification;
 }
 export = Jinaga;
