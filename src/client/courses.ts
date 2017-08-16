@@ -127,3 +127,10 @@ function courseTitleIsCurrent(n: CourseTitle) : CourseTitle {
         prior: [n] // Need to change Jinaga to make this valid.
     });
 }
+
+function titlesForCourse(c: Course) : CourseTitle {
+    return j.where({
+        type: "ImprovingU.Course.Title",
+        course: c
+    }, [courseTitleIsCurrent]);
+}
