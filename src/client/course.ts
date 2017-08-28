@@ -89,7 +89,7 @@ function coursesInSemester(s: Semester) : Course {
 function courseTitleIsCurrent(n: CourseTitle) : CourseTitle {
     return j.not({
         type: "ImprovingU.Course.Title",
-        prior: [n] // Need to change Jinaga to make this valid.
+        prior: [n]
     });
 }
 

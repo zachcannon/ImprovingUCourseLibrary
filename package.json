@@ -42,7 +42,7 @@
     "debug": "^2.6.8",
     "express": "^4.15.3",
     "express-session": "^1.15.4",
-    "jinaga": "^1.8.4",
+    "jinaga": "^1.8.5",
     "jinaga.app": "^1.1.2",
     "jsonwebtoken": "^6.2.0",
     "passport": "^0.3.2",
