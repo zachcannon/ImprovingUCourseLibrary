@@ -54,15 +54,17 @@ function IdeasViewModel() {
     function initializeWatches(viewModel) {
         var userWatches = [];
 
-        viewModel.context.subscribe(function (c) {
+        viewModel.context.subscribe(updateWatches);
+
+        updateWatches(viewModel.context());
+
+        function updateWatches(context) {
             dispose(userWatches)();
             viewModel.ideas.removeAll();
 
-            console.log("Watching semester " + JSON.stringify(c.semester));
-            
-            if (c && c.user && c.semester) {
-                var ideaWatch = j.watch(c.semester, [ideasForSemester],
-                    addTo(viewModel.ideas, function (idea) { return new IdeaViewModel(c.user, idea, viewModel.onlineSemester, viewModel.details); }),
+            if (context && context.user && context.semester) {
+                var ideaWatch = j.watch(context.semester, [ideasForSemester],
+                    addTo(viewModel.ideas, function (idea) { return new IdeaViewModel(context.user, idea, viewModel.onlineSemester, viewModel.details); }),
                     removeFrom(viewModel.ideas));
                 watchIdeaForVotes(ideaWatch, "ImprovingU.TakeVote", "takeCount");
                 watchIdeaForVotes(ideaWatch, "ImprovingU.TeachVote", "teachCount");
@@ -72,7 +74,7 @@ function IdeasViewModel() {
                 ideaWatch.watch([abstractsInIdea], setChildValue("abstractFact"));
 
                 var remoteIdeaWatch = j.watch(viewModel.onlineSemester, [remoteIdeasForOnlineSemester],
-                    addTo(viewModel.ideas, function (remoteIdea) { return new RemoteIdeaViewModel(c.user, remoteIdea, c.semester, viewModel.remoteDetails)}),
+                    addTo(viewModel.ideas, function (remoteIdea) { return new RemoteIdeaViewModel(context.user, remoteIdea, context.semester, viewModel.remoteDetails)}),
                     removeFrom(viewModel.ideas));
                 watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TakeVote", "takeVotesAll");
                 watchRemoteIdeaForVotes(remoteIdeaWatch, "ImprovingU.TeachVote", "teachVotesAll");
@@ -82,7 +84,7 @@ function IdeasViewModel() {
                 remoteIdeaWatch.watch([ideaForRemoteIdea, abstractsInIdea], setChildValue("abstractFact"));
 
                 userWatches = [
-                    j.watch(c.user, [namesForUser], function (n) {
+                    j.watch(context.user, [namesForUser], function (n) {
                         viewModel.displayName(n.value);
                     }),
                     ideaWatch,
@@ -92,7 +94,7 @@ function IdeasViewModel() {
             else {
                 userWatches = [];
             }
-        });
+        }
     }
 
     function watchIdeaForVotes(ideaWatch, type, observableName) {
