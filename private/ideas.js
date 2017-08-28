@@ -58,6 +58,8 @@ function IdeasViewModel() {
             dispose(userWatches)();
             viewModel.ideas.removeAll();
 
+            console.log("Watching semester " + JSON.stringify(c.semester));
+            
             if (c && c.user && c.semester) {
                 var ideaWatch = j.watch(c.semester, [ideasForSemester],
                     addTo(viewModel.ideas, function (idea) { return new IdeaViewModel(c.user, idea, viewModel.onlineSemester, viewModel.details); }),
