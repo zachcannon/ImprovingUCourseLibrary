@@ -57,3 +57,8 @@ function sessionIsNotDeleted(s: Session) : SessionDelete {
         session: s
     });
 }
+
+function courseForSession(s: Session) : Course {
+    (<any>s).has("course");
+    return s.course;
+}

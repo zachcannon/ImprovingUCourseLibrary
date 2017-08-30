@@ -33,7 +33,7 @@ class AttendanceViewModel {
 class StudentViewModel {}
 
 const AttendanceViewModelSpec = jko.root(AttendanceViewModel, {
-    students: jko.collection([registrationsForCourse], StudentViewModel, {
+    students: jko.collection([courseForSession, registrationsForCourse], StudentViewModel, {
         name: jko.property([namesForStudent], "<unknown>", "value")
     })
 });
