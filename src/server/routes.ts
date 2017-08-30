@@ -37,6 +37,10 @@ export function configureRoutes(app: express.Express, authenticate: express.Hand
     app.get("/courses/prior", authenticate, (req, res, next) => {
         res.render("prior/courses");
     });
+
+    app.get("/attendance", (req, res, next) =>{
+        res.render("current/attendance");
+    });
     
     app.get("/", (req, res, next) => {
         res.render("index");

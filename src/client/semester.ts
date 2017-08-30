@@ -1,8 +1,3 @@
-class User {
-    public type: string;
-    public publicKey: string;
-}
-
 class Company {
     public type: string;
     public name: string;

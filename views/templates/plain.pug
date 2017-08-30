@@ -1,0 +1,10 @@
+block variables
+doctype html
+html(lang="en")
+    include ../includes/head
+    body(data-bind="css: { loaded: user, error: status() == 'Error', saving: status() == 'Saving...' }")
+        .container
+            block content
+
+        include ../includes/scripts
+        block scripts
