@@ -24,9 +24,10 @@ function registrationsForCourse(c: Course) : CourseRegistration {
 }
 
 function namesForStudent(r: CourseRegistration) : UserName {
+    (<any>r).has('from');
     return j.where({
         type: 'ImprovingU.UserName',
-        user: r.from
+        from: r.from
     }, [nameIsCurrent]);
 }
 

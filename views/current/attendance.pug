@@ -5,3 +5,14 @@ block variables
 
 block content
     h1 Attendance
+    ul(data-bind="foreach: students")
+        li(data-bind="text: name")
+
+block scripts
+    script(src="/public/js/jinaga.knockout.js")
+    script(src="/js/app/config.js")
+    script(src="/public/js/user.js")
+    script(src="/public/js/semester.js")
+    script(src="/public/js/course.js")
+    script(src="/public/js/registration.js")
+    script(src="/public/js/attendanceViewModel.js")
