@@ -1,59 +1,54 @@
 class CatalogDate {
+    public static Type = "ImprovingU.Catalog.Date";
     public type: string;
-    public catalog?: Catalog;
-    public date?: string;
+
+    constructor (
+        public catalog?: Catalog,
+        public date?: string
+    ) {
+        this.type = CatalogDate.Type;
+    }
 }
 
 class Session {
+    public static Type = "ImprovingU.Session";
     public type: string;
-    public from?: User;
-    public course?: Course;
-    public catalogDate?: CatalogDate;
-    public time?: string;
-    public place?: string;
     public createdAt?: Date;
+
+    constructor (
+        public from?: User,
+        public course?: Course,
+        public catalogDate?: CatalogDate,
+        public time?: string,
+        public place?: string
+    ) {
+        this.type = Session.Type;
+        this.createdAt = new Date();
+    }
 }
 
 class SessionDelete {
+    public static Type = "ImprovingU.Session.Delete";
     public type: string;
-    public from?: User;
-    public session?: Session;
-}
 
-function CreateSession(from: User, course: Course, date: string, time: string, place: string) : Session {
-    return {
-        type: 'ImprovingU.Session',
-        from: from,
-        course: course,
-        catalogDate: {
-            type: 'ImprovingU.Catalog.Date',
-            catalog: course._in,
-            date: date
-        },
-        time: time,
-        place: place,
-        createdAt: new Date()
-    };
-}
-
-function CreateSessionDelete(from: User, session: Session) : SessionDelete {
-    return {
-        type: 'ImprovingU.Session.Delete',
-        from: from,
-        session: session
-    };
+    constructor (
+        public from?: User,
+        public session?: Session
+    ) {
+        this.type = SessionDelete.Type;
+    }
 }
 
 function sessionsInCourse(c: Course) : Session {
     return j.where({
-        type: 'ImprovingU.Session',
+        type: Session.Type,
         course: c
     }, [sessionIsNotDeleted]);
 }
 
 function sessionIsNotDeleted(s: Session) : SessionDelete {
     return j.not({
-        type: 'ImprovingU.Session.Delete',
+        type: SessionDelete.Type,
         session: s
     });
 }

@@ -1,86 +1,72 @@
 class Catalog {
+    public static Type = "ImprovingU.Catalog";
     public type: string;
-    public office?: string;
-    public _in: Semester;
-    public from?: User;
+
+    constructor (
+        public office?: string,
+        public _in?: Semester,
+        public from?: User
+    ) {
+        this.type = Catalog.Type;
+    }
 }
 
 class Course {
+    public static Type = "ImprovingU.Course";
     public type: string;
-    public from?: User;
-    public _in: Catalog;
     public createdAt?: Date;
+
+    constructor (
+        public from?: User,
+        public _in?: Catalog
+    ) {
+        this.type = Course.Type;
+        this.createdAt = new Date();
+    }
 }
 
 class CourseDelete {
+    public static Type = "ImprovingU.Course.Delete";
     public type: string;
-    public from?: User;
-    public course: Course;
-    public _in?: Catalog;
+
+    constructor (
+        public from?: User,
+        public course?: Course,
+        public _in?: Catalog
+    ) {
+        this.type = CourseDelete.Type;
+    }
 }
 
 class CourseTitle {
+    public static Type = "ImprovingU.Course.Title";
     public type: string;
-    public from?: User;
-    public course?: Course;
-    public value?: string;
-    public prior?: CourseTitle[];
-    public _in?: Catalog;
+
+    constructor (
+        public from?: User,
+        public course?: Course,
+        public value?: string,
+        public prior?: CourseTitle[],
+        public _in?: Catalog
+    ) {
+        this.type = CourseTitle.Type;
+    }
 }
 
-
-// Factory functions
-function getCatalog(office: string) : Catalog {
-    return {
-        type: "ImprovingU.Catalog",
-        office: office,
-        _in: semester,
-        from: owner
-    };
-}
-
-function createCourse(user: User, catalog: Catalog) : Course {
-    return {
-        type: "ImprovingU.Course",
-        from: user,
-        _in: catalog,
-        createdAt: new Date()
-    };
-}
-
-function createCourseDelete(user: User, course: Course) : CourseDelete {
-    return {
-        type: "ImprovingU.Course.Delete",
-        from: user,
-        course: course,
-        _in: course._in
-    };
-}
-
-function createCourseTitle(user: User, course: Course, value: string, prior: CourseTitle[]) : CourseTitle {
-    return {
-        type: "ImprovingU.Course.Title",
-        from: user,
-        course: course,
-        value: value,
-        prior: prior,
-        _in: course._in
-    };
-}
 
 // Template functions
 function courseIsDeleted(c: Course) : CourseDelete {
     return {
-        type: "ImprovingU.Course.Delete",
+        type: CourseDelete.Type,
         course: c
     };
 }
 
 function coursesInSemester(s: Semester) : Course {
     return j.where({
-        type: "ImprovingU.Course",
+        type: Course.Type,
         _in: {
-            type: "ImprovingU.Catalog",
+            type: Catalog.Type,
             _in: s
         }
     }, [j.not(courseIsDeleted)]);
@@ -88,14 +74,14 @@ function coursesInSemester(s: Semester) : Course {
 
 function courseTitleIsCurrent(n: CourseTitle) : CourseTitle {
     return j.not({
-        type: "ImprovingU.Course.Title",
+        type: CourseTitle.Type,
         prior: [n]
     });
 }
 
 function titlesForCourse(c: Course) : CourseTitle {
     return j.where({
-        type: "ImprovingU.Course.Title",
+        type: CourseTitle.Type,
         course: c
     }, [courseTitleIsCurrent]);
 }

@@ -1,24 +1,21 @@
 class CourseRegistration {
+    public static Type = "ImprovingU.Course.Registration";
     public type: string;
-    public from?: User;
-    public course?: Course;
-    public office?: string;
     public createdAt?: Date;
-}
-
-function createCourseRegistration(user: User, course: Course, office: string) : CourseRegistration {
-    return {
-        type: 'ImprovingU.Course.Registration',
-        from: user,
-        course: course,
-        office: office,
-        createdAt: new Date()
-    };
+    
+    constructor (
+        public from?: User,
+        public course?: Course,
+        public office?: string
+    ) {
+        this.type = CourseRegistration.Type;
+        this.createdAt = new Date();
+    }
 }
 
 function registrationsForCourse(c: Course) : CourseRegistration {
     return j.where({
-        type: 'ImprovingU.Course.Registration',
+        type: CourseRegistration.Type,
         course: c
     }, [j.not(registrationIsDeleted)]);
 }
@@ -26,60 +23,54 @@ function registrationsForCourse(c: Course) : CourseRegistration {
 function namesForStudent(r: CourseRegistration) : UserName {
     (<any>r).has('from');
     return j.where({
-        type: 'ImprovingU.UserName',
+        type: UserName.Type,
         from: r.from
     }, [nameIsCurrent]);
 }
 
 class CourseRegistrationNote {
+    public static Type = "ImprovingU.Course.Registration.Note";
     public type: string;
-    public from?: User;
-    public registration?: CourseRegistration;
-    public value?: string;
-    public prior?: Array<CourseRegistrationNote>;
-}
 
-function createCourseRegistrationNote(user: User, registration: CourseRegistration, note: string, prior: Array<CourseRegistrationNote>): CourseRegistrationNote {
-    return {
-        type: 'ImprovingU.Course.Registration.Note',
-        from: user,
-        registration: registration,
-        value: note,
-        prior: prior
+    constructor (
+        public from?: User,
+        public registration?: CourseRegistration,
+        public value?: string,
+        public prior?: Array<CourseRegistrationNote>
+    ) {
+        this.type = CourseRegistrationNote.Type;
     }
 }
 
 function notesForRegistration(r: CourseRegistration) : CourseRegistrationNote {
     return j.where({
-        type: 'ImprovingU.Course.Registration.Note',
+        type: CourseRegistrationNote.Type,
         registration: r
     }, [noteIsCurrent]);
 }
 
 function noteIsCurrent(n: CourseRegistrationNote) : CourseRegistrationNote {
     return j.not({
-        type: "ImprovingU.Course.Registration.Note",
+        type: CourseRegistrationNote.Type,
         prior: [n]
     });
 }
 
 class CourseRegistrationDeletion {
+    public static Type = "ImprovingU.Course.Registration.Deletion";
     public type: string;
-    public from?: User;
-    public courseRegistration?: CourseRegistration;
-}
 
-function createCourseRegistrationDeletion(user: User, courseRegistration: CourseRegistration) : CourseRegistrationDeletion {
-    return {
-        type: 'ImprovingU.Course.Registration.Deletion',
-        from: user,
-        courseRegistration: courseRegistration
+    constructor (
+        public from?: User,
+        public courseRegistration?: CourseRegistration
+    ) {
+        this.type = CourseRegistrationDeletion.Type;
     }
 }
 
 function registrationIsDeleted(r: CourseRegistration) : CourseRegistrationDeletion {
     return {
-        type: 'ImprovingU.Course.Registration.Deletion',
+        type: CourseRegistrationDeletion.Type,
         courseRegistration: r
     }
 }
