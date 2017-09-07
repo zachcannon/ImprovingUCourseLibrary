@@ -29,7 +29,7 @@ class Roster {
     };
     private semester = {
         type: "ImprovingU.Semester",
-        name: "Summer 2017",
+        name: "Fall 2017",
         _in: this.company,
         from: this.owner
     };
