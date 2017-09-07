@@ -35,7 +35,7 @@ gulp.task("compile", function() {
 
 // For files from a third party, which are less likely to change.
 gulp.task("copy", function () {
-    gulp.src([ "./bower_components/**/*.min.css", "./bower_components/**/*.js" ])
+    gulp.src([ "./bower_components/**/*.*" ])
         .pipe(gulp.dest("./dist/bower_components"));
 
     gulp.src(["./node_modules/**/*.*"])
