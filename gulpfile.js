@@ -38,8 +38,10 @@ gulp.task("copy", function () {
     gulp.src([ "./bower_components/**/*.min.css", "./bower_components/**/*.js" ])
         .pipe(gulp.dest("./dist/bower_components"));
 
-    gulp.src(npmFiles(), { base: "./" })
-        .pipe(gulp.dest("./dist"));
+    gulp.src(["./node_modules/**/*.*"])
+        .pipe(gulp.dest("./dist/node_modules"));
+    // gulp.src(npmFiles(), { base: "./" })
+    //     .pipe(gulp.dest("./dist"));
 });
 
 // Start node, or restart if it is already running.
