@@ -167,21 +167,23 @@ block content
                                     span(data-bind="text: date")
                                 .col-md-2
                                     span(data-bind="text: time")
-                                .col-md-4
+                                .col-md-3
                                     span(data-bind="text: place")
-                                .col-md-1
-                                    button.btn(type="button", data-bind="click: remove") -
-                                .col-md-1
-                                    button.btn(type="button", data-bind="click: attendance") a
+                                .col-md-3.btn-group
+                                    button.btn(type="button", data-bind="click: remove")
+                                        span.glyphicon.glyphicon-remove
+                                    button.btn(type="button", data-bind="click: attendance")
+                                        span.glyphicon.glyphicon-list
                         .row(data-bind="with: newSession")
                             .col-md-4
                                 input(type="date", data-bind="value: date")
                             .col-md-2
                                 input(type="text", data-bind="value: time")
-                            .col-md-4
+                            .col-md-3
                                 input(type="text", data-bind="value: place")
-                            .col-md-1
-                                button.btn(type="button", data-bind="click: add") +
+                            .col-md-3
+                                button.btn(type="button", data-bind="click: add")
+                                    span.glyphicon.glyphicon-plus
                     .modal-footer
                         .pull-left
                             input#remote-checkbox(type="checkbox", data-bind="checked: isRemote")
