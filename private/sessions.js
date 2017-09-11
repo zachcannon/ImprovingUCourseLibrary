@@ -47,6 +47,14 @@ function initializeSessions(viewModel, course, user) {
                 session: session
             });
         };
+
+        this.attendance = function () {
+            var id = new Date(session.createdAt).getTime().toString(16).toLowerCase();
+            var identifier = new AttendanceSheetIdentifier(id);
+            var sheet = new AttendanceSheet(user, identifier, session);
+            j.fact(sheet);
+            window.open('/attendance/' + id);
+        };
     }
 
     function sessionsInCourse(c) {

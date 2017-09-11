@@ -136,7 +136,7 @@ block content
                     .modal-header
                         button.close(type="button", data-dismiss="modal", aria-label="Close")
                             span(aria-hidden="true") ×
-                        h4#course-edit-title.modal-title Course Details
+                        h4#course-edit-title.modal-title Edit Course
                     .modal-body
                         .row
                             .col-md-2
@@ -171,6 +171,8 @@ block content
                                     span(data-bind="text: place")
                                 .col-md-1
                                     button.btn(type="button", data-bind="click: remove") -
+                                .col-md-1
+                                    button.btn(type="button", data-bind="click: attendance") a
                         .row(data-bind="with: newSession")
                             .col-md-4
                                 input(type="date", data-bind="value: date")
@@ -229,6 +231,7 @@ block scripts
     script(src="/private/courses.js")
     script(src="/private/coordinator.js")
     script(src="/private/accessControl.js")
+    script(src="/public/js/attendance.js")
     script(src="/private/sessions.js")
     script.
         ko.applyBindings(new CoursesViewModel());

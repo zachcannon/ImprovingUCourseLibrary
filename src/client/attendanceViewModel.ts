@@ -15,9 +15,3 @@ const AttendanceViewModelSpec = jko.root(AttendanceViewModel, {
         name: jko.property([namesForStudent], "<unknown>", "value")
     })
 });
-
-const identifier = new AttendanceSheetIdentifier("ABC");
-const vmFactory = AttendanceViewModelSpec.load(j.fact(identifier));
-const vm = vmFactory.viewModel;
-
-ko.applyBindings(vm);

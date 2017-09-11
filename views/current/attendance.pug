@@ -16,5 +16,13 @@ block scripts
     script(src="/public/js/course.js")
     script(src="/public/js/registration.js")
     script(src="/public/js/session.js")
+    script(src="/public/js/attendance.js")
     script(src="/public/js/statusViewModel.js")
     script(src="/public/js/attendanceViewModel.js")
+    script.
+        var id = "#{id}";
+        var identifier = new AttendanceSheetIdentifier(id);
+        var vmFactory = AttendanceViewModelSpec.load(j.fact(identifier));
+        var vm = vmFactory.viewModel;
+
+        ko.applyBindings(vm);

@@ -38,8 +38,9 @@ export function configureRoutes(app: express.Express, authenticate: express.Hand
         res.render("prior/courses");
     });
 
-    app.get("/attendance", (req, res, next) =>{
-        res.render("current/attendance");
+    app.get("/attendance/:id", (req, res, next) => {
+        const id = req.params.id;
+        res.render("current/attendance", { id: id });
     });
     
     app.get("/", (req, res, next) => {
