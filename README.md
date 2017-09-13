@@ -16,7 +16,7 @@ ImprovingU is a series of courses taught by Improvers for Improvers (that is, pe
  - Clone the repository.
  - Run `npm install`.
  - Copy `src/server/config/config.example.ts` to `src/server/config/config.ts`.
- - Configure config.ts from the step above with your Google OAuth2 credentials and your MongoDB instance location.
+ - Configure `config.ts` from the step above with your Google OAuth2 credentials and your MongoDB instance location.
  - Run `npm run-script bower`.
  - Run `npm run-script build`.
  - Run `npm start`.
