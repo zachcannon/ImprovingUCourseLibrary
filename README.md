@@ -13,6 +13,11 @@ ImprovingU is a series of courses taught by Improvers for Improvers (that is, pe
 
 ## Installation Steps
 
+Pre-Requisites:
+ - Install `nodejs` on your local machine from `nodejs.org` or another installation medium.
+ - Install `bower` globally by running `npm install -g bower`.
+
+To Install ImprovingU Locally:
  - Clone the repository.
  - Run `npm install`.
  - Copy `src/server/config/config.example.ts` to `src/server/config/config.ts`.
