@@ -5,7 +5,7 @@ export function makeConfiguration() : Configuration {
         port: 3000,
         baseUrl: "http://localhost:3000",
         sessionSecret: "tacocat",
-        mongoDB: "mongodb://localhost:27017/dev",
+        mongoDB: "mongodb://localhost:27017/improvingu",
         secure: false,
         google: {
             clientId: "",
