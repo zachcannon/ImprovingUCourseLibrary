@@ -11,19 +11,23 @@ ImprovingU is a series of courses taught by Improvers for Improvers (that is, pe
 * Node 5.0.0
 * Mongo 3.0.0
 
-## Installation
+## Installation Steps
 
-Clone the repository. Run `npm install`. Copy `config/config.example.js` to `config/config.js`. Run `DEBUG=jinaga* node server`.
+ - Clone the repository.
+ - Run `npm install`.
+ - Copy `src/server/config/config.example.ts` to `src/server/config/config.ts`.
+ - Configure config.ts from the step above with your Google OAuth2 credentials and your MongoDB instance location.
+ - Run `npm run-script bower`.
+ - Run `npm run-script build`.
+ - Run `npm start`.
 
-Navigate to `http://localhost:8080/status` to see if there were any errors during startup. This is especially helpful once you deploy it to a remote server.
-
-You will need to configure a Mongo database and Google OAuth2 credentials.
+Navigate to `http://localhost:3000/status` to see if there were any errors during startup. This is especially helpful once you deploy it to a remote server.
 
 ### Mongo
 
 By default, the application is configured to use the Mongo instance at `mongodb://localhost:27017/dev`. This is the default port, so if you have Mongo installed and running, you should be good.
 
-To change the configuration, either set the `mongoDB` setting in `config/config.js`, or set the `MONGO_DB` environment variable. The environment variable takes precedence, and is intended for server deployments. The configuration setting is easier for development.
+To change the configuration, either set the `mongoDB` setting in `src/server/config/config.ts`, or set the `MONGO_DB` environment variable. The environment variable takes precedence, and is intended for server deployments. The configuration setting is easier for development.
 
 ```JavaScript
 module.exports = {
@@ -37,7 +41,7 @@ This application example is configured to use Google OAuth2. To switch to a diff
 
 Go to the [Google Developers Console](https://console.developers.google.com) and create a new project. Go to the API Manager in the hamburger menu, and select Credentials. Create new credentials of type "OAuth client ID" for a "Web application".
 
-Add an authorized JavaScript origin for `http://localhost:8080`. Add an authorized redirect URI for `http://localhost:8080/login/callback`. Copy your client ID and client secret and put them into `config/config.js`.
+Add an authorized JavaScript origin for `http://localhost:3000`. Add an authorized redirect URI for `http://localhost:3000/login/callback`. Copy your client ID and client secret and put them into `src/server/config/config.ts`.
 
 ```JavaScript
 module.exports = {
@@ -185,7 +189,7 @@ Call this startup in server.js where indicated by the above comment:
 var authorization = require('./startup/authorization')(app, config);
 ```
 
-Create a `public/login.html` page containing a link to your authorization provider's endpoint, as configured in `startup/authorization.js`. 
+Create a `public/login.html` page containing a link to your authorization provider's endpoint, as configured in `startup/authorization.js`.
 
 Copy `config/config.example.js` to `config/config.js` and edit the authentication parameters. Test the app to ensure that you can log in.
 
@@ -238,7 +242,7 @@ Call this function from server.js immediately after the authorization startup.
 
 ```JavaScript
 require('./startup/distributor')(server, pipeline, authorization, config);
-``` 
+```
 
 Install Jinaga for the client-side using Bower:
 
