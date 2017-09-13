@@ -12,6 +12,7 @@ declare class Jinaga {
     sync(network: NetworkProvider): void;
     fact(message: Object): Object;
     watch(start: Object, templates: Array<(target: Proxy) => Object>, resultAdded: (result: Object) => void, resultRemoved: (result: Object) => void): any;
+    subscribe(start: Object, templates: Array<(target: Proxy) => Object>): any;
     query(start: Object, templates: Array<(target: Proxy) => Object>, done: (result: Array<Object>) => void): void;
     login(callback: (userFact: Object) => void): void;
     preload(cachedFacts: Array<any>): void;

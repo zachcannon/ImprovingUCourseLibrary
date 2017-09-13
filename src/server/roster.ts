@@ -35,6 +35,7 @@ class Roster {
     };
 
     private watches: Array<any> = [];
+    private subscriptions: Array<any> = [];
     private courses: Array<any> = []
     
     start() {
@@ -42,6 +43,12 @@ class Roster {
 
         this.stop();
 
+        this.subscriptions.push(this.j.subscribe(this.semester, [coursesInSemester]));
+        this.subscriptions.push(this.j.subscribe(this.semester, [coursesInSemester, titlesForCourse]));
+        this.subscriptions.push(this.j.subscribe(this.semester, [coursesInSemester, registrationsForCourse]));
+        this.subscriptions.push(this.j.subscribe(this.semester, [coursesInSemester, registrationsForCourse, userForRegistration, namesForUser]));
+        this.subscriptions.push(this.j.subscribe(this.semester, [coursesInSemester, registrationsForCourse, notesForRegistration]));
+        
         var coursesWatch = this.j.watch(this.semester, [coursesInSemester], addTo(this.courses, Course), removeFrom(this.courses));
         coursesWatch.watch([titlesForCourse], setChildValue('title'));
         var registrationsWatch = coursesWatch.watch([registrationsForCourse], addToChild('registrations', Registration), removeFromChild('registrations'));
@@ -171,6 +178,7 @@ class Roster {
 
     stop() {
         this.watches.forEach((w) => { w.stop(); });
+        this.subscriptions.forEach((s) => { s.stop(); });
         this.watches = [];
         this.courses = [];
     }
