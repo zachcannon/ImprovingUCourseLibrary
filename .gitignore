@@ -4,6 +4,3 @@ node_modules/
 bower_components/
 .idea/
 .vscode/
-
-# User Specific Config
-src/server/config/config.ts

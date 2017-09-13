@@ -16,6 +16,7 @@ ImprovingU is a series of courses taught by Improvers for Improvers (that is, pe
 Pre-Requisites:
  - Install `nodejs` on your local machine from `nodejs.org` or another installation medium.
  - Install `bower` globally by running `npm install -g bower`.
+ - Install `mongodb` on your local machine. Notes for the install can be found here: `https://github.com/mongodb/mongo/blob/master/docs/building.md`
 
 To Install ImprovingU Locally:
  - Clone the repository.
@@ -24,7 +25,10 @@ To Install ImprovingU Locally:
  - Configure `config.ts` from the step above with your Google OAuth2 credentials and your MongoDB instance location.
  - Run `npm run-script bower`.
  - Run `npm run-script build`.
+ - Start your local MongoDB server.
  - Run `npm start`.
+
+NOTE: After a change to `config.ts`, you will need to rebuild the project with `npm run-script build` and restart the server.
 
 Navigate to `http://localhost:3000/status` to see if there were any errors during startup. This is especially helpful once you deploy it to a remote server.
 
