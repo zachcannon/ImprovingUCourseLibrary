@@ -2,9 +2,16 @@
 
 Course survey site
 
-## Background
+## Overview
 
-ImprovingU is a series of courses taught by Improvers for Improvers (that is, people who work at [Improving](http://improving.com). This is a site created with [Jinaga](http://jinaga.com) to survey Improvers on courses they would like to take or teach.
+This web application is used for gathering and disseminating information about ImprovingU courses. ImprovingU is a series of courses taught by Improvers for Improvers. [Improvers](http://improving.com) can use this website to propose new course ideas, vote for courses for the upcoming semester, and register for courses. Instructors can use this website to edit information about their course and take attendance for each class. 
+ - Tech Stack
+   - Front End: KnockoutJS, HTML, CSS, [Jinaga](http://jinaga.com)
+   - Back End: NodeJS, MongoDB
+ - Production URL
+   - https://improvingucourses.azurewebsites.net
+ - Backlog
+   - https://trello.com/c/kT07QzHH/131-improvingu-course-attendance-app
 
 ## Requirements
 
